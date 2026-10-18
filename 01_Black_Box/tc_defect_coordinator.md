@@ -1,8 +1,8 @@
 # Week 1 Black-Box Test Cases: Decision Table Technique
 
 **Author / Assigned To:** Defect & Metrics Coordinator  
-**Technique:** Decision Table Testing[cite: 2]  
-**Target Features:** F-03 (Login web), F-11 (Filter and search), F-14 (Urgency badge)[cite: 2]
+**Technique:** Decision Table Testing  
+**Target Features:** F-03 (Login web), F-11 (Filter and search), F-14 (Urgency badge)
 
 ---
 
@@ -27,67 +27,67 @@
 
 #### Test Case ID: TC-BB-F03-01
 - **Feature/Requirement:** F-03: Login (web)
-- **Technique/Test Type:** Decision Table / Black-box[cite: 2, 5]
-- **Objective:** Verify successful login when user exists and password is correct (Rule 1).[cite: 5]
-- **Preconditions:** Registered user `validUser` with password `Password123!` exists in DB.[cite: 5, 8]
-- **Test Data:** Username: `validUser`, Password: `Password123!`[cite: 5, 8]
+- **Technique/Test Type:** Decision Table / Black-box
+- **Objective:** Verify successful login when user exists and password is correct (Rule 1).
+- **Preconditions:** Registered user `validUser` with password `Password123!` exists in DB.
+- **Test Data:** Username: `validUser`, Password: `Password123!`
 - **Steps:**
-  1. Navigate to `http://127.0.0.1:5000/login`.[cite: 5, 8]
-  2. Enter Username `validUser` and Password `Password123!`.[cite: 5, 8]
-  3. Click "Log in".[cite: 5, 8]
-- **Expected Result:** Redirected to `/dashboard` with an active user session.[cite: 5]
-- **Actual Result:** *(To be filled after execution)*[cite: 5]
-- **Status:** Not Run[cite: 5]
-- **Evidence:** `/evidence/TC-BB-F03-01.png`[cite: 5]
-- **Defect ID:** N/A[cite: 5]
+  1. Navigate to `http://127.0.0.1:5000/login`.
+  2. Enter Username `validUser` and Password `Password123!`.
+  3. Click "Log in".
+- **Expected Result:** Redirected to `/dashboard` with an active user session.
+- **Actual Result:** *(To be filled after execution)*
+- **Status:** Not Run
+- **Evidence:** `/evidence/TC-BB-F03-01.png`
+- **Defect ID:** N/A
 
 #### Test Case ID: TC-BB-F03-02
-- **Feature/Requirement:** F-03: Login (web)[cite: 5]
-- **Technique/Test Type:** Decision Table / Black-box[cite: 2, 5]
-- **Objective:** Verify failure when user exists but enters an incorrect password (Rule 2).[cite: 5]
-- **Preconditions:** Registered user `validUser` exists in DB.[cite: 5, 8]
-- **Test Data:** Username: `validUser`, Password: `WrongPassword123`[cite: 5, 8]
+- **Feature/Requirement:** F-03: Login (web)
+- **Technique/Test Type:** Decision Table / Black-box
+- **Objective:** Verify failure when user exists but enters an incorrect password (Rule 2).
+- **Preconditions:** Registered user `validUser` exists in DB.
+- **Test Data:** Username: `validUser`, Password: `WrongPassword123`
 - **Steps:**
-  1. Navigate to `http://127.0.0.1:5000/login`.[cite: 5, 8]
-  2. Enter Username `validUser` and Password `WrongPassword123`.[cite: 5, 8]
-  3. Click "Log in".[cite: 5, 8]
-- **Expected Result:** Login denied, user remains on `/login` with an error message displayed.[cite: 5]
-- **Actual Result:** *(To be filled after execution)*[cite: 5]
-- **Status:** Not Run[cite: 5]
-- **Evidence:** `/evidence/TC-BB-F03-02.png`[cite: 5]
-- **Defect ID:** N/A[cite: 5]
+  1. Navigate to `http://127.0.0.1:5000/login`.
+  2. Enter Username `validUser` and Password `WrongPassword123`.
+  3. Click "Log in".
+- **Expected Result:** Login denied, user remains on `/login` with an error message displayed.
+- **Actual Result:** *(To be filled after execution)*
+- **Status:** Not Run
+- **Evidence:** `/evidence/TC-BB-F03-02.png`
+- **Defect ID:** N/A
 
 #### Test Case ID: TC-BB-F03-03
-- **Feature/Requirement:** F-03: Login (web)[cite: 5]
-- **Technique/Test Type:** Decision Table / Black-box[cite: 2, 5]
-- **Objective:** Verify failure when non-existent user tries to log in (Rule 3).[cite: 5]
-- **Preconditions:** Username `unknownUser` does not exist in DB.[cite: 5, 8]
-- **Test Data:** Username: `unknownUser`, Password: `Password123!`[cite: 5, 8]
+- **Feature/Requirement:** F-03: Login (web)
+- **Technique/Test Type:** Decision Table / Black-box
+- **Objective:** Verify failure when non-existent user tries to log in (Rule 3).
+- **Preconditions:** Username `unknownUser` does not exist in DB.
+- **Test Data:** Username: `unknownUser`, Password: `Password123!`
 - **Steps:**
-  1. Navigate to `http://127.0.0.1:5000/login`.[cite: 5, 8]
-  2. Enter Username `unknownUser` and Password `Password123!`.[cite: 5, 8]
-  3. Click "Log in".[cite: 5, 8]
-- **Expected Result:** Login denied, user remains on `/login` with an error message displayed.[cite: 5]
-- **Actual Result:** *(To be filled after execution)*[cite: 5]
-- **Status:** Not Run[cite: 5]
-- **Evidence:** `/evidence/TC-BB-F03-03.png`[cite: 5]
-- **Defect ID:** N/A[cite: 5]
+  1. Navigate to `http://127.0.0.1:5000/login`.
+  2. Enter Username `unknownUser` and Password `Password123!`.
+  3. Click "Log in".
+- **Expected Result:** Login denied, user remains on `/login` with an error message displayed.
+- **Actual Result:** *(To be filled after execution)*
+- **Status:** Not Run
+- **Evidence:** `/evidence/TC-BB-F03-03.png`
+- **Defect ID:** N/A
 
 #### Test Case ID: TC-BB-F03-04
-- **Feature/Requirement:** F-03: Login (web)[cite: 5]
-- **Technique/Test Type:** Decision Table / Black-box[cite: 2, 5]
-- **Objective:** Verify failure when both username and password do not exist (Rule 4).[cite: 5]
-- **Preconditions:** Username `invalidUser` does not exist in DB.[cite: 5, 8]
-- **Test Data:** Username: `invalidUser`, Password: `WrongPassword123`[cite: 5, 8]
+- **Feature/Requirement:** F-03: Login (web)
+- **Technique/Test Type:** Decision Table / Black-box
+- **Objective:** Verify failure when both username and password do not exist (Rule 4).
+- **Preconditions:** Username `invalidUser` does not exist in DB.
+- **Test Data:** Username: `invalidUser`, Password: `WrongPassword123`
 - **Steps:**
-  1. Navigate to `http://127.0.0.1:5000/login`.[cite: 5, 8]
-  2. Enter Username `invalidUser` and Password `WrongPassword123`.[cite: 5, 8]
-  3. Click "Log in".[cite: 5, 8]
-- **Expected Result:** Login denied, user remains on `/login` with an error message displayed.[cite: 5]
-- **Actual Result:** *(To be filled after execution)*[cite: 5]
-- **Status:** Not Run[cite: 5]
-- **Evidence:** `/evidence/TC-BB-F03-04.png`[cite: 5]
-- **Defect ID:** N/A[cite: 5]
+  1. Navigate to `http://127.0.0.1:5000/login`.
+  2. Enter Username `invalidUser` and Password `WrongPassword123`.
+  3. Click "Log in".
+- **Expected Result:** Login denied, user remains on `/login` with an error message displayed.
+- **Actual Result:** *(To be filled after execution)*
+- **Status:** Not Run
+- **Evidence:** `/evidence/TC-BB-F03-04.png`
+- **Defect ID:** N/A
 
 ---
 
@@ -113,69 +113,69 @@
 ### Test Cases (F-11)
 
 #### Test Case ID: TC-BB-F11-01
-- **Feature/Requirement:** F-11: Filter and search[cite: 5]
-- **Technique/Test Type:** Decision Table / Functional[cite: 2, 5]
-- **Objective:** Verify that all tasks are displayed when filters are set to default/empty (Rule 1).[cite: 5]
-- **Preconditions:** User is logged in and has created multiple tasks in different categories.[cite: 5]
-- **Test Data:** Category: `All`, Status: `All`, Search Keyword: `""`[cite: 5]
+- **Feature/Requirement:** F-11: Filter and search
+- **Technique/Test Type:** Decision Table / Functional
+- **Objective:** Verify that all tasks are displayed when filters are set to default/empty (Rule 1).
+- **Preconditions:** User is logged in and has created multiple tasks in different categories.
+- **Test Data:** Category: `All`, Status: `All`, Search Keyword: `""`
 - **Steps:**
-  1. Navigate to the task list page.[cite: 5]
-  2. Keep Category as `All`, Status as `All`, and Search input empty.[cite: 5]
-  3. Click "Search" or apply filter.[cite: 5]
-- **Expected Result:** All active tasks belonging to the logged-in user are displayed.[cite: 5]
-- **Actual Result:** *(To be filled after execution)*[cite: 5]
-- **Status:** Not Run[cite: 5]
-- **Evidence:** `/evidence/TC-BB-F11-01.png`[cite: 5]
-- **Defect ID:** N/A[cite: 5]
+  1. Navigate to the task list page.
+  2. Keep Category as `All`, Status as `All`, and Search input empty.
+  3. Click "Search" or apply filter.
+- **Expected Result:** All active tasks belonging to the logged-in user are displayed.
+- **Actual Result:** *(To be filled after execution)*
+- **Status:** Not Run
+- **Evidence:** `/evidence/TC-BB-F11-01.png`
+- **Defect ID:** N/A
 
 #### Test Case ID: TC-BB-F11-02
-- **Feature/Requirement:** F-11: Filter and search[cite: 5]
-- **Technique/Test Type:** Decision Table / Functional[cite: 2, 5]
-- **Objective:** Verify filtering by specific category, pending status, and matching keyword (Rule 2).[cite: 5]
-- **Preconditions:** A Pending task titled "Submit Report" exists under category "Work".[cite: 5]
-- **Test Data:** Category: `Work`, Status: `Pending`, Search Keyword: `"Report"`[cite: 5]
+- **Feature/Requirement:** F-11: Filter and search
+- **Technique/Test Type:** Decision Table / Functional
+- **Objective:** Verify filtering by specific category, pending status, and matching keyword (Rule 2).
+- **Preconditions:** A Pending task titled "Submit Report" exists under category "Work".
+- **Test Data:** Category: `Work`, Status: `Pending`, Search Keyword: `"Report"`
 - **Steps:**
-  1. Select Category `Work`.[cite: 5]
-  2. Select Status `Pending`.[cite: 5]
-  3. Enter `"Report"` in the search field.[cite: 5]
-  4. Click "Search".[cite: 5]
-- **Expected Result:** Only the task "Submit Report" is displayed in the list.[cite: 5]
-- **Actual Result:** *(To be filled after execution)*[cite: 5]
-- **Status:** Not Run[cite: 5]
-- **Evidence:** `/evidence/TC-BB-F11-02.png`[cite: 5]
-- **Defect ID:** N/A[cite: 5]
+  1. Select Category `Work`.
+  2. Select Status `Pending`.
+  3. Enter `"Report"` in the search field.
+  4. Click "Search".
+- **Expected Result:** Only the task "Submit Report" is displayed in the list.
+- **Actual Result:** *(To be filled after execution)*
+- **Status:** Not Run
+- **Evidence:** `/evidence/TC-BB-F11-02.png`
+- **Defect ID:** N/A
 
 #### Test Case ID: TC-BB-F11-03
-- **Feature/Requirement:** F-11: Filter and search[cite: 5]
-- **Technique/Test Type:** Decision Table / Functional[cite: 2, 5]
-- **Objective:** Verify filtering completed tasks across all categories (Rule 3).[cite: 5]
-- **Preconditions:** User has both pending and completed tasks.[cite: 5]
-- **Test Data:** Category: `All`, Status: `Done`, Search Keyword: `""`[cite: 5]
+- **Feature/Requirement:** F-11: Filter and search
+- **Technique/Test Type:** Decision Table / Functional
+- **Objective:** Verify filtering completed tasks across all categories (Rule 3).
+- **Preconditions:** User has both pending and completed tasks.
+- **Test Data:** Category: `All`, Status: `Done`, Search Keyword: `""`
 - **Steps:**
-  1. Select Category `All`.[cite: 5]
-  2. Select Status `Done`.[cite: 5]
-  3. Click "Search".[cite: 5]
-- **Expected Result:** Only tasks marked as "Done" are listed.[cite: 5]
-- **Actual Result:** *(To be filled after execution)*[cite: 5]
-- **Status:** Not Run[cite: 5]
-- **Evidence:** `/evidence/TC-BB-F11-03.png`[cite: 5]
-- **Defect ID:** N/A[cite: 5]
+  1. Select Category `All`.
+  2. Select Status `Done`.
+  3. Click "Search".
+- **Expected Result:** Only tasks marked as "Done" are listed.
+- **Actual Result:** *(To be filled after execution)*
+- **Status:** Not Run
+- **Evidence:** `/evidence/TC-BB-F11-03.png`
+- **Defect ID:** N/A
 
 #### Test Case ID: TC-BB-F11-04
-- **Feature/Requirement:** F-11: Filter and search[cite: 5]
-- **Technique/Test Type:** Decision Table / Functional[cite: 2, 5]
-- **Objective:** Verify system behavior when search keyword yields no matching results (Rule 4 & 5).[cite: 5]
-- **Preconditions:** User is logged in on the task list page.[cite: 5]
-- **Test Data:** Category: `Work`, Status: `Pending`, Search Keyword: `"XYZ999"`[cite: 5]
+- **Feature/Requirement:** F-11: Filter and search
+- **Technique/Test Type:** Decision Table / Functional
+- **Objective:** Verify system behavior when search keyword yields no matching results (Rule 4 & 5).
+- **Preconditions:** User is logged in on the task list page.
+- **Test Data:** Category: `Work`, Status: `Pending`, Search Keyword: `"XYZ999"`
 - **Steps:**
-  1. Select Category `Work`.[cite: 5]
-  2. Enter `"XYZ999"` in the search input.[cite: 5]
-  3. Click "Search".[cite: 5]
-- **Expected Result:** Task list is empty and displays "No tasks found" feedback.[cite: 5]
-- **Actual Result:** *(To be filled after execution)*[cite: 5]
-- **Status:** Not Run[cite: 5]
-- **Evidence:** `/evidence/TC-BB-F11-04.png`[cite: 5]
-- **Defect ID:** N/A[cite: 5]
+  1. Select Category `Work`.
+  2. Enter `"XYZ999"` in the search input.
+  3. Click "Search".
+- **Expected Result:** Task list is empty and displays "No tasks found" feedback.
+- **Actual Result:** *(To be filled after execution)*
+- **Status:** Not Run
+- **Evidence:** `/evidence/TC-BB-F11-04.png`
+- **Defect ID:** N/A
 
 ---
 
@@ -203,61 +203,61 @@
 ### Test Cases (F-14)
 
 #### Test Case ID: TC-BB-F14-01
-- **Feature/Requirement:** F-14: Urgency badge[cite: 5]
-- **Technique/Test Type:** Decision Table / Functional[cite: 2, 5]
-- **Objective:** Verify "Overdue" badge display on open tasks with a past due date (Rule 1).[cite: 5]
-- **Preconditions:** User is logged in.[cite: 5]
-- **Test Data:** Task Title: "Past Task", Status: `Open`, Due Date: `Yesterday`[cite: 5]
+- **Feature/Requirement:** F-14: Urgency badge
+- **Technique/Test Type:** Decision Table / Functional
+- **Objective:** Verify "Overdue" badge display on open tasks with a past due date (Rule 1).
+- **Preconditions:** User is logged in.
+- **Test Data:** Task Title: "Past Task", Status: `Open`, Due Date: `Yesterday`
 - **Steps:**
-  1. Create an open task with yesterday's date as due date.[cite: 5]
-  2. View the task badge on the dashboard/task list.[cite: 5]
-- **Expected Result:** Task displays an "Overdue" badge (e.g., Red label).[cite: 5]
-- **Actual Result:** *(To be filled after execution)*[cite: 5]
-- **Status:** Not Run[cite: 5]
-- **Evidence:** `/evidence/TC-BB-F14-01.png`[cite: 5]
-- **Defect ID:** N/A[cite: 5]
+  1. Create an open task with yesterday's date as due date.
+  2. View the task badge on the dashboard/task list.
+- **Expected Result:** Task displays an "Overdue" badge (e.g., Red label).
+- **Actual Result:** *(To be filled after execution)*
+- **Status:** Not Run
+- **Evidence:** `/evidence/TC-BB-F14-01.png`
+- **Defect ID:** N/A
 
 #### Test Case ID: TC-BB-F14-02
-- **Feature/Requirement:** F-14: Urgency badge[cite: 5]
-- **Technique/Test Type:** Decision Table / Functional[cite: 2, 5]
-- **Objective:** Verify "Due Today" badge display on open tasks due today (Rule 2).[cite: 5]
-- **Preconditions:** User is logged in.[cite: 5]
-- **Test Data:** Task Title: "Today Task", Status: `Open`, Due Date: `Today`[cite: 5]
+- **Feature/Requirement:** F-14: Urgency badge
+- **Technique/Test Type:** Decision Table / Functional
+- **Objective:** Verify "Due Today" badge display on open tasks due today (Rule 2).
+- **Preconditions:** User is logged in.
+- **Test Data:** Task Title: "Today Task", Status: `Open`, Due Date: `Today`
 - **Steps:**
-  1. Create an open task with today's date as due date.[cite: 5]
-  2. View the task badge on the dashboard/task list.[cite: 5]
-- **Expected Result:** Task displays a "Due Today" badge (Note: Check if label is missing as reported in Scope Matrix).[cite: 5]
-- **Actual Result:** *(To be filled after execution)*[cite: 5]
-- **Status:** Not Run[cite: 5]
-- **Evidence:** `/evidence/TC-BB-F14-02.png`[cite: 5]
-- **Defect ID:** N/A[cite: 5]
+  1. Create an open task with today's date as due date.
+  2. View the task badge on the dashboard/task list.
+- **Expected Result:** Task displays a "Due Today" badge (Note: Check if label is missing as reported in Scope Matrix).
+- **Actual Result:** *(To be filled after execution)*
+- **Status:** Not Run
+- **Evidence:** `/evidence/TC-BB-F14-02.png`
+- **Defect ID:** N/A
 
 #### Test Case ID: TC-BB-F14-03
-- **Feature/Requirement:** F-14: Urgency badge[cite: 5]
-- **Technique/Test Type:** Decision Table / Functional[cite: 2, 5]
-- **Objective:** Verify "Upcoming" badge display on open tasks due in the future (Rule 3).[cite: 5]
-- **Preconditions:** User is logged in.[cite: 5]
-- **Test Data:** Task Title: "Future Task", Status: `Open`, Due Date: `Tomorrow`[cite: 5]
+- **Feature/Requirement:** F-14: Urgency badge
+- **Technique/Test Type:** Decision Table / Functional
+- **Objective:** Verify "Upcoming" badge display on open tasks due in the future (Rule 3).
+- **Preconditions:** User is logged in.
+- **Test Data:** Task Title: "Future Task", Status: `Open`, Due Date: `Tomorrow`
 - **Steps:**
-  1. Create an open task with tomorrow's date as due date.[cite: 5]
-  2. View the task badge on the dashboard/task list.[cite: 5]
-- **Expected Result:** Task displays an "Upcoming" badge.[cite: 5]
-- **Actual Result:** *(To be filled after execution)*[cite: 5]
-- **Status:** Not Run[cite: 5]
-- **Evidence:** `/evidence/TC-BB-F14-03.png`[cite: 5]
-- **Defect ID:** N/A[cite: 5]
+  1. Create an open task with tomorrow's date as due date.
+  2. View the task badge on the dashboard/task list.
+- **Expected Result:** Task displays an "Upcoming" badge.
+- **Actual Result:** *(To be filled after execution)*
+- **Status:** Not Run
+- **Evidence:** `/evidence/TC-BB-F14-03.png`
+- **Defect ID:** N/A
 
 #### Test Case ID: TC-BB-F14-04
-- **Feature/Requirement:** F-14: Urgency badge[cite: 5]
-- **Technique/Test Type:** Decision Table / Functional[cite: 2, 5]
-- **Objective:** Verify completed tasks override urgency badge display (Rule 5).[cite: 5]
-- **Preconditions:** Task with a past due date exists.[cite: 5]
-- **Test Data:** Task Title: "Finished Task", Status: `Done`, Due Date: `Yesterday`[cite: 5]
+- **Feature/Requirement:** F-14: Urgency badge
+- **Technique/Test Type:** Decision Table / Functional
+- **Objective:** Verify completed tasks override urgency badge display (Rule 5).
+- **Preconditions:** Task with a past due date exists.
+- **Test Data:** Task Title: "Finished Task", Status: `Done`, Due Date: `Yesterday`
 - **Steps:**
-  1. Mark an overdue task as "Done".[cite: 5]
-  2. View the task badge on the task list.[cite: 5]
-- **Expected Result:** "Overdue" urgency warning is cleared/overridden by Completed status.[cite: 5]
-- **Actual Result:** *(To be filled after execution)*[cite: 5]
-- **Status:** Not Run[cite: 5]
-- **Evidence:** `/evidence/TC-BB-F14-04.png`[cite: 5]
-- **Defect ID:** N/A[cite: 5]
+  1. Mark an overdue task as "Done".
+  2. View the task badge on the task list.
+- **Expected Result:** "Overdue" urgency warning is cleared/overridden by Completed status.
+- **Actual Result:** *(To be filled after execution)*
+- **Status:** Not Run
+- **Evidence:** `/evidence/TC-BB-F14-04.png`
+- **Defect ID:** N/A
