@@ -29,31 +29,31 @@
 - **Feature/Requirement:** F-03: Login (web)
 - **Technique/Test Type:** Decision Table / Black-box
 - **Objective:** Verify successful login when user exists and password is correct (Rule 1).
-- **Preconditions:** Registered user `validUser` with password `Password123!` exists in DB.
-- **Test Data:** Username: `validUser`, Password: `Password123!`
+- **Preconditions:** Registered user `ryulemontea` with password `Kimryulhensem` exists in DB.
+- **Test Data:** Username: `ryulemontea`, Password: `Kimryulhensem`
 - **Steps:**
   1. Navigate to `http://127.0.0.1:5000/login`.
-  2. Enter Username `validUser` and Password `Password123!`.
+  2. Enter Username `ryulemontea` and Password `Kimryulhensem`.
   3. Click "Log in".
 - **Expected Result:** Redirected to `/dashboard` with an active user session.
-- **Actual Result:** *(To be filled after execution)*
-- **Status:** Not Run
-- **Evidence:** `/evidence/TC-BB-F03-01.png`
+- **Actual Result:** * Redirected to `/dashboard` with an active user session*
+- **Status:** PASS
+- **Evidence:** ``
 - **Defect ID:** N/A
 
 #### Test Case ID: TC-BB-F03-02
 - **Feature/Requirement:** F-03: Login (web)
 - **Technique/Test Type:** Decision Table / Black-box
 - **Objective:** Verify failure when user exists but enters an incorrect password (Rule 2).
-- **Preconditions:** Registered user `validUser` exists in DB.
-- **Test Data:** Username: `validUser`, Password: `WrongPassword123`
+- **Preconditions:** Registered user `ryulemontea` exists in DB.
+- **Test Data:** Username: `ryulemontea`, Password: `Kimryulhensom`
 - **Steps:**
   1. Navigate to `http://127.0.0.1:5000/login`.
-  2. Enter Username `validUser` and Password `WrongPassword123`.
+  2. Enter Username `ryulemonteaa` and Password `Kimryulhensom`.
   3. Click "Log in".
 - **Expected Result:** Login denied, user remains on `/login` with an error message displayed.
-- **Actual Result:** *(To be filled after execution)*
-- **Status:** Not Run
+- **Actual Result:** ** Login denied, `/Invalid username and password` error message displayed
+- **Status:** PASS
 - **Evidence:** `/evidence/TC-BB-F03-02.png`
 - **Defect ID:** N/A
 
@@ -61,15 +61,15 @@
 - **Feature/Requirement:** F-03: Login (web)
 - **Technique/Test Type:** Decision Table / Black-box
 - **Objective:** Verify failure when non-existent user tries to log in (Rule 3).
-- **Preconditions:** Username `unknownUser` does not exist in DB.
-- **Test Data:** Username: `unknownUser`, Password: `Password123!`
+- **Preconditions:** Username `ryulemonteaa` does not exist in DB.
+- **Test Data:** Username: `ryulemonteaa`, Password: `Kimryulhensem`
 - **Steps:**
   1. Navigate to `http://127.0.0.1:5000/login`.
-  2. Enter Username `unknownUser` and Password `Password123!`.
+  2. Enter Username `ryulemonteaa` and Password `Kimryulhensem`.
   3. Click "Log in".
 - **Expected Result:** Login denied, user remains on `/login` with an error message displayed.
-- **Actual Result:** *(To be filled after execution)*
-- **Status:** Not Run
+- **Actual Result:** ** Login denied, `invalid username or password` error message appeared
+- **Status:** PASS
 - **Evidence:** `/evidence/TC-BB-F03-03.png`
 - **Defect ID:** N/A
 
@@ -77,15 +77,15 @@
 - **Feature/Requirement:** F-03: Login (web)
 - **Technique/Test Type:** Decision Table / Black-box
 - **Objective:** Verify failure when both username and password do not exist (Rule 4).
-- **Preconditions:** Username `invalidUser` does not exist in DB.
-- **Test Data:** Username: `invalidUser`, Password: `WrongPassword123`
+- **Preconditions:** Username `mingyuKim` does not exist in DB.
+- **Test Data:** Username: `mingyuKim`, Password: `Abcdefgh`
 - **Steps:**
   1. Navigate to `http://127.0.0.1:5000/login`.
-  2. Enter Username `invalidUser` and Password `WrongPassword123`.
+  2. Enter Username `mingyuKim` and Password `Abcdefgh`.
   3. Click "Log in".
 - **Expected Result:** Login denied, user remains on `/login` with an error message displayed.
-- **Actual Result:** *(To be filled after execution)*
-- **Status:** Not Run
+- **Actual Result:** ** Login denied, invalid username or password` error message appeared
+- **Status:** PASS
 - **Evidence:** `/evidence/TC-BB-F03-04.png`
 - **Defect ID:** N/A
 
