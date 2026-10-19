@@ -49,7 +49,7 @@
 - **Test Data:** Username: `ryulemontea`, Password: `Kimryulhensom`
 - **Steps:**
   1. Navigate to `http://127.0.0.1:5000/login`.
-  2. Enter Username `ryulemonteaa` and Password `Kimryulhensom`.
+  2. Enter Username `ryulemontea` and Password `Kimryulhensom`.
   3. Click "Log in".
 - **Expected Result:** Login denied, user remains on `/login` with an error message displayed.
 - **Actual Result:** ** Login denied, `/Invalid username and password` error message displayed
