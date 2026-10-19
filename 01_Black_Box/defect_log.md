@@ -1,7 +1,7 @@
 # Central Defect Log - PyTodo Pro
 
 ## Summary
-- **Total Defects Logged:** 2
+- **Total Defects Logged:** 3
 - **Open Defects:** 1
 - **Resolved Defects:** 0
 
@@ -43,3 +43,20 @@
 - **Status:** Open
 - **Evidence:** `/evidence/BVA/TC-BB-BVA-005_Actual.png`
 - **Related Test Case:** `TC-BB-BVA-005`
+
+### Defect ID: D-003
+- **Title:** Task due today incorrectly displays "Overdue" badge instead of "Due Today"
+- **Affected Feature:** Task Urgency Logic (`helpers.py`)
+- **Environment:** Localhost (http://127.0.0.1:5000), Browser
+- **Preconditions:** User is logged in.
+- **Steps to Reproduce:**
+  1. Navigate to the Create Task page (`/tasks/new`).
+  2. Create an open task and set the due date exactly to **today's date**.
+  3. Save the task and view the task list or dashboard.
+- **Expected Result:** The task should display a **"Due Today"** badge.
+- **Actual Result:** The task displays an **"Overdue"** badge.
+- **Severity:** Moderate
+- **Priority:** Medium
+- **Status:** Open
+- **Evidence:** `/01_Black_Box/evidence/BVA/TC-BB-BVA-008_Actual.png`
+- **Related Test Case:** `TC-BB-BVA-008`
