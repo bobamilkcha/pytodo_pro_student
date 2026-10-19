@@ -1,6 +1,5 @@
 # Week 1 Black-Box Test Cases: Decision Table Technique
-
-**Author / Assigned To:** Defect & Metrics Coordinator  
+ 
 **Technique:** Decision Table Testing  
 **Target Features:** F-03 (Login web), F-11 (Filter and search), F-14 (Urgency badge)
 
