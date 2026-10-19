@@ -224,7 +224,7 @@
   1. Create an open task with today's date as due date.
   2. View the task badge on the dashboard/task list.
 - **Expected Result:** Task displays a "Due Today" badge (Note: Check if label is missing as reported in Scope Matrix).
-- **Actual Result:** Task displays a "Overdue" badge 
+- **Actual Result:** Task displays an "Overdue" badge instead of "Due Today" 
 - **Status:** FAILED
 - **Evidence:** `/evidence/TC-BB-F14-02.png`
 - **Defect ID:** D-001
