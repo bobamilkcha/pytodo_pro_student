@@ -123,8 +123,8 @@
   2. Keep Category as `All`, Status as `All`, and Search input empty.
   3. Click "Search" or apply filter.
 - **Expected Result:** All active tasks belonging to the logged-in user are displayed.
-- **Actual Result:** *(To be filled after execution)*
-- **Status:** Not Run
+- **Actual Result:** ** All active tasks are displayed
+- **Status:** PASS
 - **Evidence:** `/evidence/TC-BB-F11-01.png`
 - **Defect ID:** N/A
 
@@ -133,15 +133,15 @@
 - **Technique/Test Type:** Decision Table / Functional
 - **Objective:** Verify filtering by specific category, pending status, and matching keyword (Rule 2).
 - **Preconditions:** A Pending task titled "Submit Report" exists under category "Work".
-- **Test Data:** Category: `Work`, Status: `Pending`, Search Keyword: `"Report"`
+- **Test Data:** Category: `Work`, Status: `Open`, Search Keyword: `"Report"`
 - **Steps:**
   1. Select Category `Work`.
-  2. Select Status `Pending`.
+  2. Select Status `Open`.
   3. Enter `"Report"` in the search field.
   4. Click "Search".
 - **Expected Result:** Only the task "Submit Report" is displayed in the list.
-- **Actual Result:** *(To be filled after execution)*
-- **Status:** Not Run
+- **Actual Result:** ** "Submit Report" is the only task displayed in the list after done filter action
+- **Status:** PASS
 - **Evidence:** `/evidence/TC-BB-F11-02.png`
 - **Defect ID:** N/A
 
@@ -156,8 +156,8 @@
   2. Select Status `Done`.
   3. Click "Search".
 - **Expected Result:** Only tasks marked as "Done" are listed.
-- **Actual Result:** *(To be filled after execution)*
-- **Status:** Not Run
+- **Actual Result:** ** "Proposal decommissioning" is display when status marked as "Done"
+- **Status:** PASS
 - **Evidence:** `/evidence/TC-BB-F11-03.png`
 - **Defect ID:** N/A
 
@@ -166,14 +166,14 @@
 - **Technique/Test Type:** Decision Table / Functional
 - **Objective:** Verify system behavior when search keyword yields no matching results (Rule 4 & 5).
 - **Preconditions:** User is logged in on the task list page.
-- **Test Data:** Category: `Work`, Status: `Pending`, Search Keyword: `"XYZ999"`
+- **Test Data:** Category: `Work`, Status: `Open`, Search Keyword: `"image scanner"`
 - **Steps:**
   1. Select Category `Work`.
-  2. Enter `"XYZ999"` in the search input.
+  2. Enter `"image scanner"` in the search input.
   3. Click "Search".
 - **Expected Result:** Task list is empty and displays "No tasks found" feedback.
-- **Actual Result:** *(To be filled after execution)*
-- **Status:** Not Run
+- **Actual Result:** ** Task list displays "No tasks match your filters"
+- **Status:** PASS
 - **Evidence:** `/evidence/TC-BB-F11-04.png`
 - **Defect ID:** N/A
 
@@ -183,22 +183,19 @@
 
 ### Decision Table
 - **Conditions:**
-  - C1: Task completion state? (Open / Done)
-  - C2: Due Date status? (Past / Today / Future / None)
+  - C1: Task status? (Open / Done)
+
 - **Actions:**
   - A1: Display "Overdue" badge
-  - A2: Display "Due Today" badge
+  - A2: Display "Due Soon" badge
   - A3: Display "Upcoming" badge
-  - A4: Display Neutral / Completed badge (No urgency warning)
 
 | Condition / Action | Rule 1 | Rule 2 | Rule 3 | Rule 4 | Rule 5 |
 | :--- | :---: | :---: | :---: | :---: | :---: |
 | **C1: Task State** | Open | Open | Open | Open | Done |
-| **C2: Due Date Status** | Past | Today | Future | None | Past / Today / Future |
 | **A1: Badge = "Overdue"** | **X** | | | | |
-| **A2: Badge = "Due Today"** | | **X** | | | |
+| **A2: Badge = "Due Soon"** | | **X** | | | |
 | **A3: Badge = "Upcoming"** | | | **X** | | |
-| **A4: Badge = Neutral / "Completed"** | | | | **X** | **X** |
 
 ### Test Cases (F-14)
 
@@ -207,13 +204,13 @@
 - **Technique/Test Type:** Decision Table / Functional
 - **Objective:** Verify "Overdue" badge display on open tasks with a past due date (Rule 1).
 - **Preconditions:** User is logged in.
-- **Test Data:** Task Title: "Past Task", Status: `Open`, Due Date: `Yesterday`
+- **Test Data:** Task Title: "Submit report", Status: `Open`
 - **Steps:**
   1. Create an open task with yesterday's date as due date.
   2. View the task badge on the dashboard/task list.
 - **Expected Result:** Task displays an "Overdue" badge (e.g., Red label).
-- **Actual Result:** *(To be filled after execution)*
-- **Status:** Not Run
+- **Actual Result:** ** Task "Submit report" displays an "Overdue" badge
+- **Status:** PASS
 - **Evidence:** `/evidence/TC-BB-F14-01.png`
 - **Defect ID:** N/A
 
@@ -222,28 +219,28 @@
 - **Technique/Test Type:** Decision Table / Functional
 - **Objective:** Verify "Due Today" badge display on open tasks due today (Rule 2).
 - **Preconditions:** User is logged in.
-- **Test Data:** Task Title: "Today Task", Status: `Open`, Due Date: `Today`
+- **Test Data:** Task Title: "Mock Interview", Status: `Open`, Due Date: `Today`
 - **Steps:**
   1. Create an open task with today's date as due date.
   2. View the task badge on the dashboard/task list.
 - **Expected Result:** Task displays a "Due Today" badge (Note: Check if label is missing as reported in Scope Matrix).
-- **Actual Result:** *(To be filled after execution)*
-- **Status:** Not Run
+- **Actual Result:** Task displays a "Overdue" badge 
+- **Status:** FAILED
 - **Evidence:** `/evidence/TC-BB-F14-02.png`
-- **Defect ID:** N/A
+- **Defect ID:** D-001
 
 #### Test Case ID: TC-BB-F14-03
 - **Feature/Requirement:** F-14: Urgency badge
 - **Technique/Test Type:** Decision Table / Functional
-- **Objective:** Verify "Upcoming" badge display on open tasks due in the future (Rule 3).
+- **Objective:** Verify "Dental appointment" badge display on open tasks due in the future (Rule 3).
 - **Preconditions:** User is logged in.
-- **Test Data:** Task Title: "Future Task", Status: `Open`, Due Date: `Tomorrow`
+- **Test Data:** Task Title: "Dental appointment", Status: `Open`, Due Date: `Tomorrow`
 - **Steps:**
   1. Create an open task with tomorrow's date as due date.
   2. View the task badge on the dashboard/task list.
 - **Expected Result:** Task displays an "Upcoming" badge.
-- **Actual Result:** *(To be filled after execution)*
-- **Status:** Not Run
+- **Actual Result:** ** Task displays an "Upcoming" badge 
+- **Status:** PASS
 - **Evidence:** `/evidence/TC-BB-F14-03.png`
 - **Defect ID:** N/A
 
@@ -252,12 +249,12 @@
 - **Technique/Test Type:** Decision Table / Functional
 - **Objective:** Verify completed tasks override urgency badge display (Rule 5).
 - **Preconditions:** Task with a past due date exists.
-- **Test Data:** Task Title: "Finished Task", Status: `Done`, Due Date: `Yesterday`
+- **Test Data:** Task Title: "Proposal decommissioning", Status: `Done`, Due Date: `Yesterday`
 - **Steps:**
   1. Mark an overdue task as "Done".
   2. View the task badge on the task list.
 - **Expected Result:** "Overdue" urgency warning is cleared/overridden by Completed status.
-- **Actual Result:** *(To be filled after execution)*
-- **Status:** Not Run
+- **Actual Result:** ** Task title will strikethrough and "Done" urgency badge displayed
+- **Status:** PASS
 - **Evidence:** `/evidence/TC-BB-F14-04.png`
 - **Defect ID:** N/A
