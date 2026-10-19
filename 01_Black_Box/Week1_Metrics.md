@@ -8,7 +8,7 @@
 
 ## 1. Test Execution Metrics
 
-| Metric Category | Count | Percentage / Formula |
+| Metric Category | Count | Percentage |
 | :--- | :---: | :---: |
 | **Total Test Cases Planned** | 12 | 100% |
 | **Total Test Cases Executed** | 12 | 100% |
