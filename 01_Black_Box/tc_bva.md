@@ -1,17 +1,17 @@
 # Boundary Value Analysis (BVA) Test Designs
 
 **Designer:** Nisrina (Automation/Tool Coordinator)
-**Technique Justification:** BVA targets the edge cases of input ranges (minimum, just below minimum, maximum, just above maximum) where logic errors and database crashes most frequently occur.
+**Technique Justification:** BVA targets the edge cases of input ranges (minimum, just below minimum, maximum, just above maximum) to catch logic errors at the boundaries.
 
 ## Test Cases
 
-| Test ID | Feature / Endpoint | Boundary Condition | Input Data | Expected Result |
+| Test ID | Feature | Boundary Condition | Input Data | Expected Result |
 | :--- | :--- | :--- | :--- | :--- |
-| **TC-BB-BVA-001** | Create Task (Web UI) | Title: Minimum valid length | `Title: "A"` (1 character) | Task is created successfully and appears in the list. |
-| **TC-BB-BVA-002** | Create Task (Web UI) | Title: Just below minimum | `Title: ""` (0 characters / blank) | Application rejects the task and displays a validation error message. |
-| **TC-BB-BVA-003** | Create Task (API) | Title: Extremely long string | `Title: [String of 300 characters]` | Application gracefully handles or truncates the input without throwing a 500 Internal Server Error. |
-| **TC-BB-BVA-004** | API Pagination | Page: Minimum valid | `GET /api/tasks?page=1` | Returns the first page of the task list. |
-| **TC-BB-BVA-005** | API Pagination | Page: Just below minimum | `GET /api/tasks?page=0` | API returns a clear 400 Bad Request error or safely defaults to page 1. |
-| **TC-BB-BVA-006** | API Pagination | Per Page: Below minimum | `GET /api/tasks?per_page=0` | API returns a 400 Bad Request error or safely defaults to standard pagination. |
-| **TC-BB-BVA-007** | Task Urgency Logic | Date: Boundary to Overdue | `Due Date: [Yesterday's Date]` | System categorizes and labels the task strictly as "Overdue". |
-| **TC-BB-BVA-008** | Task Urgency Logic | Date: Boundary to Due Today | `Due Date: [Today's Date]` | System categorizes and labels the task strictly as "Due Today". |
+| **TC-BB-BVA-F01-01** | F-01: Register (web) | Password: Just below minimum | `Password: "1234567"` (7 chars) | Rejects registration with validation error. |
+| **TC-BB-BVA-F01-02** | F-01: Register (web) | Password: Minimum valid length | `Password: "12345678"` (8 chars) | Registration successful. |
+| **TC-BB-BVA-F01-03** | F-01: Register (web) | Password: Just above minimum | `Password: "123456789"` (9 chars) | Registration successful. |
+| **TC-BB-BVA-F08-01** | F-08: Create task | Title: Just below minimum | `Title: ""` (0 chars) | Rejects creation with validation error. |
+| **TC-BB-BVA-F08-02** | F-08: Create task | Title: Minimum valid length | `Title: "A"` (1 char) | Task created successfully. |
+| **TC-BB-BVA-F14-01** | F-14: Urgency badge | Date: Just before today | `Due Date: [Yesterday]` | Badge displays as "Overdue". |
+| **TC-BB-BVA-F14-02** | F-14: Urgency badge | Date: Exactly today | `Due Date: [Today]` | Badge displays as "Due Today". |
+| **TC-BB-BVA-F15-01** | F-15: Dashboard | Date: Exact 7-day cutoff | Task marked done exactly 7 days ago | Task is included in the "completed in last 7 days" counter. |
