@@ -57,7 +57,7 @@ Notes on the counts:
 
 We picked 4. Two are pure functions in `helpers.py` (no Flask needed). Two are Flask routes that need the test client. We wanted a mix, and we wanted each one to have either many decisions or a known problem from Week 1.
 
-Week 1 has no test results yet (the Actual Result columns are still empty), so "Week 1 findings" below means what we noted from reading the code in `feature_inventory.md` and the test cases we wrote.
+For the Week 1 links we used the black-box results in `01_Black_Box/` (`defect_log.md`, `Week1_Metrics.md`, `EP_Test_Cases.md`, `tc_bva.md`, `tc_defect_coordinator.md`). The app code did not change after our last pull, so the line numbers are still the same. Our own state transition cases (`tc_state_transition.md`) still have empty Actual Result columns, so we have not run them yet.
 
 ### Unit 1: `index`
 
@@ -69,7 +69,7 @@ Week 1 has no test results yet (the Actual Result columns are still empty), so "
 
 Justification: This is the most complex function we found. It builds an SQL query step by step from three optional filters (category, status, search text), so there are many combinations of paths through it. It is also the main page of the app, so almost every user hits it. The decisions are independent, so we expect the control flow graph to be simple to draw but the path count to be high.
 
-Week 1 link: F-11 (Filter and search) was planned as a decision table. The inventory notes that unknown filter values are ignored and that `%` and `_` act as wildcards because the search text is not escaped. White-box tests can show if every filter branch runs. We should not expect the wildcard behaviour to show up as a coverage gap, since it is not a branch.
+Week 1 link: F-11 (Filter and search) had 4 decision table cases in `tc_defect_coordinator.md`, and the metrics file says the filter checks passed. So we have no defect here. The decision table only tried a few combinations (for example Work + Open + "Report"), so white-box tests can show which branches it never reached, such as the unknown category name branch (line 201 false when a name is given). The inventory also notes that `%` and `_` act as wildcards because the search text is not escaped. That is not a branch, so a coverage tool will not show it.
 
 How to test: Needs the Flask test client. The function reads `request.args`, uses `session["user_id"]` and queries SQLite, so we cannot call it directly. We will need a test database (a temp file, or monkeypatching `DATABASE`) and a logged-in session.
 
@@ -83,7 +83,7 @@ How to test: Needs the Flask test client. The function reads `request.args`, use
 
 Justification: This is the date rule behind the urgency badge and the dashboard Overdue and Due Soon counts, so a mistake here shows up in several places. It has real decision logic with boundaries. It also has a known problem, and it can crash on a badly formatted date because `strptime` is not wrapped in a try.
 
-Week 1 link: Risk observation #5 in the inventory. The docstring says "Due Today" for today's date, but line 33 uses `due <= today`, so today returns "Overdue" and "Due Today" can never be returned. This is a code vs spec difference (F-14, risk H). Observation #7 is also related (a bad date format may cause a 500 error). For white-box, this means no test can ever reach a "Due Today" branch because it does not exist. We will point that out in the coverage report.
+Week 1 link: This is the cause of the "Due Today" defects. The defect log has D-001, D-002 and D-003 (they look like the same defect logged more than once), plus a failed EP case (TC-BB-008, logged as DEF-001) and a failed BVA case (TC-BB-BVA-F14-02). All say a task due today shows "Overdue". The docstring says "Due Today", but line 33 uses `due <= today`, so "Due Today" can never be returned. For white-box, there is no "Due Today" branch to reach. We will point that out in the coverage report. Inventory observation #7 is also related (a bad date format may crash with a `ValueError`). We have not tested that one yet.
 
 How to test: Directly with PyTest. It is a pure function and takes `today` as a parameter, so we can pass a fixed date and need no mocking.
 
@@ -97,7 +97,7 @@ How to test: Directly with PyTest. It is a pure function and takes `today` as a 
 
 Justification: It feeds the "Completed this week" counter on both dashboards. It has an unusual compound condition (`age.total_seconds() > 0 and age.days < n`), which is good for condition coverage and MC/DC style thinking. It has only 3 decisions, but the boundary is easy to get wrong.
 
-Week 1 link: Risk observation #10 and F-15 (risk H). The docstring says "inclusive of exactly N days ago", but `age.days < n` leaves out anything that is 7 days or older. Also, `total_seconds() > 0` rejects a completion time that is in the future or exactly equal to now. In Week 1 we were not sure how to create a 7-day-old task from the UI. With white-box tests we can pass a `now` value, so this problem goes away.
+Week 1 link: Defect D-005 (BVA case TC-BB-BVA-F15-01, status Open). The dashboard counter left out a task completed exactly 7 days ago. The docstring says "inclusive of exactly N days ago", but `age.days < n` leaves out anything that is 7 days or older. Also, `total_seconds() > 0` rejects a completion time that is in the future or exactly equal to now, and we have not tested that yet. In Week 1 we had to change the system clock to make a 7-day-old task. With white-box tests we can pass a `now` value instead.
 
 How to test: Directly with PyTest. It takes `now` as a parameter, so we do not need to mock the clock. A badly formatted string would raise `ValueError`, which we can also check with `pytest.raises`.
 
@@ -111,7 +111,7 @@ How to test: Directly with PyTest. It takes `now` as a parameter, so we do not n
 
 Justification: This is the status change logic of the app. It flips `done` and sets or clears `completed_at`, and the dashboard counts depend on it. It also has a permission check, because the query includes `user_id`, so a user cannot toggle someone else's task. Few decisions, but each one matters, and a mistake here quietly corrupts data.
 
-Week 1 link: This is F-12, and the state transition test cases we wrote (TC-BB-070, 071, 073, 077) cover it from the outside. In the state transition notes, toggling another user's task could not be done by hand in the browser because it is a POST. White-box tests with the test client can cover that gap. Doing this also lets us check the `else` branch where the task is not found (T9) in a controlled way.
+Week 1 link: This is F-12. No defects have been logged for it, but our state transition cases (TC-BB-070, 071, 073, 077) are not run yet, so we cannot say it is clean. In the state transition notes, toggling another user's task could not be done by hand in the browser because it is a POST. White-box tests with the test client can cover that gap. They also let us check the "task not found" path (T9) in a controlled way.
 
 How to test: Needs the Flask test client. It is a POST route that depends on the session and the database. We will need to set the session (or log in through `/login`) and read the database afterwards to check `done` and `completed_at`.
 
@@ -125,3 +125,5 @@ How to test: Needs the Flask test client. It is a POST route that depends on the
 | QA/Test Lead | `toggle_task` | app.py | 269-281 | Flask test client |
 
 We matched people to the features they had in Week 1 where we could (Automation had F-15, Defect & Metrics had the F-14 decision table, the Test Lead had F-12). The Test Design Coordinator has the most complex function, as agreed, since they lead the control-flow analysis.
+
+---
