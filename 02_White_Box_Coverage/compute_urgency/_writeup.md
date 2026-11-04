@@ -4,7 +4,7 @@ Owner: Defect & Metrics Coordinator
 Unit: `compute_urgency(due_date_str, today=None)` in `helpers.py`, lines 12-39
 Feature: F-14 Task urgency
 Test file: `02_White_Box_Coverage/compute_urgency/tests/test_compute_urgency.py`
-Executed: 4 Nov 2026 (Windows laptop, project venv)
+
 
 ---
 
