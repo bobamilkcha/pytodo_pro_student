@@ -1,0 +1,1 @@
+pytest 02_White_Box_Coverage/index/tests/test_index.py --cov=app --cov-branch --cov-report=term-missing --cov-report=html > 02_White_Box_Coverage/index/pytest_output_index.txt
