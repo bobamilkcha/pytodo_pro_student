@@ -5,9 +5,9 @@
 
 **Contributors:**
 - QA/Test Lead - `toggle_task`
-- Aida (Test Design Coordinator) - `index`
-- Nisrina (Automation/Tool Coordinator) - `completed_in_last_n_days`
-- Nafiesa (Defect & Metrics Coordinator) - `compute_urgency`
+- Test Design Coordinator - `index`
+- Automation/Tool Coordinator - `completed_in_last_n_days`
+- Defect & Metrics Coordinator - `compute_urgency`
 
 ---
 
@@ -17,11 +17,10 @@ This matrix links each selected unit to its feature, Week 1 risk, tests, results
 
 | Unit | File (lines) | Feature | Week 1 risk | Owner | Test file | Cases | Passed | Failed | Statement cov. | Branch cov. | Defects | Status |
 | :--- | :--- | :---: | :---: | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :--- | :--- |
-| `index` | app.py (189-222) | F-09, F-11 | M | Aida | `index/tests/test_index.py` | 11 | 11 | 0 | 100% | 100% (8/8) | None | Done |
-| `compute_urgency` | helpers.py (12-39) | F-14 | H | Nafiesa | `compute_urgency/tests/test_compute_urgency.py` | 10 | 8 | 2 | 100% | 100% (8/8) | D-001, D-006 | Done |
-| `completed_in_last_n_days` | helpers.py (61-75) | F-15, F-16 | H | Nisrina | `test_helpers.py` | 7 | 7 | 0 | 100% | 100% (4/4) | D-005 | Done |
 | `toggle_task` | app.py (269-281) | F-12 | M | QA/Test Lead | Not in repo | 0 | 0 | 0 | 0% | 0% (0/2) | - | **Not started** |
-
+| `index` | app.py (189-222) | F-09, F-11 | M | Aida | `index/tests/test_index.py` | 11 | 11 | 0 | 100% | 100% (8/8) | None | Done |
+| `completed_in_last_n_days` | helpers.py (61-75) | F-15, F-16 | H | Nisrina | `test_helpers.py` | 7 | 7 | 0 | 100% | 100% (4/4) | D-005 | Done |
+| `compute_urgency` | helpers.py (12-39) | F-14 | H | Nafiesa | `compute_urgency/tests/test_compute_urgency.py` | 10 | 8 | 2 | 100% | 100% (8/8) | D-001, D-006 | Done |
 ---
 
 ## 2. Test Execution Metrics (Week 2)
@@ -42,10 +41,11 @@ This matrix links each selected unit to its feature, Week 1 risk, tests, results
 Note: `compute_urgency` has 10 test cases but 13 pytest runs, because TC-WB-F14-09 uses 4 data values. We count it as 1 test case.
 
 ### Breakdown by Unit
-- **`index` (Aida):** 11 Executed | 11 Passed | 0 Failed
-- **`compute_urgency` (Nafiesa):** 10 Executed | 8 Passed | 2 Failed
-- **`completed_in_last_n_days` (Nisrina):** 7 Executed | 7 Passed | 0 Failed
 - **`toggle_task` (QA/Test Lead):** 0 Executed. Tests not yet pushed.
+- **`index` (Aida):** 11 Executed | 11 Passed | 0 Failed
+- **`completed_in_last_n_days` (Nisrina):** 7 Executed | 7 Passed | 0 Failed
+- **`compute_urgency` (Nafiesa):** 10 Executed | 8 Passed | 2 Failed
+
 
 ---
 
@@ -53,10 +53,10 @@ Note: `compute_urgency` has 10 test cases but 13 pytest runs, because TC-WB-F14-
 
 | Scope | Statements | Statement % | Branches | Branch % |
 | :--- | :---: | :---: | :---: | :---: |
-| `index` | 22 / 22 | 100% | 8 / 8 | 100% |
-| `compute_urgency` | 11 / 11 | 100% | 8 / 8 | 100% |
-| `completed_in_last_n_days` | 7 / 7 | 100% | 4 / 4 | 100% |
 | `toggle_task` | 0 / 8 | 0% | 0 / 2 | 0% |
+| `index` | 22 / 22 | 100% | 8 / 8 | 100% |
+| `completed_in_last_n_days` | 7 / 7 | 100% | 4 / 4 | 100% |
+| `compute_urgency` | 11 / 11 | 100% | 8 / 8 | 100% |
 | `helpers.py` (whole file) | 28 / 31 | 90.3% | 15 / 18 | 83.3% |
 | `app.py` (whole file) | 164 / 299 | 54.8% | 26 / 64 | 40.6% |
 
@@ -104,9 +104,9 @@ The uncovered lines in `helpers.py` (48, 55, 57) belong to `is_valid_username` a
 
 | Technique | Owner | Planned | Executed | Passed | Failed | Not Run |
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: |
-| Decision Table | Nafiesa | 12 | 12 | 11 | 1 | 0 |
-| BVA | Nisrina | 8 | 8 | 5 | 3 | 0 |
-| EP | Aida | 10 | 10 | 9 | 1 | 0 |
+| Decision Table | Defect & Metrics Coordinator | 12 | 12 | 11 | 1 | 0 |
+| BVA | Automation/Tool Coordinator | 8 | 8 | 5 | 3 | 0 |
+| EP | Test Design Coordinator | 10 | 10 | 9 | 1 | 0 |
 | State Transition | QA/Test Lead | 20 | 0 | 0 | 0 | 20 |
 | White-box | All | 28 | 28 | 26 | 2 | 0 |
 | **Total** | | **78** | **58** | **51** | **7** | **20** |
@@ -122,9 +122,9 @@ The uncovered lines in `helpers.py` (48, 55, 57) belong to `is_valid_username` a
 | :--- | :--- |
 | QA/Test Lead | Run the 20 State Transition cases (TC-BB-060 to TC-BB-079) and fill in Actual Result and Status. |
 | QA/Test Lead | Push white-box tests and write-up for `toggle_task`. |
-| Nafiesa | Add D-006 to `01_Black_Box/defect_log.md`. |
-| Nafiesa | Mark D-002, D-003 and DEF-001 as Duplicate of D-001 in the defect log. |
-| Aida, Nisrina | Add TC IDs to the docstrings in `test_index.py` and `test_helpers.py`, so each test can be traced. |
+| Defect & Metrics Coordinator | Add D-006 to `01_Black_Box/defect_log.md`. |
+| Defect & Metrics Coordinator| Mark D-002, D-003 and DEF-001 as Duplicate of D-001 in the defect log. |
+| Test Design Coordinator, Automation/Tool Coordinator | Add TC IDs to the docstrings in `test_index.py` and `test_helpers.py`, so each test can be traced. |
 
 ---
 
