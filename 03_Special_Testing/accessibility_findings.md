@@ -2,6 +2,7 @@ Week 3: Accessibility Findings (accessibility_findings.md)
 
 Owner: Defect & Metrics Coordinator (Nafiesa)
 Target Application: PyTodo Pro (http://127.0.0.1:5000/)
+Date tested: 19 Nov 2026
 Test Environment: Google Chrome 153 (headless, Linux), window 1366 x 768. ACC-09 uses a 320 px wide window.
 Tools: Keyboard-only checks scripted with Playwright, axe-core (automated WCAG rules), Lighthouse (accessibility audit)
 Evidence Directory: 03_Special_Testing/evidence/accessibility_testing/
