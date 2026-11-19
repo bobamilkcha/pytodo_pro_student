@@ -1,0 +1,98 @@
+PyTodo Pro - Week 3 accessibility scan log
+Run on 19 Nov 2026 with Google Chrome 153.0.8010.12 (headless, Linux) driven by Playwright, axe-core 4.x and Lighthouse.
+
+Page titles:
+  Log in: Log in — PyTodo Pro
+  Register: Register — PyTodo Pro
+  Task list: Tasks — PyTodo Pro
+  New task: New Task — PyTodo Pro
+  Edit task: Edit Task — PyTodo Pro
+  Dashboard: Dashboard — PyTodo Pro
+
+Page language (html lang): en
+
+Headings per page:
+  Log in: H1: Log in
+  Register: H1: Create an account
+  Task list: H1: My Tasks
+  New task: H1: New Task
+  Edit task: H1: Edit Task
+  Dashboard: H1: Dashboard
+
+ACC-01 label click on /login: focus moved to -> BODY
+  labels: [{"text": "Username", "for": "", "control": false}, {"text": "Password", "for": "", "control": false}]
+
+ACC-02 done toggle accessible names: [{"text": "○", "aria": null, "title": ""}, {"text": "○", "aria": null, "title": ""}, {"text": "○", "aria": null, "title": ""}, {"text": "✓", "aria": null, "title": ""}]
+
+ACC-08 search box: {"label": 0, "aria": null, "ph": "Search title..."}
+ACC-08 dropdowns: [{"name": "category", "labels": 0, "aria": null, "first": "All categories"}, {"name": "status", "labels": 0, "aria": null, "first": "All statuses"}]
+
+ACC-04 Tab order on task list (element | text | outline when focused):
+  1. A|PyTodo Pro|auto 1px|none
+  2. A|Tasks|auto 1px|none
+  3. A|Dashboard|auto 1px|none
+  4. A|Log out|auto 1px|none
+  5. A|+ New Task|auto 1px|none
+  6. SELECT|All categories Personal S|auto 1px|none
+  7. SELECT|All statuses Open Done|auto 1px|none
+  8. INPUT|q|auto 1px|none
+  9. BUTTON|Filter|auto 1px|none
+  10. BUTTON|○|auto 1px|none
+  11. A|Edit|auto 1px|none
+  12. BUTTON|Delete|auto 1px|none
+  13. BUTTON|○|auto 1px|none
+  14. A|Edit|auto 1px|none
+  15. BUTTON|Delete|auto 1px|none
+  16. BUTTON|○|auto 1px|none
+  17. A|Edit|auto 1px|none
+  18. BUTTON|Delete|auto 1px|none
+  19. BUTTON|✓|auto 1px|none
+  20. A|Edit|auto 1px|none
+  21. BUTTON|Delete|auto 1px|none
+
+ACC-13 Delete button pressed with Enter -> dialog shown: ["Delete this task?"]
+
+ACC-06 register error: {"text": "Username must be 3-20 characters (letters, numbers, underscore).", "role": null, "live": null}
+  username field after error: ''
+  aria-invalid: None
+
+ACC-09 width 320 px: page scroll width 510 px vs window 320 px. meta viewport present: False
+
+ACC-11 target sizes: ○ 29x29 px, Edit 24x16 px, Delete 39x15 px (WCAG 2.2 minimum 24x24 px)
+
+axe-core violations per page:
+  Log in (17 rules passed)
+    - label [critical]: Form elements must have labels -> input[type="text"], input[type="password"]
+    - landmark-one-main [moderate]: Document should have one main landmark -> html
+    - region [moderate]: All page content should be contained by landmarks -> h1, label:nth-child(1), input[type="text"], label:nth-child(3), input[type="password"], p
+  Register (17 rules passed)
+    - label [critical]: Form elements must have labels -> input[type="text"], input[type="password"]
+    - landmark-one-main [moderate]: Document should have one main landmark -> html
+    - region [moderate]: All page content should be contained by landmarks -> h1, label:nth-child(1), input[type="text"], label:nth-child(3), input[type="password"], p
+  Task list (21 rules passed)
+    - color-contrast [serious]: Elements must meet minimum color contrast ratio thresholds -> .done > .title-cell
+    - empty-table-header [minor]: Table header text should not be empty -> th:nth-child(1), th:nth-child(6)
+    - landmark-one-main [moderate]: Document should have one main landmark -> html
+    - region [moderate]: All page content should be contained by landmarks -> .page-header, select[name="category"], select[name="status"], input, thead, tr:nth-child(1) > .title-cell
+    - select-name [critical]: Select element must have an accessible name -> select[name="category"], select[name="status"]
+  New task (16 rules passed)
+    - label [critical]: Form elements must have labels -> input[type="text"], textarea, input[type="date"]
+    - landmark-one-main [moderate]: Document should have one main landmark -> html
+    - region [moderate]: All page content should be contained by landmarks -> h1, label:nth-child(1), input[type="text"], label:nth-child(3), textarea, label:nth-child(5)
+    - select-name [critical]: Select element must have an accessible name -> select
+  Edit task (16 rules passed)
+    - label [critical]: Form elements must have labels -> input[type="text"], textarea, input[type="date"]
+    - landmark-one-main [moderate]: Document should have one main landmark -> html
+    - region [moderate]: All page content should be contained by landmarks -> h1, label:nth-child(1), input[type="text"], label:nth-child(3), textarea, label:nth-child(5)
+    - select-name [critical]: Select element must have an accessible name -> select
+  Dashboard (12 rules passed)
+    - landmark-one-main [moderate]: Document should have one main landmark -> html
+    - region [moderate]: All page content should be contained by landmarks -> .container
+  Task list (empty) (21 rules passed)
+    - color-contrast [serious]: Elements must meet minimum color contrast ratio thresholds -> td
+    - empty-table-header [minor]: Table header text should not be empty -> th:nth-child(1), th:nth-child(6)
+    - landmark-one-main [moderate]: Document should have one main landmark -> html
+    - region [moderate]: All page content should be contained by landmarks -> .page-header, select[name="category"], select[name="status"], input, table
+    - select-name [critical]: Select element must have an accessible name -> select[name="category"], select[name="status"]
+
+Lighthouse accessibility scores: Log in 85, Register 85, Task list 72, New task 74, Dashboard 95 (full reports: lighthouse_*.report.html)
