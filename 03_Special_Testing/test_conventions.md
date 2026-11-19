@@ -1,7 +1,8 @@
 # Test Conventions - PyTodo Pro
 
 **Maintained by:** Defect & Metrics Coordinator (Nafiesa)
-**Applies to:** All weeks (`01_Black_Box` onward)
+
+**Applies to:** All weeks 
 
 This file sets the shared rules for IDs, results, evidence and defect reports, so every folder uses the same format. It follows the templates in the group project brief.
 
