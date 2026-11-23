@@ -20,3 +20,16 @@
 1. **Activate the virtual environment** (from the project root in PowerShell):
    ```powershell
    .\venv\Scripts\Activate.ps1
+
+---
+
+## Endpoint Division (Task 3b & Task 4)
+
+| Role | Assigned Endpoints | Count | Test File | Scope Focus |
+| :--- | :--- | :---: | :--- | :--- |
+| **Automation/Tool Coordinator** | `POST /api/register`<br>`POST /api/login`<br>`GET /api/categories` | 3 | `tests/test_api_auth.py` | Registration/login validation, session cookie setup, and public category listing. |
+| **QA/Test Lead** | `GET /api/tasks`<br>`GET /api/tasks/<id>` | 2 | `tests/test_api_tasks_read.py` | Pagination (`page`, `per_page`), filtering (`category`, `status`), search (`q` / SQLi edge cases), and single-task `404` handling. |
+| **Test Design Coordinator** | `POST /api/tasks`<br>`PUT /api/tasks/<id>` | 2 | `tests/test_api_tasks_write.py` | JSON payload validation, missing/invalid fields, partial updates, and `done`/`completed_at` transitions. |
+| **Defect & Metrics Coordinator** | `DELETE /api/tasks/<id>`<br>`GET /api/dashboard` | 2 | `tests/test_api_delete_dashboard.py` | Task deletion, cross-user access control (IDOR) check, and verifying all 5 dashboard stat counts. |
+
+---
