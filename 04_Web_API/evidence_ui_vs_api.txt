@@ -1,0 +1,206 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.1, pytest-9.2.0, pluggy-1.7.0 -- C:\Users\syasy\OneDrive\Documents\2026\STQA\pytodo_pro_student\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\syasy\OneDrive\Documents\2026\STQA\pytodo_pro_student
+collecting ... collected 30 items
+
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_01_password_7_chars_rejected PASSED [  3%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_02_password_8_chars_accepted FAILED [  6%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_03_password_9_chars_accepted PASSED [ 10%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_04_duplicate_username_rejected FAILED [ 13%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_05_username_2_chars_rejected PASSED [ 16%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_06_username_as_number_rejected FAILED [ 20%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_07_login_empty_password_rejected PASSED [ 23%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_08_login_wrong_password_rejected PASSED [ 26%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_09_create_title_empty_rejected PASSED [ 30%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_10_create_title_only_spaces_rejected PASSED [ 33%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_11_create_title_1_char_accepted PASSED [ 36%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_12_create_title_500_chars_rejected FAILED [ 40%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_13_create_due_date_in_past_is_overdue PASSED [ 43%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_14_create_due_date_today_is_due_today FAILED [ 46%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_15_create_due_date_wrong_format_rejected FAILED [ 50%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_16_create_category_not_found_rejected FAILED [ 53%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_17_edit_missing_task_gives_404 PASSED [ 56%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_18_edit_title_empty_rejected FAILED [ 60%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_19_edit_other_users_task_gives_404 PASSED [ 63%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_20_toggle_done_then_reopen PASSED [ 66%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_21_toggle_missing_task_gives_404 PASSED [ 70%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_22_done_as_text_false_does_not_complete_task FAILED [ 73%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_23_delete_missing_task_gives_404 FAILED [ 76%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_24_delete_other_users_task_is_refused FAILED [ 80%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_25_search_underscore_is_plain_text FAILED [ 83%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_26_search_percent_is_plain_text FAILED [ 86%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_27_search_single_quote_is_plain_text FAILED [ 90%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_28_create_task_without_login_refused PASSED [ 93%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_29_edit_task_without_login_refused PASSED [ 96%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_30_delete_task_without_login_refused PASSED [100%]
+
+================================== FAILURES ===================================
+_________________ test_tc_api_ui_02_password_8_chars_accepted _________________
+04_Web_API\tests\test_ui_vs_api.py:96: in test_tc_api_ui_02_password_8_chars_accepted
+    assert res.status_code == 201
+E   assert 400 == 201
+E    +  where 400 = <WrapperTestResponse streamed [400 BAD REQUEST]>.status_code
+________________ test_tc_api_ui_04_duplicate_username_rejected ________________
+04_Web_API\tests\test_ui_vs_api.py:108: in test_tc_api_ui_04_duplicate_username_rejected
+    assert second.status_code in (400, 409)
+E   assert 201 in (400, 409)
+E    +  where 201 = <WrapperTestResponse streamed [201 CREATED]>.status_code
+________________ test_tc_api_ui_06_username_as_number_rejected ________________
+04_Web_API\tests\test_ui_vs_api.py:118: in test_tc_api_ui_06_username_as_number_rejected
+    assert res.status_code == 400
+E   assert 500 == 400
+E    +  where 500 = <WrapperTestResponse streamed [500 INTERNAL SERVER ERROR]>.status_code
+------------------------------ Captured log call ------------------------------
+ERROR    app:app.py:838 Exception on /api/register [POST]
+Traceback (most recent call last):
+  File "C:\Users\syasy\OneDrive\Documents\2026\STQA\pytodo_pro_student\venv\Lib\site-packages\flask\app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\syasy\OneDrive\Documents\2026\STQA\pytodo_pro_student\venv\Lib\site-packages\flask\app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\syasy\OneDrive\Documents\2026\STQA\pytodo_pro_student\venv\Lib\site-packages\flask\app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\syasy\OneDrive\Documents\2026\STQA\pytodo_pro_student\venv\Lib\site-packages\flask\app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\syasy\OneDrive\Documents\2026\STQA\pytodo_pro_student\app.py", line 318, in api_register
+    username = (data.get("username") or "").strip()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'int' object has no attribute 'strip'
+______________ test_tc_api_ui_12_create_title_500_chars_rejected ______________
+04_Web_API\tests\test_ui_vs_api.py:172: in test_tc_api_ui_12_create_title_500_chars_rejected
+    assert res.status_code == 400
+E   assert 201 == 400
+E    +  where 201 = <WrapperTestResponse streamed [201 CREATED]>.status_code
+____________ test_tc_api_ui_14_create_due_date_today_is_due_today _____________
+04_Web_API\tests\test_ui_vs_api.py:189: in test_tc_api_ui_14_create_due_date_today_is_due_today
+    assert res.get_json()["urgency"] == "Due Today"
+E   AssertionError: assert 'Overdue' == 'Due Today'
+E     
+E     - Due Today
+E     + Overdue
+___________ test_tc_api_ui_15_create_due_date_wrong_format_rejected ___________
+04_Web_API\tests\test_ui_vs_api.py:195: in test_tc_api_ui_15_create_due_date_wrong_format_rejected
+    assert res.status_code == 400
+E   assert 500 == 400
+E    +  where 500 = <WrapperTestResponse streamed [500 INTERNAL SERVER ERROR]>.status_code
+------------------------------ Captured log call ------------------------------
+ERROR    app:app.py:838 Exception on /api/tasks [POST]
+Traceback (most recent call last):
+  File "C:\Users\syasy\OneDrive\Documents\2026\STQA\pytodo_pro_student\venv\Lib\site-packages\flask\app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\syasy\OneDrive\Documents\2026\STQA\pytodo_pro_student\venv\Lib\site-packages\flask\app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\syasy\OneDrive\Documents\2026\STQA\pytodo_pro_student\venv\Lib\site-packages\flask\app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\syasy\OneDrive\Documents\2026\STQA\pytodo_pro_student\venv\Lib\site-packages\flask\app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\syasy\OneDrive\Documents\2026\STQA\pytodo_pro_student\app.py", line 130, in wrapper
+    return f(*args, **kwargs)
+  File "C:\Users\syasy\OneDrive\Documents\2026\STQA\pytodo_pro_student\app.py", line 420, in api_create_task
+    return jsonify(row_to_task(row, get_category_name(db, row["category_id"]))), 201
+                   ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\syasy\OneDrive\Documents\2026\STQA\pytodo_pro_student\app.py", line 94, in row_to_task
+    "urgency": compute_urgency(row["due_date"]) if not row["done"] else "Done",
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\syasy\OneDrive\Documents\2026\STQA\pytodo_pro_student\helpers.py", line 31, in compute_urgency
+    due = datetime.strptime(due_date_str, "%Y-%m-%d").date()
+          ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\_strptime.py", line 676, in _strptime_datetime
+    tt, fraction, gmtoff_fraction = _strptime(data_string, format)
+                                    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\_strptime.py", line 455, in _strptime
+    raise ValueError("time data %r does not match format %r" %
+                     (data_string, format))
+ValueError: time data '04-11-2026' does not match format '%Y-%m-%d'
+____________ test_tc_api_ui_16_create_category_not_found_rejected _____________
+04_Web_API\tests\test_ui_vs_api.py:201: in test_tc_api_ui_16_create_category_not_found_rejected
+    assert res.status_code == 400
+E   assert 201 == 400
+E    +  where 201 = <WrapperTestResponse streamed [201 CREATED]>.status_code
+_________________ test_tc_api_ui_18_edit_title_empty_rejected _________________
+04_Web_API\tests\test_ui_vs_api.py:218: in test_tc_api_ui_18_edit_title_empty_rejected
+    assert res.status_code == 400
+E   assert 200 == 400
+E    +  where 200 = <WrapperTestResponse streamed [200 OK]>.status_code
+_________ test_tc_api_ui_22_done_as_text_false_does_not_complete_task _________
+04_Web_API\tests\test_ui_vs_api.py:260: in test_tc_api_ui_22_done_as_text_false_does_not_complete_task
+    assert res.status_code == 400 or res.get_json()["done"] is False
+E   assert (200 == 400 or True is False)
+E    +  where 200 = <WrapperTestResponse 205 bytes [200 OK]>.status_code
+_______________ test_tc_api_ui_23_delete_missing_task_gives_404 _______________
+04_Web_API\tests\test_ui_vs_api.py:271: in test_tc_api_ui_23_delete_missing_task_gives_404
+    assert res.status_code == 404
+E   assert 200 == 404
+E    +  where 200 = <WrapperTestResponse streamed [200 OK]>.status_code
+____________ test_tc_api_ui_24_delete_other_users_task_is_refused _____________
+04_Web_API\tests\test_ui_vs_api.py:280: in test_tc_api_ui_24_delete_other_users_task_is_refused
+    assert res.status_code in (403, 404)
+E   assert 200 in (403, 404)
+E    +  where 200 = <WrapperTestResponse streamed [200 OK]>.status_code
+______________ test_tc_api_ui_25_search_underscore_is_plain_text ______________
+04_Web_API\tests\test_ui_vs_api.py:295: in test_tc_api_ui_25_search_underscore_is_plain_text
+    assert [t["title"] for t in res.get_json()] == ["due_today"]
+E   AssertionError: assert ['due today', 'due_today'] == ['due_today']
+E     
+E     At index 0 diff: 'due today' != 'due_today'
+E     Left contains one more item: 'due_today'
+E     
+E     Full diff: (-: missing in left side, +: extra in left side)
+E       [
+E     +     'due today',
+E           'due_today',
+E       ]
+_______________ test_tc_api_ui_26_search_percent_is_plain_text ________________
+04_Web_API\tests\test_ui_vs_api.py:304: in test_tc_api_ui_26_search_percent_is_plain_text
+    assert [t["title"] for t in res.get_json()] == ["100% done"]
+E   AssertionError: assert ['100 done', '100% done'] == ['100% done']
+E     
+E     At index 0 diff: '100 done' != '100% done'
+E     Left contains one more item: '100% done'
+E     
+E     Full diff: (-: missing in left side, +: extra in left side)
+E       [
+E     +     '100 done',
+E           '100% done',
+E       ]
+_____________ test_tc_api_ui_27_search_single_quote_is_plain_text _____________
+04_Web_API\tests\test_ui_vs_api.py:312: in test_tc_api_ui_27_search_single_quote_is_plain_text
+    assert res.status_code == 200
+E   assert 500 == 200
+E    +  where 500 = <WrapperTestResponse streamed [500 INTERNAL SERVER ERROR]>.status_code
+------------------------------ Captured log call ------------------------------
+ERROR    app:app.py:838 Exception on /api/tasks [GET]
+Traceback (most recent call last):
+  File "C:\Users\syasy\OneDrive\Documents\2026\STQA\pytodo_pro_student\venv\Lib\site-packages\flask\app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\syasy\OneDrive\Documents\2026\STQA\pytodo_pro_student\venv\Lib\site-packages\flask\app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\syasy\OneDrive\Documents\2026\STQA\pytodo_pro_student\venv\Lib\site-packages\flask\app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\syasy\OneDrive\Documents\2026\STQA\pytodo_pro_student\venv\Lib\site-packages\flask\app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\syasy\OneDrive\Documents\2026\STQA\pytodo_pro_student\app.py", line 130, in wrapper
+    return f(*args, **kwargs)
+  File "C:\Users\syasy\OneDrive\Documents\2026\STQA\pytodo_pro_student\app.py", line 384, in api_list_tasks
+    rows = db.execute(query, params).fetchall()
+           ~~~~~~~~~~^^^^^^^^^^^^^^^
+sqlite3.OperationalError: unrecognized token: "' ORDER BY id DESC LIMIT ? OFFSET ?"
+=========================== short test summary info ===========================
+FAILED 04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_02_password_8_chars_accepted
+FAILED 04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_04_duplicate_username_rejected
+FAILED 04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_06_username_as_number_rejected
+FAILED 04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_12_create_title_500_chars_rejected
+FAILED 04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_14_create_due_date_today_is_due_today
+FAILED 04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_15_create_due_date_wrong_format_rejected
+FAILED 04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_16_create_category_not_found_rejected
+FAILED 04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_18_edit_title_empty_rejected
+FAILED 04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_22_done_as_text_false_does_not_complete_task
+FAILED 04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_23_delete_missing_task_gives_404
+FAILED 04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_24_delete_other_users_task_is_refused
+FAILED 04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_25_search_underscore_is_plain_text
+FAILED 04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_26_search_percent_is_plain_text
+FAILED 04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_27_search_single_quote_is_plain_text
+======================== 14 failed, 16 passed in 9.91s ========================
