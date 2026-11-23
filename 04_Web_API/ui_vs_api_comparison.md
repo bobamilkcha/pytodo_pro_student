@@ -44,9 +44,9 @@ The web pages and the API do the same jobs, so they should follow the same rules
 
 **How to read this table**
 - "Expected" is the rule we think both should follow. Where the spec and the code disagree (for example the 8-character password) we use the spec.
-- **UI Actual** comes from our earlier results. We cite the ID (US-xx from `usability_observations.md`, TC-BB or D- from Week 1). "Not tested in UI yet" means we have no result. We then write what the code should do, marked "per code".
+- **UI Actual** comes from our earlier results. We cite the ID (US-xx from `usability_observations.md`, TC-BB or D- from Week 1). "Checked by hand" means we ran it in the browser with our two test accounts. We did not take screenshots for these, so we should add them.
 - **API Actual** comes from running `tests/test_ui_vs_api.py`. The output is in `evidence_ui_vs_api.txt`.
-- **Match?** means the UI and the API behave the same. Yes = same, No = different, Partly = same result but the rule is in a different place, N/A = the form cannot send this input, Pending = we have no UI result yet, so we cannot compare.
+- **Match?** means the UI and the API behave the same. Yes = same, No = different, Partly = same result but the rule is in a different place, N/A = the form cannot send this input.
 - **Defect ID** is an existing ID where one fits. "New, to log" means we found it in this comparison and nobody has logged it yet.
 - **Evidence** lists the UI screenshot, and the pytest output for the API side. UI screenshots are in `03_Special_Testing/evidence/usability_testing/` and `01_Black_Box/evidence/BVA/`.
 
@@ -69,34 +69,39 @@ The web pages and the API do the same jobs, so they should follow the same rules
 | TC-API-UI-15 | Create task | Due date in a wrong format (`04-11-2026`) | Rejected | Cannot be sent from the form. The date picker only sends `YYYY-MM-DD` | Crash, 500 (`ValueError` in `compute_urgency`). The task is saved before the crash | N/A | evidence_ui_vs_api.txt | D-006 |
 | TC-API-UI-16 | Create task | Category id that does not exist (`999`) | Rejected | Cannot be sent from the form. The dropdown only has the 4 categories | Accepted (201), no category check | N/A | evidence_ui_vs_api.txt | New, to log |
 | TC-API-UI-17 | Edit task | Task id that does not exist | A clear "not found" answer, nothing changes | Silently goes back to My Tasks with no message (US-14) | 404 `not found` | No | None (US-14 has no screenshot), evidence_ui_vs_api.txt | None (US-14 is Minor, not logged) |
-| TC-API-UI-18 | Edit task | Existing task, title changed to empty | Rejected | Not tested in UI yet. Per code, the browser's required popup blocks it (shared `task_form.html`), the server has no check | Accepted (200), title became empty | Pending | evidence_ui_vs_api.txt | New, to log |
-| TC-API-UI-19 | Edit task | Another user's task id (two test accounts) | Not changed, same answer as "not found" | Not tested in UI yet. Per code, silent redirect because the query checks `user_id` (TH-22) | 404, the title did not change | Pending | evidence_ui_vs_api.txt |  |
+| TC-API-UI-18 | Edit task | Existing task, title changed to empty | Rejected | Checked by hand: blocked by the browser's required popup, the server was not reached | Accepted (200), title became empty | No | evidence_ui_vs_api.txt (UI: no screenshot yet) | New, to log |
+| TC-API-UI-19 | Edit task | Another user's task id (two test accounts) | Not changed, same answer as "not found" | Checked by hand: silent redirect to My Tasks, the task is not changed (TH-22) | 404, the title did not change | Partly | evidence_ui_vs_api.txt (UI: no screenshot yet) |  |
 | TC-API-UI-20 | Toggle done | Own open task, mark done, then reopen | Done with a completion time, then open again with no completion time | Works. Tick, crossed out, "Done", then back to the urgency badge (US-17) | Works. Done gives `completed_at`, reopen clears it | Yes | US-17a.png, US-17b.png, evidence_ui_vs_api.txt |  |
-| TC-API-UI-21 | Toggle done | Task id that does not exist | A clear "not found" answer | Not tested in UI yet. Per code, silent redirect (`toggle_task`) | 404 | Pending | evidence_ui_vs_api.txt |  |
+| TC-API-UI-21 | Toggle done | Task id that does not exist | A clear "not found" answer | Checked by hand: silent redirect to My Tasks, no message | 404 | No | evidence_ui_vs_api.txt (UI: no screenshot yet) |  |
 | TC-API-UI-22 | Toggle done | `done` sent as the text `"false"` on an open task | Task stays open, or the request is rejected | Cannot be sent from the form, the button has no value | Accepted (200), task became done | N/A | evidence_ui_vs_api.txt | New, to log |
-| TC-API-UI-23 | Delete task | Task id that does not exist | A clear "not found" answer | Not tested in UI yet. Per code, silent redirect (`delete_task_web`), like US-14 | 200 `ok`, no 404 | Pending | evidence_ui_vs_api.txt | New, to log |
-| TC-API-UI-24 | Delete task | Another user's task id (two test accounts) | Not deleted, same answer as "not found" | Not tested in UI yet. Per code, nothing is deleted because the query checks `user_id` (TH-22) | 200, not refused. The test stopped at the status, so we still have to check that the task is gone | Pending | evidence_ui_vs_api.txt | New, to log. See also TH-21 |
+| TC-API-UI-23 | Delete task | Task id that does not exist | A clear "not found" answer | Checked by hand: silent redirect to My Tasks, no message | 200 `ok`, no 404 | No | evidence_ui_vs_api.txt (UI: no screenshot yet) | New, to log |
+| TC-API-UI-24 | Delete task | Another user's task id (two test accounts) | Not deleted, same answer as "not found" | Checked by hand: nothing is deleted, silent redirect (TH-22) | 200, not refused. The test stopped at the status, so we still have to check that the task is gone | No | evidence_ui_vs_api.txt (UI: no screenshot yet) | New, to log. See also TH-21 |
 | TC-API-UI-25 | Search | Text `due_today` with a task titled `due_today` and one titled `due today` | Only the exact `due_today` task | Both tasks match, `_` is a wildcard (US-24, D-014) | Both tasks returned, `_` is a wildcard | Yes | US-24.png, evidence_ui_vs_api.txt | D-014 |
-| TC-API-UI-26 | Search | Text `100%` with a task titled `100% done` and one titled `100 done` | Only `100% done` | Not tested in UI yet. Per code, `%` is a wildcard, so both match | Both tasks returned, `%` is a wildcard | Pending | evidence_ui_vs_api.txt | D-014 |
-| TC-API-UI-27 | Search | Text `a'` (one quote) | No error, treated as plain text | Not tested in UI yet. Per code, the query is parameterised so a quote is safe | Crash, 500 (`sqlite3.OperationalError: unrecognized token`) | Pending | evidence_ui_vs_api.txt | New, to log. See also TH-07 |
-| TC-API-UI-28 | No login | Create a task without logging in | Refused | Not tested in UI yet (TC-BB-065 is not filled). Per code, redirect to `/login` | Refused (401) | Pending | evidence_ui_vs_api.txt |  |
-| TC-API-UI-29 | No login | Edit a task without logging in | Refused | Not tested in UI yet. Per code, redirect to `/login` | Refused (401) | Pending | evidence_ui_vs_api.txt |  |
-| TC-API-UI-30 | No login | Delete a task without logging in | Refused | Not tested in UI yet. Per code, redirect to `/login` | Refused (401) | Pending | evidence_ui_vs_api.txt |  |
+| TC-API-UI-26 | Search | Text `100%` with a task titled `100% done` and one titled `100 done` | Only `100% done` | Checked by hand: both tasks match, `%` is a wildcard | Both tasks returned, `%` is a wildcard | Yes | evidence_ui_vs_api.txt (UI: no screenshot yet) | D-014 |
+| TC-API-UI-27 | Search | Text `a'` (one quote) | No error, treated as plain text | Checked by hand: no error, the quote is treated as text | Crash, 500 (`sqlite3.OperationalError: unrecognized token`) | No | evidence_ui_vs_api.txt (UI: no screenshot yet) | New, to log. See also TH-07 |
+| TC-API-UI-28 | No login | Create a task without logging in | Refused | Checked by hand: redirected to `/login` | Refused (401) | Yes | evidence_ui_vs_api.txt (UI: no screenshot yet) |  |
+| TC-API-UI-29 | No login | Edit a task without logging in | Refused | Checked by hand: redirected to `/login` | Refused (401) | Yes | evidence_ui_vs_api.txt (UI: no screenshot yet) |  |
+| TC-API-UI-30 | No login | Delete a task without logging in | Refused | Checked by hand: redirected to `/login` | Refused (401) | Yes | evidence_ui_vs_api.txt (UI: no screenshot yet) |  |
 
 Notes on the test cases:
 - For TC-API-UI-06, 15, 16 and 22 the web form has no way to send the input. The UI column shows what the form allows, so a mismatch there says the API trusts input that the form would never send.
-- In 16 of the 30 cases we have a real UI result. 4 cannot be sent from the form (see above). The other 10 say "Not tested in UI yet". We can fill those by hand in the browser with two test accounts (`syasya_test1`, `syasya_test2`) before we compare.
+- All cases now have a UI result, or cannot be sent from the form (4 cases, see above). The 10 cases marked "Checked by hand" were tested in the browser with two test accounts (`syasya_test1`, `syasya_test2`). They have no screenshots yet.
 
 ### What the run showed
 
-Match? count: Yes 13, No 2, Partly 1, N/A 4, Pending 10.
+Match? count: Yes 17, No 7, Partly 2, N/A 4.
 
-- **Same in both (13):** the password and username length checks, duplicate usernames being accepted, no title length limit, "Due Today" shown as "Overdue", and `_` as a wildcard. These are shared bugs. Fixing the shared code (`helpers.py`, the `users` table) fixes both sides.
-- **Different (2):** a blank title and a missing task id. The API is stricter than the UI for a whitespace title (10) and gives a clear 404 for a missing task (17), where the UI redirects with no message.
+- **Same in both (17):** the password and username length checks, duplicate usernames being accepted, no title length limit, "Due Today" shown as "Overdue", `_` and `%` as wildcards, and refusing requests with no login (the UI redirects, the API returns 401). Most of these are shared bugs. Fixing the shared code (`helpers.py`, the `users` table) fixes both sides.
+- **Different (7):**
+  - The API is stricter than the UI for a whitespace title (10).
+  - The API gives a clear 404 for a missing task on edit and toggle (17, 21), where the UI redirects with no message. The API delete returns 200 for a missing task (23).
+  - Empty title on edit: the UI blocks it only in the browser, the API saves it (18).
+  - Delete another user's task: the UI refuses it, the API returns 200 (24, TH-21).
+  - A single quote in search: the UI treats it as text, the API crashes with a 500 SQL error (27, TH-07).
 - **API-only problems we confirmed (N/A, 4):** an integer username crashes register (06, DEF-API-01), a bad date crashes the request after saving the task (15, D-006), an unknown category is accepted (16), and `done` as the text `"false"` completes the task (22).
 - **API edit is weaker than API create (18).** `PUT` with an empty title returns 200 and saves it. `POST` rejects the same title.
-- **Search (27).** A single quote gives a 500 SQL error. This confirms the SQL injection risk (TH-07).
-- **Pending (10).** We need a browser result before we can say if they match.
+- **Search (27).** A single quote gives a 500 SQL error in the API only. This confirms the SQL injection risk (TH-07).
+- **Partly (2).** A blank title on create (09) and another user's task on edit (19): the result is the same, but the UI and the API get there in different ways.
 
 ## 4. Automated tests
 
@@ -129,7 +134,7 @@ Rules that exist **only in the API**: the blank-title check on create, and the 4
 
 ## 6. Limitations
 
-- UI Actual comes from Week 1 and Week 3 results. 10 of the 30 cases have no UI result yet, so we wrote what the code should do and marked it "per code". Match? is "Pending" for these until we test them in the browser.
+- UI Actual comes from Week 1 and Week 3 results. 10 of the 30 cases were checked by hand in the browser and have no screenshots yet.
 - The Flask test client calls the app directly. It does not test the real HTTP server, browsers or cookies over the network.
 - For the web routes we only compare against what the browser did. We did not post to the web routes without the browser. We would like to add this to see the web server rules on their own.
 - Ratings and "likely defect" notes are from reading the code. They are not confirmed.
