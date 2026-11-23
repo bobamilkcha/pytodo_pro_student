@@ -1,0 +1,635 @@
+﻿============================= test session starts =============================
+platform win32 -- Python 3.11.5, pytest-9.2.0, pluggy-1.7.0 -- C:\Users\user\OneDrive - Universiti Teknologi PETRONAS\SUBJECT STQA\pytodo_pro_student\env\bin\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\user\OneDrive - Universiti Teknologi PETRONAS\SUBJECT STQA\pytodo_pro_student
+plugins: cov-7.1.0
+collecting ... collected 22 items
+
+05_Security_Performance/tests/test_security.py::test_sec_01_th01_login_brute_force_rate_limit FAILED [  4%]
+05_Security_Performance/tests/test_security.py::test_sec_02_th02_duplicate_username_registration FAILED [  9%]
+05_Security_Performance/tests/test_security.py::test_sec_03_th03_hardcoded_secret_key_cookie_forgery FAILED [ 13%]
+05_Security_Performance/tests/test_security.py::test_sec_04_th04_session_cookie_replay_after_logout FAILED [ 18%]
+05_Security_Performance/tests/test_security.py::test_sec_05_th05_stored_xss_in_task_title FAILED [ 22%]
+05_Security_Performance/tests/test_security.py::test_sec_06_th06_missing_csrf_token_on_task_form FAILED [ 27%]
+05_Security_Performance/tests/test_security.py::test_sec_07_th07_api_search_sql_injection_syntax_error FAILED [ 31%]
+05_Security_Performance/tests/test_security.py::test_sec_08_th08_web_search_sql_wildcard_escaping FAILED [ 36%]
+05_Security_Performance/tests/test_security.py::test_sec_09_th09_whitespace_title_server_validation FAILED [ 40%]
+05_Security_Performance/tests/test_security.py::test_sec_10_th10_audit_trail_for_task_deletion FAILED [ 45%]
+05_Security_Performance/tests/test_security.py::test_sec_11_th11_debug_mode_disabled_in_source FAILED [ 50%]
+05_Security_Performance/tests/test_security.py::test_sec_12_th12_no_store_cache_control_header FAILED [ 54%]
+05_Security_Performance/tests/test_security.py::test_sec_13_th13_password_stored_as_salted_hash PASSED [ 59%]
+05_Security_Performance/tests/test_security.py::test_sec_14_th14_api_search_sqli_cross_user_data_leak FAILED [ 63%]
+05_Security_Performance/tests/test_security.py::test_sec_15_th15_session_cookie_security_flags FAILED [ 68%]
+05_Security_Performance/tests/test_security.py::test_sec_16_th16_unauthenticated_categories_exposes_no_user_data PASSED [ 72%]
+05_Security_Performance/tests/test_security.py::test_sec_17_th17_malformed_due_date_availability FAILED [ 77%]
+05_Security_Performance/tests/test_security.py::test_sec_18_th18_unbounded_per_page_limit FAILED [ 81%]
+05_Security_Performance/tests/test_security.py::test_sec_19_th19_api_login_burst_throttling FAILED [ 86%]
+05_Security_Performance/tests/test_security.py::test_sec_20_th20_logout_requires_post_not_get FAILED [ 90%]
+05_Security_Performance/tests/test_security.py::test_sec_21_th21_api_delete_cross_user_idor FAILED [ 95%]
+05_Security_Performance/tests/test_security.py::test_sec_22_th22_web_routes_enforce_task_ownership PASSED [100%]
+
+================================== FAILURES ===================================
+________________ test_sec_01_th01_login_brute_force_rate_limit ________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_sec_01_th01_login_brute_force_rate_limit(client):
+        """TH-01: Repeated failed logins should trigger rate limiting or lockout."""
+        register_web(client, "syasya_test1", "Password123")
+        client.get("/logout")
+    
+        statuses = []
+        for _ in range(10):
+            res = client.post(
+                "/login",
+                data={"username": "syasya_test1", "password": "WrongPassword99"},
+            )
+            statuses.append(res.status_code)
+    
+>       assert any(s in (403, 429) for s in statuses), "No rate limit or lockout after 10 failed logins"
+E       AssertionError: No rate limit or lockout after 10 failed logins
+E       assert False
+E        +  where False = any(<generator object test_sec_01_th01_login_brute_force_rate_limit.<locals>.<genexpr> at 0x00000226a0debe00>)
+
+05_Security_Performance\tests\test_security.py:49: AssertionError
+______________ test_sec_02_th02_duplicate_username_registration _______________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_sec_02_th02_duplicate_username_registration(client):
+        """TH-02: Registering an existing username should be rejected."""
+        register_web(client, "syasya_test1", "Password123")
+        client.get("/logout")
+        register_web(client, "syasya_test1", "DifferentPass123")
+    
+        with app_module.app.app_context():
+            db = app_module.get_db()
+            count = db.execute(
+                "SELECT COUNT(*) FROM users WHERE username = ?", ("syasya_test1",)
+            ).fetchone()[0]
+    
+>       assert count == 1, f"Duplicate username allowed: {count} accounts created"
+E       AssertionError: Duplicate username allowed: 2 accounts created
+E       assert 2 == 1
+
+05_Security_Performance\tests\test_security.py:64: AssertionError
+____________ test_sec_03_th03_hardcoded_secret_key_cookie_forgery _____________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_sec_03_th03_hardcoded_secret_key_cookie_forgery(client):
+        """TH-03: Hardcoded SECRET_KEY allows forging a valid session cookie for another user."""
+        register_web(client, "syasya_test1", "Password123")
+        client.get("/logout")
+        register_web(client, "syasya_test2", "Password123")
+        client.get("/logout")
+    
+        serializer = app_module.app.session_interface.get_signing_serializer(app_module.app)
+        forged_cookie = serializer.dumps({"user_id": 2, "username": "syasya_test2"})
+        client.set_cookie("session", forged_cookie)
+    
+        res = client.get("/")
+>       assert res.status_code == 302, "Forged cookie signed with hardcoded SECRET_KEY granted access"
+E       AssertionError: Forged cookie signed with hardcoded SECRET_KEY granted access
+E       assert 200 == 302
+E        +  where 200 = <WrapperTestResponse streamed [200 OK]>.status_code
+
+05_Security_Performance\tests\test_security.py:79: AssertionError
+_____________ test_sec_04_th04_session_cookie_replay_after_logout _____________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_sec_04_th04_session_cookie_replay_after_logout(client):
+        """TH-04: Captured session cookie should not remain valid after /logout."""
+        register_web(client, "syasya_test1", "Password123")
+        client.get("/logout")
+    
+        login_res = client.post(
+            "/login", data={"username": "syasya_test1", "password": "Password123"}
+        )
+        set_cookie = login_res.headers.get("Set-Cookie", "")
+        old_session = set_cookie.split(";")[0].split("=", 1)[1]
+    
+        client.get("/logout")
+        client.set_cookie("session", old_session)
+        res = client.get("/")
+>       assert res.status_code == 302, "Old session cookie still authenticated user after logout"
+E       AssertionError: Old session cookie still authenticated user after logout
+E       assert 200 == 302
+E        +  where 200 = <WrapperTestResponse streamed [200 OK]>.status_code
+
+05_Security_Performance\tests\test_security.py:96: AssertionError
+__________________ test_sec_05_th05_stored_xss_in_task_title __________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_sec_05_th05_stored_xss_in_task_title(client):
+        """TH-05: HTML/script tags in task title should be escaped, not rendered raw."""
+        register_web(client, "syasya_test1", "Password123")
+        payload = "<script>alert(1)</script>"
+        client.post("/tasks/new", data={"title": payload})
+    
+        res = client.get("/")
+>       assert payload.encode() not in res.data, "Unescaped <script> tag rendered via |safe filter"
+E       AssertionError: Unescaped <script> tag rendered via |safe filter
+E       assert b'<script>alert(1)</script>' not in b'<!doctype html>\n<html lang="en">\n<head>\n    <meta charset="utf-8">\n    <title>Tasks \xe2\x80\x94 PyTodo Pro</title>\n    <link rel="stylesheet" href="/static/style.css">\n</head>\n<body>\n    <nav class="topnav">\n        <a class="brand" href="/">PyTodo Pro</a>\n        \n        <div class="nav-links">\n            <a href="/">Tasks</a>\n            <a href="/dashboard">Dashboard</a>\n            <span class="nav-user">syasya_test1</span>\n            <a href="/logout">Log out</a>\n        </div>\n        \n    </nav>\n    <div class="container">\n        \n<div class="page-header">\n    <h1>My Tasks</h1>\n    <a class="btn" href="/tasks/new">+ New Task</a>\n</div>\n\n<form method="get" class="filters">\n    <select name="category" onchange="this.form.submit()">\n        <option value="">All categories</option>\n        \n        <option value="Personal" >Personal</option>\n        \n        <option value="Study" >Study</option>\n        \n        <option value="Urgent" >Urgent</option>\n        \n        <option value="Work" >Work</option>\n        \n    </select>\n    <select name="status" onchange="this.form.submit()">\n        <option value="">All statuses</option>\n ...Search title..." value="">\n    <button type="submit">Filter</button>\n</form>\n\n<table class="task-table">\n    <thead>\n        <tr>\n            <th></th>\n            <th>Title</th>\n            <th>Category</th>\n            <th>Due Date</th>\n            <th>Urgency</th>\n            <th></th>\n        </tr>\n    </thead>\n    <tbody>\n        \n        <tr class="">\n            <td>\n                <form method="post" action="/tasks/1/toggle">\n                    <button type="submit" class="check-btn">\xe2\x97\x8b</button>\n                </form>\n            </td>\n            <td class="title-cell"><script>alert(1)</script></td>\n            <td>\xe2\x80\x94</td>\n            <td>\xe2\x80\x94</td>\n            <td><span class="badge badge-no-due-date">No due date</span></td>\n            <td class="actions">\n                <a href="/tasks/1/edit">Edit</a>\n                <form method="post" action="/tasks/1/delete" onsubmit="return confirm(\'Delete this task?\');">\n                    <button type="submit" class="link-btn">Delete</button>\n                </form>\n            </td>\n        </tr>\n        \n    </tbody>\n</table>\n\n    </div>\n</body>\n</html>'
+E        +  where b'<script>alert(1)</script>' = <built-in method encode of str object at 0x00000226a00b9610>()
+E        +    where <built-in method encode of str object at 0x00000226a00b9610> = '<script>alert(1)</script>'.encode
+E        +  and   b'<!doctype html>\n<html lang="en">\n<head>\n    <meta charset="utf-8">\n    <title>Tasks \xe2\x80\x94 PyTodo Pro</title>\n    <link rel="stylesheet" href="/static/style.css">\n</head>\n<body>\n    <nav class="topnav">\n        <a class="brand" href="/">PyTodo Pro</a>\n        \n        <div class="nav-links">\n            <a href="/">Tasks</a>\n            <a href="/dashboard">Dashboard</a>\n            <span class="nav-user">syasya_test1</span>\n            <a href="/logout">Log out</a>\n        </div>\n        \n    </nav>\n    <div class="container">\n        \n<div class="page-header">\n    <h1>My Tasks</h1>\n    <a class="btn" href="/tasks/new">+ New Task</a>\n</div>\n\n<form method="get" class="filters">\n    <select name="category" onchange="this.form.submit()">\n        <option value="">All categories</option>\n        \n        <option value="Personal" >Personal</option>\n        \n        <option value="Study" >Study</option>\n        \n        <option value="Urgent" >Urgent</option>\n        \n        <option value="Work" >Work</option>\n        \n    </select>\n    <select name="status" onchange="this.form.submit()">\n        <option value="">All statuses</option>\n ...Search title..." value="">\n    <button type="submit">Filter</button>\n</form>\n\n<table class="task-table">\n    <thead>\n        <tr>\n            <th></th>\n            <th>Title</th>\n            <th>Category</th>\n            <th>Due Date</th>\n            <th>Urgency</th>\n            <th></th>\n        </tr>\n    </thead>\n    <tbody>\n        \n        <tr class="">\n            <td>\n                <form method="post" action="/tasks/1/toggle">\n                    <button type="submit" class="check-btn">\xe2\x97\x8b</button>\n                </form>\n            </td>\n            <td class="title-cell"><script>alert(1)</script></td>\n            <td>\xe2\x80\x94</td>\n            <td>\xe2\x80\x94</td>\n            <td><span class="badge badge-no-due-date">No due date</span></td>\n            <td class="actions">\n                <a href="/tasks/1/edit">Edit</a>\n                <form method="post" action="/tasks/1/delete" onsubmit="return confirm(\'Delete this task?\');">\n                    <button type="submit" class="link-btn">Delete</button>\n                </form>\n            </td>\n        </tr>\n        \n    </tbody>\n</table>\n\n    </div>\n</body>\n</html>' = <WrapperTestResponse 2421 bytes [200 OK]>.data
+
+05_Security_Performance\tests\test_security.py:110: AssertionError
+______________ test_sec_06_th06_missing_csrf_token_on_task_form _______________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_sec_06_th06_missing_csrf_token_on_task_form(client):
+        """TH-06: State-changing POST forms should include CSRF protection."""
+        register_web(client, "syasya_test1", "Password123")
+        form_page = client.get("/tasks/new")
+>       assert b"csrf" in form_page.data.lower(), "No CSRF token found in /tasks/new form"
+E       AssertionError: No CSRF token found in /tasks/new form
+E       assert b'csrf' in b'<!doctype html>\n<html lang="en">\n<head>\n    <meta charset="utf-8">\n    <title>new task \xe2\x80\x94 pytodo pro</title>\n    <link rel="stylesheet" href="/static/style.css">\n</head>\n<body>\n    <nav class="topnav">\n        <a class="brand" href="/">pytodo pro</a>\n        \n        <div class="nav-links">\n            <a href="/">tasks</a>\n            <a href="/dashboard">dashboard</a>\n            <span class="nav-user">syasya_test1</span>\n            <a href="/logout">log out</a>\n        </div>\n        \n    </nav>\n    <div class="container">\n        \n<h1>new task</h1>\n<form method="post" class="task-form">\n    <label>title</label>\n    <input type="text" name="title" value="" required>\n\n    <label>description</label>\n    <textarea name="description" rows="3"></textarea>\n\n    <label>category</label>\n    <select name="category_id">\n        <option value="">none</option>\n        \n        <option value="2" >personal</option>\n        \n        <option value="3" >study</option>\n        \n        <option value="4" >urgent</option>\n        \n        <option value="1" >work</option>\n        \n    </select>\n\n    <label>due date</label>\n    <input type="date" name="due_date" value="">\n\n    <button type="submit">create task</button>\n    <a class="btn-secondary" href="/">cancel</a>\n</form>\n\n    </div>\n</body>\n</html>'
+E        +  where b'<!doctype html>\n<html lang="en">\n<head>\n    <meta charset="utf-8">\n    <title>new task \xe2\x80\x94 pytodo pro</title>\n    <link rel="stylesheet" href="/static/style.css">\n</head>\n<body>\n    <nav class="topnav">\n        <a class="brand" href="/">pytodo pro</a>\n        \n        <div class="nav-links">\n            <a href="/">tasks</a>\n            <a href="/dashboard">dashboard</a>\n            <span class="nav-user">syasya_test1</span>\n            <a href="/logout">log out</a>\n        </div>\n        \n    </nav>\n    <div class="container">\n        \n<h1>new task</h1>\n<form method="post" class="task-form">\n    <label>title</label>\n    <input type="text" name="title" value="" required>\n\n    <label>description</label>\n    <textarea name="description" rows="3"></textarea>\n\n    <label>category</label>\n    <select name="category_id">\n        <option value="">none</option>\n        \n        <option value="2" >personal</option>\n        \n        <option value="3" >study</option>\n        \n        <option value="4" >urgent</option>\n        \n        <option value="1" >work</option>\n        \n    </select>\n\n    <label>due date</label>\n    <input type="date" name="due_date" value="">\n\n    <button type="submit">create task</button>\n    <a class="btn-secondary" href="/">cancel</a>\n</form>\n\n    </div>\n</body>\n</html>' = <built-in method lower of bytes object at 0x000002269e061ee0>()
+E        +    where <built-in method lower of bytes object at 0x000002269e061ee0> = b'<!doctype html>\n<html lang="en">\n<head>\n    <meta charset="utf-8">\n    <title>New Task \xe2\x80\x94 PyTodo Pro</title>\n    <link rel="stylesheet" href="/static/style.css">\n</head>\n<body>\n    <nav class="topnav">\n        <a class="brand" href="/">PyTodo Pro</a>\n        \n        <div class="nav-links">\n            <a href="/">Tasks</a>\n            <a href="/dashboard">Dashboard</a>\n            <span class="nav-user">syasya_test1</span>\n            <a href="/logout">Log out</a>\n        </div>\n        \n    </nav>\n    <div class="container">\n        \n<h1>New Task</h1>\n<form method="post" class="task-form">\n    <label>Title</label>\n    <input type="text" name="title" value="" required>\n\n    <label>Description</label>\n    <textarea name="description" rows="3"></textarea>\n\n    <label>Category</label>\n    <select name="category_id">\n        <option value="">None</option>\n        \n        <option value="2" >Personal</option>\n        \n        <option value="3" >Study</option>\n        \n        <option value="4" >Urgent</option>\n        \n        <option value="1" >Work</option>\n        \n    </select>\n\n    <label>Due Date</label>\n    <input type="date" name="due_date" value="">\n\n    <button type="submit">Create Task</button>\n    <a class="btn-secondary" href="/">Cancel</a>\n</form>\n\n    </div>\n</body>\n</html>'.lower
+E        +      where b'<!doctype html>\n<html lang="en">\n<head>\n    <meta charset="utf-8">\n    <title>New Task \xe2\x80\x94 PyTodo Pro</title>\n    <link rel="stylesheet" href="/static/style.css">\n</head>\n<body>\n    <nav class="topnav">\n        <a class="brand" href="/">PyTodo Pro</a>\n        \n        <div class="nav-links">\n            <a href="/">Tasks</a>\n            <a href="/dashboard">Dashboard</a>\n            <span class="nav-user">syasya_test1</span>\n            <a href="/logout">Log out</a>\n        </div>\n        \n    </nav>\n    <div class="container">\n        \n<h1>New Task</h1>\n<form method="post" class="task-form">\n    <label>Title</label>\n    <input type="text" name="title" value="" required>\n\n    <label>Description</label>\n    <textarea name="description" rows="3"></textarea>\n\n    <label>Category</label>\n    <select name="category_id">\n        <option value="">None</option>\n        \n        <option value="2" >Personal</option>\n        \n        <option value="3" >Study</option>\n        \n        <option value="4" >Urgent</option>\n        \n        <option value="1" >Work</option>\n        \n    </select>\n\n    <label>Due Date</label>\n    <input type="date" name="due_date" value="">\n\n    <button type="submit">Create Task</button>\n    <a class="btn-secondary" href="/">Cancel</a>\n</form>\n\n    </div>\n</body>\n</html>' = <WrapperTestResponse 1306 bytes [200 OK]>.data
+
+05_Security_Performance\tests\test_security.py:117: AssertionError
+___________ test_sec_07_th07_api_search_sql_injection_syntax_error ____________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_sec_07_th07_api_search_sql_injection_syntax_error(client):
+        """TH-07: Single quote in /api/tasks?q= should be safely parameterized."""
+        register_web(client, "syasya_test1", "Password123")
+>       res = client.get("/api/tasks?q=a'")
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+05_Security_Performance\tests\test_security.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+env\lib\python3.11\site-packages\werkzeug\test.py:1166: in get
+    return self.open(*args, **kw)
+           ^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\flask\testing.py:235: in open
+    response = super().open(
+env\lib\python3.11\site-packages\werkzeug\test.py:1120: in open
+    response_parts = self.run_wsgi_app(request.environ, buffered=buffered)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\werkzeug\test.py:992: in run_wsgi_app
+    rv = run_wsgi_app(self.application, environ, buffered=buffered)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\werkzeug\test.py:1268: in run_wsgi_app
+    app_rv = app(environ, start_response)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\flask\app.py:1498: in __call__
+    return self.wsgi_app(environ, start_response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\flask\app.py:1476: in wsgi_app
+    response = self.handle_exception(e)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\flask\app.py:1473: in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\flask\app.py:882: in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\flask\app.py:880: in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\flask\app.py:865: in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app.py:130: in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    @app.route("/api/tasks", methods=["GET"])
+    @login_required_api
+    def api_list_tasks():
+        db = get_db()
+        page = request.args.get("page", default=0, type=int)
+        per_page = request.args.get("per_page", default=10, type=int)
+        category = request.args.get("category", "").strip()
+        status = request.args.get("status", "").strip()
+        q = request.args.get("q", "").strip()
+    
+        query = "SELECT * FROM tasks WHERE user_id = ?"
+        params = [session["user_id"]]
+    
+        cat_id = get_category_id_by_name(db, category) if category else None
+        if cat_id:
+            query += " AND category_id = ?"
+            params.append(cat_id)
+    
+        if status == "done":
+            query += " AND done = 1"
+        elif status == "open":
+            query += " AND done = 0"
+    
+        if q:
+            # Search is intentionally simple: build the LIKE pattern directly.
+            query += f" AND title LIKE '%{q}%'"
+    
+        query += " ORDER BY id DESC LIMIT ? OFFSET ?"
+        params.extend([per_page, page * per_page])
+    
+>       rows = db.execute(query, params).fetchall()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       sqlite3.OperationalError: unrecognized token: "' ORDER BY id DESC LIMIT ? OFFSET ?"
+
+app.py:384: OperationalError
+______________ test_sec_08_th08_web_search_sql_wildcard_escaping ______________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_sec_08_th08_web_search_sql_wildcard_escaping(client):
+        """TH-08: Literal % in web search should not match unrelated tasks."""
+        register_web(client, "syasya_test1", "Password123")
+        client.post("/tasks/new", data={"title": "100% Completed"})
+        client.post("/tasks/new", data={"title": "Unrelated Task"})
+    
+        res = client.get("/?q=%")
+>       assert b"Unrelated Task" not in res.data, "Unescaped % wildcard matched all tasks"
+E       AssertionError: Unescaped % wildcard matched all tasks
+E       assert b'Unrelated Task' not in b'<!doctype html>\n<html lang="en">\n<head>\n    <meta charset="utf-8">\n    <title>Tasks \xe2\x80\x94 PyTodo Pro</title>\n    <link rel="stylesheet" href="/static/style.css">\n</head>\n<body>\n    <nav class="topnav">\n        <a class="brand" href="/">PyTodo Pro</a>\n        \n        <div class="nav-links">\n            <a href="/">Tasks</a>\n            <a href="/dashboard">Dashboard</a>\n            <span class="nav-user">syasya_test1</span>\n            <a href="/logout">Log out</a>\n        </div>\n        \n    </nav>\n    <div class="container">\n        \n<div class="page-header">\n    <h1>My Tasks</h1>\n    <a class="btn" href="/tasks/new">+ New Task</a>\n</div>\n\n<form method="get" class="filters">\n    <select name="category" onchange="this.form.submit()">\n        <option value="">All categories</option>\n        \n        <option value="Personal" >Personal</option>\n        \n        <option value="Study" >Study</option>\n        \n        <option value="Urgent" >Urgent</option>\n        \n        <option value="Work" >Work</option>\n        \n    </select>\n    <select name="status" onchange="this.form.submit()">\n        <option value="">All statuses</option>\n ...o due date</span></td>\n            <td class="actions">\n                <a href="/tasks/2/edit">Edit</a>\n                <form method="post" action="/tasks/2/delete" onsubmit="return confirm(\'Delete this task?\');">\n                    <button type="submit" class="link-btn">Delete</button>\n                </form>\n            </td>\n        </tr>\n        \n        <tr class="">\n            <td>\n                <form method="post" action="/tasks/1/toggle">\n                    <button type="submit" class="check-btn">\xe2\x97\x8b</button>\n                </form>\n            </td>\n            <td class="title-cell">100% Completed</td>\n            <td>\xe2\x80\x94</td>\n            <td>\xe2\x80\x94</td>\n            <td><span class="badge badge-no-due-date">No due date</span></td>\n            <td class="actions">\n                <a href="/tasks/1/edit">Edit</a>\n                <form method="post" action="/tasks/1/delete" onsubmit="return confirm(\'Delete this task?\');">\n                    <button type="submit" class="link-btn">Delete</button>\n                </form>\n            </td>\n        </tr>\n        \n    </tbody>\n</table>\n\n    </div>\n</body>\n</html>'
+E        +  where b'<!doctype html>\n<html lang="en">\n<head>\n    <meta charset="utf-8">\n    <title>Tasks \xe2\x80\x94 PyTodo Pro</title>\n    <link rel="stylesheet" href="/static/style.css">\n</head>\n<body>\n    <nav class="topnav">\n        <a class="brand" href="/">PyTodo Pro</a>\n        \n        <div class="nav-links">\n            <a href="/">Tasks</a>\n            <a href="/dashboard">Dashboard</a>\n            <span class="nav-user">syasya_test1</span>\n            <a href="/logout">Log out</a>\n        </div>\n        \n    </nav>\n    <div class="container">\n        \n<div class="page-header">\n    <h1>My Tasks</h1>\n    <a class="btn" href="/tasks/new">+ New Task</a>\n</div>\n\n<form method="get" class="filters">\n    <select name="category" onchange="this.form.submit()">\n        <option value="">All categories</option>\n        \n        <option value="Personal" >Personal</option>\n        \n        <option value="Study" >Study</option>\n        \n        <option value="Urgent" >Urgent</option>\n        \n        <option value="Work" >Work</option>\n        \n    </select>\n    <select name="status" onchange="this.form.submit()">\n        <option value="">All statuses</option>\n ...o due date</span></td>\n            <td class="actions">\n                <a href="/tasks/2/edit">Edit</a>\n                <form method="post" action="/tasks/2/delete" onsubmit="return confirm(\'Delete this task?\');">\n                    <button type="submit" class="link-btn">Delete</button>\n                </form>\n            </td>\n        </tr>\n        \n        <tr class="">\n            <td>\n                <form method="post" action="/tasks/1/toggle">\n                    <button type="submit" class="check-btn">\xe2\x97\x8b</button>\n                </form>\n            </td>\n            <td class="title-cell">100% Completed</td>\n            <td>\xe2\x80\x94</td>\n            <td>\xe2\x80\x94</td>\n            <td><span class="badge badge-no-due-date">No due date</span></td>\n            <td class="actions">\n                <a href="/tasks/1/edit">Edit</a>\n                <form method="post" action="/tasks/1/delete" onsubmit="return confirm(\'Delete this task?\');">\n                    <button type="submit" class="link-btn">Delete</button>\n                </form>\n            </td>\n        </tr>\n        \n    </tbody>\n</table>\n\n    </div>\n</body>\n</html>' = <WrapperTestResponse 3142 bytes [200 OK]>.data
+
+05_Security_Performance\tests\test_security.py:134: AssertionError
+_____________ test_sec_09_th09_whitespace_title_server_validation _____________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_sec_09_th09_whitespace_title_server_validation(client):
+        """TH-09: Server should reject whitespace-only task titles."""
+        register_web(client, "syasya_test1", "Password123")
+        res = client.post("/tasks/new", data={"title": "     "})
+>       assert res.status_code == 400, "Whitespace-only title was accepted and saved"
+E       AssertionError: Whitespace-only title was accepted and saved
+E       assert 302 == 400
+E        +  where 302 = <WrapperTestResponse streamed [302 FOUND]>.status_code
+
+05_Security_Performance\tests\test_security.py:141: AssertionError
+_______________ test_sec_10_th10_audit_trail_for_task_deletion ________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_sec_10_th10_audit_trail_for_task_deletion(client):
+        """TH-10: Destructive actions (task deletion) should leave an audit log record."""
+        register_web(client, "syasya_test1", "Password123")
+        client.post("/tasks/new", data={"title": "Audit Test Task"})
+        client.post("/tasks/1/delete")
+    
+        with app_module.app.app_context():
+            db = app_module.get_db()
+            tables = [
+                r[0]
+                for r in db.execute(
+                    "SELECT name FROM sqlite_master WHERE type='table'"
+                ).fetchall()
+            ]
+    
+>       assert any("audit" in t or "log" in t for t in tables), "No audit log table exists in database"
+E       AssertionError: No audit log table exists in database
+E       assert False
+E        +  where False = any(<generator object test_sec_10_th10_audit_trail_for_task_deletion.<locals>.<genexpr> at 0x000002269e2275e0>)
+
+05_Security_Performance\tests\test_security.py:163: AssertionError
+_______________ test_sec_11_th11_debug_mode_disabled_in_source ________________
+
+    def test_sec_11_th11_debug_mode_disabled_in_source():
+        """TH-11: Flask debug=True should not be hardcoded in app.py."""
+        app_source = (ROOT_DIR / "app.py").read_text(encoding="utf-8")
+>       assert "debug=True" not in app_source, "app.run(debug=True) exposes Werkzeug debugger"
+E       AssertionError: app.run(debug=True) exposes Werkzeug debugger
+E       assert 'debug=True' not in '"""\nPyTodo...ebug=True)\n'
+E         
+E         'debug=True' is contained here:
+E           """
+E           PyTodo Pro ù a complete, ready-to-test Flask task manager.
+E           
+E           Features: user accounts, categorized tasks with due dates, an urgency
+E           dashboard, and a full JSON REST API ù all already implemented. This...
+E         
+E         ...Full output truncated, use '-vv' to show
+
+05_Security_Performance\tests\test_security.py:173: AssertionError
+_______________ test_sec_12_th12_no_store_cache_control_header ________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_sec_12_th12_no_store_cache_control_header(client):
+        """TH-12: Authenticated pages should send Cache-Control: no-store to prevent Back-button leak."""
+        register_web(client, "syasya_test1", "Password123")
+        res = client.get("/dashboard")
+        cache_control = res.headers.get("Cache-Control", "")
+>       assert "no-store" in cache_control.lower(), "Missing Cache-Control: no-store header on /dashboard"
+E       AssertionError: Missing Cache-Control: no-store header on /dashboard
+E       assert 'no-store' in ''
+E        +  where '' = <built-in method lower of str object at 0x00007ff8e10b45e0>()
+E        +    where <built-in method lower of str object at 0x00007ff8e10b45e0> = ''.lower
+
+05_Security_Performance\tests\test_security.py:181: AssertionError
+____________ test_sec_14_th14_api_search_sqli_cross_user_data_leak ____________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_sec_14_th14_api_search_sqli_cross_user_data_leak(client):
+        """TH-14: SQL injection in /api/tasks?q= must not leak another user's private tasks."""
+        register_web(client, "syasya_test1", "Password123")
+        client.post("/api/tasks", json={"title": "Test1 Private Secret"})
+        client.get("/logout")
+    
+        register_web(client, "syasya_test2", "Password123")
+>       res = client.get("/api/tasks?q=' OR 1=1 --")
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+05_Security_Performance\tests\test_security.py:204: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+env\lib\python3.11\site-packages\werkzeug\test.py:1166: in get
+    return self.open(*args, **kw)
+           ^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\flask\testing.py:235: in open
+    response = super().open(
+env\lib\python3.11\site-packages\werkzeug\test.py:1120: in open
+    response_parts = self.run_wsgi_app(request.environ, buffered=buffered)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\werkzeug\test.py:992: in run_wsgi_app
+    rv = run_wsgi_app(self.application, environ, buffered=buffered)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\werkzeug\test.py:1268: in run_wsgi_app
+    app_rv = app(environ, start_response)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\flask\app.py:1498: in __call__
+    return self.wsgi_app(environ, start_response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\flask\app.py:1476: in wsgi_app
+    response = self.handle_exception(e)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\flask\app.py:1473: in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\flask\app.py:882: in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\flask\app.py:880: in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\flask\app.py:865: in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app.py:130: in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    @app.route("/api/tasks", methods=["GET"])
+    @login_required_api
+    def api_list_tasks():
+        db = get_db()
+        page = request.args.get("page", default=0, type=int)
+        per_page = request.args.get("per_page", default=10, type=int)
+        category = request.args.get("category", "").strip()
+        status = request.args.get("status", "").strip()
+        q = request.args.get("q", "").strip()
+    
+        query = "SELECT * FROM tasks WHERE user_id = ?"
+        params = [session["user_id"]]
+    
+        cat_id = get_category_id_by_name(db, category) if category else None
+        if cat_id:
+            query += " AND category_id = ?"
+            params.append(cat_id)
+    
+        if status == "done":
+            query += " AND done = 1"
+        elif status == "open":
+            query += " AND done = 0"
+    
+        if q:
+            # Search is intentionally simple: build the LIKE pattern directly.
+            query += f" AND title LIKE '%{q}%'"
+    
+        query += " ORDER BY id DESC LIMIT ? OFFSET ?"
+        params.extend([per_page, page * per_page])
+    
+>       rows = db.execute(query, params).fetchall()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       sqlite3.ProgrammingError: Incorrect number of bindings supplied. The current statement uses 1, and there are 3 supplied.
+
+app.py:384: ProgrammingError
+_______________ test_sec_15_th15_session_cookie_security_flags ________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_sec_15_th15_session_cookie_security_flags(client):
+        """TH-15: Session cookie should include HttpOnly, SameSite, and Secure flags."""
+        res = register_web(client, "syasya_test1", "Password123")
+        cookie_header = res.headers.get("Set-Cookie", "")
+        assert "HttpOnly" in cookie_header
+>       assert "SameSite" in cookie_header and "Secure" in cookie_header, "Missing SameSite/Secure flags"
+E       AssertionError: Missing SameSite/Secure flags
+E       assert ('SameSite' in 'session=eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6InN5YXN5YV90ZXN0MSJ9.awR2rA.wB0pCPbxijLVqi6vxFiIC2MvSdQ; HttpOnly; Path=/')
+
+05_Security_Performance\tests\test_security.py:214: AssertionError
+______________ test_sec_17_th17_malformed_due_date_availability _______________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_sec_17_th17_malformed_due_date_availability(client):
+        """TH-17: Malformed due_date should be rejected rather than crashing / with 500."""
+        register_web(client, "syasya_test1", "Password123")
+        client.post("/tasks/new", data={"title": "Bad Date Task", "due_date": "04-11-2026"})
+>       res = client.get("/")
+              ^^^^^^^^^^^^^^^
+
+05_Security_Performance\tests\test_security.py:234: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+env\lib\python3.11\site-packages\werkzeug\test.py:1166: in get
+    return self.open(*args, **kw)
+           ^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\flask\testing.py:235: in open
+    response = super().open(
+env\lib\python3.11\site-packages\werkzeug\test.py:1120: in open
+    response_parts = self.run_wsgi_app(request.environ, buffered=buffered)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\werkzeug\test.py:992: in run_wsgi_app
+    rv = run_wsgi_app(self.application, environ, buffered=buffered)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\werkzeug\test.py:1268: in run_wsgi_app
+    app_rv = app(environ, start_response)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\flask\app.py:1498: in __call__
+    return self.wsgi_app(environ, start_response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\flask\app.py:1476: in wsgi_app
+    response = self.handle_exception(e)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\flask\app.py:1473: in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\flask\app.py:882: in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\flask\app.py:880: in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\flask\app.py:865: in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app.py:121: in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+app.py:216: in index
+    tasks = [row_to_task(r, get_category_name(db, r["category_id"])) for r in rows]
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app.py:216: in <listcomp>
+    tasks = [row_to_task(r, get_category_name(db, r["category_id"])) for r in rows]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app.py:94: in row_to_task
+    "urgency": compute_urgency(row["due_date"]) if not row["done"] else "Done",
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+helpers.py:31: in compute_urgency
+    due = datetime.strptime(due_date_str, "%Y-%m-%d").date()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\msys64\ucrt64\lib\python3.11\_strptime.py:568: in _strptime_datetime
+    tt, fraction, gmtoff_fraction = _strptime(data_string, format)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+data_string = '04-11-2026', format = '%Y-%m-%d'
+
+    def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
+        """Return a 2-tuple consisting of a time struct and an int containing
+        the number of microseconds based on the input string and the
+        format string."""
+    
+        for index, arg in enumerate([data_string, format]):
+            if not isinstance(arg, str):
+                msg = "strptime() argument {} must be str, not {}"
+                raise TypeError(msg.format(index, type(arg)))
+    
+        global _TimeRE_cache, _regex_cache
+        with _cache_lock:
+            locale_time = _TimeRE_cache.locale_time
+            if (_getlang() != locale_time.lang or
+                time.tzname != locale_time.tzname or
+                time.daylight != locale_time.daylight):
+                _TimeRE_cache = TimeRE()
+                _regex_cache.clear()
+                locale_time = _TimeRE_cache.locale_time
+            if len(_regex_cache) > _CACHE_MAX_SIZE:
+                _regex_cache.clear()
+            format_regex = _regex_cache.get(format)
+            if not format_regex:
+                try:
+                    format_regex = _TimeRE_cache.compile(format)
+                # KeyError raised when a bad format is found; can be specified as
+                # \\, in which case it was a stray % but with a space after it
+                except KeyError as err:
+                    bad_directive = err.args[0]
+                    if bad_directive == "\\":
+                        bad_directive = "%"
+                    del err
+                    raise ValueError("'%s' is a bad directive in format '%s'" %
+                                        (bad_directive, format)) from None
+                # IndexError only occurs when the format string is "%"
+                except IndexError:
+                    raise ValueError("stray %% in format '%s'" % format) from None
+                _regex_cache[format] = format_regex
+        found = format_regex.match(data_string)
+        if not found:
+>           raise ValueError("time data %r does not match format %r" %
+                             (data_string, format))
+E           ValueError: time data '04-11-2026' does not match format '%Y-%m-%d'
+
+C:\msys64\ucrt64\lib\python3.11\_strptime.py:349: ValueError
+__________________ test_sec_18_th18_unbounded_per_page_limit __________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_sec_18_th18_unbounded_per_page_limit(client):
+        """TH-18: API pagination per_page parameter should enforce a safe maximum cap."""
+        register_web(client, "syasya_test1", "Password123")
+        for i in range(25):
+            client.post("/api/tasks", json={"title": f"Task {i}"})
+    
+        res = client.get("/api/tasks?per_page=1000")
+>       assert len(res.get_json()) <= 20, "Unbounded per_page returned all 25 tasks without cap"
+E       AssertionError: Unbounded per_page returned all 25 tasks without cap
+E       assert 25 <= 20
+E        +  where 25 = len([{'category': None, 'category_id': None, 'completed_at': None, 'created_at': '2026-11-24T01:23:57.964876', ...}, {'category': None, 'category_id': None, 'completed_at': None, 'created_at': '2026-11-24T01:23:57.952256', ...}, {'category': None, 'category_id': None, 'completed_at': None, 'created_at': '2026-11-24T01:23:57.934376', ...}, {'category': None, 'category_id': None, 'completed_at': None, 'created_at': '2026-11-24T01:23:57.922601', ...}, {'category': None, 'category_id': None, 'completed_at': None, 'created_at': '2026-11-24T01:23:57.893919', ...}, {'category': None, 'category_id': None, 'completed_at': None, 'created_at': '2026-11-24T01:23:57.880434', ...}, ...])
+E        +    where [{'category': None, 'category_id': None, 'completed_at': None, 'created_at': '2026-11-24T01:23:57.964876', ...}, {'category': None, 'category_id': None, 'completed_at': None, 'created_at': '2026-11-24T01:23:57.952256', ...}, {'category': None, 'category_id': None, 'completed_at': None, 'created_at': '2026-11-24T01:23:57.934376', ...}, {'category': None, 'category_id': None, 'completed_at': None, 'created_at': '2026-11-24T01:23:57.922601', ...}, {'category': None, 'category_id': None, 'completed_at': None, 'created_at': '2026-11-24T01:23:57.893919', ...}, {'category': None, 'category_id': None, 'completed_at': None, 'created_at': '2026-11-24T01:23:57.880434', ...}, ...] = get_json()
+E        +      where get_json = <WrapperTestResponse 4858 bytes [200 OK]>.get_json
+
+05_Security_Performance\tests\test_security.py:245: AssertionError
+_________________ test_sec_19_th19_api_login_burst_throttling _________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_sec_19_th19_api_login_burst_throttling(client):
+        """TH-19: Rapid sequential login requests should trigger throttling."""
+        register_web(client, "syasya_test1", "Password123")
+        client.get("/logout")
+    
+        statuses = [
+            client.post("/api/login", json={"username": "syasya_test1", "password": "bad"}).status_code
+            for _ in range(20)
+        ]
+>       assert 429 in statuses, "All 20 rapid login attempts processed with no throttling"
+E       AssertionError: All 20 rapid login attempts processed with no throttling
+E       assert 429 in [401, 401, 401, 401, 401, 401, ...]
+
+05_Security_Performance\tests\test_security.py:257: AssertionError
+________________ test_sec_20_th20_logout_requires_post_not_get ________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_sec_20_th20_logout_requires_post_not_get(client):
+        """TH-20: GET /logout should not terminate session (prevents cross-site image logout)."""
+        register_web(client, "syasya_test1", "Password123")
+        res = client.get("/logout")
+>       assert res.status_code == 405, "GET /logout terminated session without POST/CSRF protection"
+E       AssertionError: GET /logout terminated session without POST/CSRF protection
+E       assert 302 == 405
+E        +  where 302 = <WrapperTestResponse streamed [302 FOUND]>.status_code
+
+05_Security_Performance\tests\test_security.py:264: AssertionError
+_________________ test_sec_21_th21_api_delete_cross_user_idor _________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_sec_21_th21_api_delete_cross_user_idor(client):
+        """TH-21: User B must not be able to delete User A's task via DELETE /api/tasks/<id>."""
+        register_web(client, "syasya_test1", "Password123")
+        task_id = client.post("/api/tasks", json={"title": "Test1 Protected Task"}).get_json()["id"]
+        client.get("/logout")
+    
+        register_web(client, "syasya_test2", "Password123")
+        res = client.delete(f"/api/tasks/{task_id}")
+>       assert res.status_code in (403, 404), "IDOR: User B deleted User A's task via API"
+E       AssertionError: IDOR: User B deleted User A's task via API
+E       assert 200 in (403, 404)
+E        +  where 200 = <WrapperTestResponse streamed [200 OK]>.status_code
+
+05_Security_Performance\tests\test_security.py:279: AssertionError
+=========================== short test summary info ===========================
+FAILED 05_Security_Performance/tests/test_security.py::test_sec_01_th01_login_brute_force_rate_limit
+FAILED 05_Security_Performance/tests/test_security.py::test_sec_02_th02_duplicate_username_registration
+FAILED 05_Security_Performance/tests/test_security.py::test_sec_03_th03_hardcoded_secret_key_cookie_forgery
+FAILED 05_Security_Performance/tests/test_security.py::test_sec_04_th04_session_cookie_replay_after_logout
+FAILED 05_Security_Performance/tests/test_security.py::test_sec_05_th05_stored_xss_in_task_title
+FAILED 05_Security_Performance/tests/test_security.py::test_sec_06_th06_missing_csrf_token_on_task_form
+FAILED 05_Security_Performance/tests/test_security.py::test_sec_07_th07_api_search_sql_injection_syntax_error
+FAILED 05_Security_Performance/tests/test_security.py::test_sec_08_th08_web_search_sql_wildcard_escaping
+FAILED 05_Security_Performance/tests/test_security.py::test_sec_09_th09_whitespace_title_server_validation
+FAILED 05_Security_Performance/tests/test_security.py::test_sec_10_th10_audit_trail_for_task_deletion
+FAILED 05_Security_Performance/tests/test_security.py::test_sec_11_th11_debug_mode_disabled_in_source
+FAILED 05_Security_Performance/tests/test_security.py::test_sec_12_th12_no_store_cache_control_header
+FAILED 05_Security_Performance/tests/test_security.py::test_sec_14_th14_api_search_sqli_cross_user_data_leak
+FAILED 05_Security_Performance/tests/test_security.py::test_sec_15_th15_session_cookie_security_flags
+FAILED 05_Security_Performance/tests/test_security.py::test_sec_17_th17_malformed_due_date_availability
+FAILED 05_Security_Performance/tests/test_security.py::test_sec_18_th18_unbounded_per_page_limit
+FAILED 05_Security_Performance/tests/test_security.py::test_sec_19_th19_api_login_burst_throttling
+FAILED 05_Security_Performance/tests/test_security.py::test_sec_20_th20_logout_requires_post_not_get
+FAILED 05_Security_Performance/tests/test_security.py::test_sec_21_th21_api_delete_cross_user_idor
+======================== 19 failed, 3 passed in 19.54s ========================
