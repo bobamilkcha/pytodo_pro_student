@@ -1,7 +1,6 @@
 # Week 4 Testing Metrics Summary - PyTodo Pro
 
 **Prepared by:** Nafiesa (Defect & Metrics Coordinator)
-**Date:** 24 Nov 2026
 **Scope:** Web workflow scenarios, JSON API testing of all 9 endpoints, and UI vs API comparison
 
 **Contributors:**
