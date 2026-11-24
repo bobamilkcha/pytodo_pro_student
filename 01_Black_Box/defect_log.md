@@ -1,30 +1,51 @@
 # Central Defect Log - PyTodo Pro
 
 ## Summary
-*(Updated 19 Nov 2026, after Week 3. Severity scale and status values follow `test_conventions.md`.)*
+*(Updated 24 Nov 2026, after Week 4. Severity scale and status values follow `test_conventions.md`.)*
 
-- **Total Defect IDs Logged:** 18 (D-001 to D-018)
-- **Unique Defects:** 16
-- **Open Defects:** 16
+- **Total Defect IDs Logged:** 25 (D-001 to D-025)
+- **Unique Defects:** 23
+- **Open Defects:** 23
 - **Closed as Duplicate:** 2 (D-002, D-003 are the same bug as D-001)
 - **Resolved Defects:** 0
 
 | Severity | Count | Defect IDs |
 | :--- | :---: | :--- |
-| Critical | 0 | - |
-| Major | 5 | D-004, D-006, D-010, D-011, D-013 |
-| Moderate | 7 | D-001, D-005, D-009, D-012, D-015, D-016, D-017 |
-| Minor | 4 | D-007, D-008, D-014, D-018 |
+| Critical | 2 | D-020, D-025 |
+| Major | 6 | D-004, D-006, D-010, D-011, D-013, D-022 |
+| Moderate | 10 | D-001, D-005, D-009, D-012, D-015, D-016, D-017, D-019, D-021, D-023 |
+| Minor | 5 | D-007, D-008, D-014, D-018, D-024 |
 
 | Found in | Defect IDs |
 | :--- | :--- |
 | Week 1 (black-box) | D-001, D-004, D-005 (D-002, D-003 duplicates) |
 | Week 2 (white-box) | D-006 |
 | Week 3 (GUI, usability, accessibility) | D-007 to D-018 |
+| Week 4 (web and API) | D-019 to D-025 |
 
----
+### Week 4 draft IDs mapped to this log
 
-## Defect Details
+Week 4 files used temporary IDs. This table shows where each one is logged, so the same bug is not counted twice.
+
+| Draft ID / Test Case | Source file | Logged as |
+| :--- | :--- | :--- |
+| DEF-API-01 (`API-REG-08`), DEF-API-03 (`API-LOG-06`) | `04_Web_API/defect_log.md` | **D-019** |
+| DEF-API-02 (`API-REG-09`) | `04_Web_API/defect_log.md` | **D-013** (existing, confirmed through the API) |
+| "D-009" draft (blank title on web create and edit, `WTS-VAL-03`) | `04_Web_API/web_test_scenarios.md` | **D-011** (existing). D-009 is already used for form labels |
+| `API-TSK-GETALL-04`, `TC-API-UI-27` | `api_test_cases.md`, `ui_vs_api_comparison.md` | **D-020** |
+| `API-TSK-POST-04`, `TC-API-UI-15`, `API-DD-10` | `api_test_cases.md`, `ui_vs_api_comparison.md`, `api_test_cases_delete_dashboard.md` | **D-006** (existing) |
+| `API-TSK-POST-07` | `api_test_cases.md` | **D-019** |
+| `API-TSK-POST-08`, `TC-API-UI-16` | `api_test_cases.md`, `ui_vs_api_comparison.md` | **D-021** |
+| `API-TSK-PUT-03`, `TC-API-UI-18` | `api_test_cases.md`, `ui_vs_api_comparison.md` | **D-022** |
+| `API-TSK-PUT-06`, `TC-API-UI-22` | `api_test_cases.md`, `ui_vs_api_comparison.md` | **D-023** |
+| `API-TSK-DEL-02`, `API-DD-02`, `TC-API-UI-23` | `api_test_cases.md`, `api_test_cases_delete_dashboard.md`, `ui_vs_api_comparison.md` | **D-024** |
+| `API-TSK-DEL-05`, `API-DD-01`, `TC-API-UI-24` | `api_test_cases.md`, `api_test_cases_delete_dashboard.md`, `ui_vs_api_comparison.md` | **D-025** |
+| `API-DASH-01`, `TC-API-UI-14` | `api_test_cases.md`, `ui_vs_api_comparison.md` | **D-001** (existing) |
+| `API-DD-08` | `api_test_cases_delete_dashboard.md` | **D-005** (existing) |
+| `TC-API-UI-02` | `ui_vs_api_comparison.md` | **D-004** (existing) |
+| `TC-API-UI-04` | `ui_vs_api_comparison.md` | **D-013** (existing) |
+| `TC-API-UI-12` | `ui_vs_api_comparison.md` | **D-012** (existing) |
+| `TC-API-UI-25`, `TC-API-UI-26` | `ui_vs_api_comparison.md` | **D-014** (existing, now also in the API) |
 
 ### Defect ID: D-001
 - **Title:** Task due today incorrectly displays "Overdue" badge instead of "Due Today"
@@ -42,6 +63,7 @@
 - **Status:** Open
 - **Evidence:** `/evidence/TC-BB-F14-02.png`
 - **Related Test Case:** `TC-BB-F14-02`
+- **Week 4 retest:** Confirmed through the API. `API-DASH-01` (dashboard counts a task due today as overdue) and `TC-API-UI-14` (API returns urgency `Overdue` for today).
 
 ### Defect ID: D-002
 - **Title:** Task due today incorrectly displays "Overdue" badge instead of "Due Today"
@@ -94,6 +116,7 @@
 - **Status:** Open
 - **Evidence:** `/01_Black_Box/evidence/BVA/TC-BB-BVA-F01-02_Actual.png`
 - **Related Test Case:** `TC-BB-BVA-F01-02`
+- **Week 4 retest:** Confirmed through the API. `TC-API-UI-02`: `POST /api/register` also rejects an 8-character password, because the UI and API share `is_valid_password()`.
 
 ### Defect ID: D-005
 - **Title:** Dashboard 7-day counter excludes tasks completed exactly 7 days ago
@@ -112,6 +135,7 @@
 - **Status:** Open
 - **Evidence:** `/01_Black_Box/evidence/BVA/TC-BB-BVA-F15-01_Actual.png`
 - **Related Test Case:** `TC-BB-BVA-F15-01`
+- **Week 4 retest:** Confirmed through the API. `API-DD-08`: `GET /api/dashboard` returns `completed_this_week: 0` for a task completed exactly 7 days ago.
 
 ### Defect ID: D-006
 - **Title:** A badly formatted due date sent through the API is saved, then makes the task list API return HTTP 500
@@ -129,6 +153,7 @@
 - **Evidence:** `02_White_Box_Coverage/compute_urgency/pytest_output_compute_urgency.txt`
 - **Related Test Case:** `TC-WB-F14-10`
 - **Suggested Fix:** Validate `due_date` on the server before saving, and catch `ValueError` in `compute_urgency`.
+- **Week 4 retest:** Confirmed again by `API-TSK-POST-04` and `TC-API-UI-15`. New effect found by `API-DD-10`: once such a task exists, `GET /api/dashboard` also returns 500, so the user's dashboard stops working.
 
 ### Defect ID: D-007
 - **Title:** Invalid CSS selector `-` on line 1 of `style.css` disables `box-sizing: border-box`, so form inputs overflow their container
@@ -211,6 +236,7 @@
 - **Status:** Open
 - **Evidence:** `03_Special_Testing/evidence/usability_testing/US-11b.png` (blank row at the bottom of the table)
 - **Related Test Case:** `US-11`
+- **Week 4 retest:** `WTS-VAL-03` (Aida, draft "D-009") shows the same gap on the web **edit** route as well as create: `new_task()` and `edit_task()` only rely on the HTML `required` attribute. Evidence: `WTS-VAL-03.png` is referenced in `web_test_scenarios.md` but is not in the repo yet.
 
 ### Defect ID: D-012
 - **Title:** No maximum title length, so a very long title fills the task table with one huge row
@@ -227,6 +253,7 @@
 - **Status:** Open
 - **Evidence:** `03_Special_Testing/evidence/usability_testing/US-11b.png`, `US-11c.png`, `US-11d.png`
 - **Related Test Case:** `US-11`
+- **Week 4 retest:** `TC-API-UI-12`: the API also accepts a 500-character title. No limit exists in the UI or the API.
 
 ### Defect ID: D-013
 - **Title:** The same username can be registered more than once
@@ -245,6 +272,7 @@
 - **Evidence:** `03_Special_Testing/evidence/accessibility_testing/ACC_scan_log.txt` (retest), usability notes `US-04`
 - **Related Test Case:** `US-04`, `TC-BB-002`
 - **Note:** Week 1 case `TC-BB-002` ("Registration fails when username already exists") is marked Pass. That result conflicts with this retest and should be re-run and changed to Fail.
+- **Week 4 retest:** Confirmed through the API. `API-REG-09` (draft DEF-API-02) and `TC-API-UI-04`: `POST /api/register` returns 201 for an existing username.
 
 ### Defect ID: D-014
 - **Title:** Underscore `_` in the search box works as a wildcard and matches any single character
@@ -261,6 +289,7 @@
 - **Status:** Open
 - **Evidence:** `03_Special_Testing/evidence/usability_testing/US-24.png`
 - **Related Test Case:** `US-24`, `TC-WB-F11-11`
+- **Week 4 retest:** `TC-API-UI-25` and `TC-API-UI-26`: `GET /api/tasks?q=` also treats `_` and `%` as wildcards. In the API this comes from the same unsafe query as D-020.
 
 ### Defect ID: D-015
 - **Title:** Done task titles and the empty-list message fail the 4.5:1 colour contrast minimum (2.84:1)
@@ -326,3 +355,117 @@
 - **Status:** Open
 - **Evidence:** `03_Special_Testing/evidence/accessibility_testing/ACC-11.png`
 - **Related Test Case:** `ACC-11`
+
+### Defect ID: D-019
+- **Title:** JSON API returns HTTP 500 when a text field is sent as another data type or the body is not a JSON object
+- **Affected Feature:** F-01 Register, F-03 Login, F-08 Create Task (JSON API: `api_register`, `api_login`, `api_create_task` in `app.py`)
+- **Environment:** Python 3, pytest with Flask test client, Localhost (http://127.0.0.1:5000)
+- **Preconditions:** For `POST /api/tasks`, the user is logged in through the API.
+- **Steps to Reproduce:**
+  1. Send `POST /api/register` with `{"username": 12345, "password": "Password123"}`.
+  2. Send `POST /api/login` with `{"username": 12345, "password": "Password123"}`.
+  3. Send `POST /api/tasks` with `{"title": 12345}`.
+- **Expected Result:** Each request is rejected with 400 (or 401 for login) and a JSON `error` message.
+- **Actual Result:** All three return 500 Internal Server Error. The code calls `.strip()` on the value without checking that it is text (`AttributeError: 'int' object has no attribute 'strip'`). The web forms cannot send these values, so only the API is affected.
+- **Severity:** Moderate
+- **Priority:** Medium
+- **Status:** Open
+- **Evidence:** `04_Web_API/evidence_api_auth.txt`, `04_Web_API/evidence_api_tasks.txt`, `04_Web_API/evidence_ui_vs_api.txt`
+- **Related Test Case:** `API-REG-08`, `API-LOG-06`, `API-TSK-POST-07`, `TC-API-UI-06` (drafts DEF-API-01, DEF-API-03)
+- **Suggested Fix:** Check `isinstance(value, str)` before `.strip()`, and check the body is a JSON object, returning 400 otherwise.
+
+### Defect ID: D-020
+- **Title:** SQL injection in `GET /api/tasks?q=`: the search text is placed directly into the SQL query
+- **Affected Feature:** F-11 Filter and search (JSON API, `app.py` line 379: `query += f" AND title LIKE '%{q}%'"`)
+- **Environment:** Python 3, pytest with Flask test client, Localhost (http://127.0.0.1:5000)
+- **Preconditions:** User is logged in through the API.
+- **Steps to Reproduce:**
+  1. Send `GET /api/tasks?q=test'` (one single quote).
+- **Expected Result:** 200 with an empty list. The quote is treated as plain text, as the web search does.
+- **Actual Result:** 500 Internal Server Error (`sqlite3.OperationalError: unrecognized token`). The quote breaks the SQL statement, which proves user input is run as SQL. The web route uses a safe parameterised query (`LIKE ?`), so only the API is affected.
+- **Severity:** Critical
+- **Priority:** High
+- **Status:** Open
+- **Evidence:** `04_Web_API/evidence_api_tasks.txt`, `04_Web_API/evidence_ui_vs_api.txt`
+- **Related Test Case:** `API-TSK-GETALL-04`, `TC-API-UI-27`, threat `TH-07` (Week 5)
+- **Suggested Fix:** Use a parameterised query (`AND title LIKE ?` with `f"%{q}%"` as the parameter).
+
+### Defect ID: D-021
+- **Title:** `POST /api/tasks` accepts a `category_id` that does not exist
+- **Affected Feature:** F-08 Create Task (JSON API)
+- **Environment:** Python 3, pytest with Flask test client, Localhost (http://127.0.0.1:5000)
+- **Preconditions:** User is logged in through the API.
+- **Steps to Reproduce:**
+  1. Send `POST /api/tasks` with `{"title": "Invalid category", "category_id": 9999}`.
+- **Expected Result:** 400 with an error such as "invalid category".
+- **Actual Result:** 201 Created. The task is saved with `category_id: 9999` and `category: null`.
+- **Severity:** Moderate
+- **Priority:** Low
+- **Status:** Open
+- **Evidence:** `04_Web_API/evidence_api_tasks.txt`, `04_Web_API/evidence_ui_vs_api.txt`
+- **Related Test Case:** `API-TSK-POST-08`, `TC-API-UI-16`
+
+### Defect ID: D-022
+- **Title:** `PUT /api/tasks/<id>` accepts an empty title and overwrites the existing title with a blank
+- **Affected Feature:** F-10 Edit Task (JSON API, `api_update_task`)
+- **Environment:** Python 3, pytest with Flask test client, Localhost (http://127.0.0.1:5000)
+- **Preconditions:** User is logged in and owns a task.
+- **Steps to Reproduce:**
+  1. Create a task with a normal title.
+  2. Send `PUT /api/tasks/<id>` with `{"title": ""}`.
+- **Expected Result:** 400 `{"error": "title is required"}`, the same rule as `POST /api/tasks`. The old title is kept.
+- **Actual Result:** 200 OK. The title becomes an empty string. The update route has no title check at all.
+- **Severity:** Major
+- **Priority:** Medium
+- **Status:** Open
+- **Evidence:** `04_Web_API/evidence_api_tasks.txt`, `04_Web_API/evidence_ui_vs_api.txt`
+- **Related Test Case:** `API-TSK-PUT-03`, `TC-API-UI-18`
+
+### Defect ID: D-023
+- **Title:** `PUT /api/tasks/<id>` treats `"done": "false"` (text) as true and completes the task
+- **Affected Feature:** F-12 Mark done / reopen (JSON API, `api_update_task`)
+- **Environment:** Python 3, pytest with Flask test client, Localhost (http://127.0.0.1:5000)
+- **Preconditions:** User is logged in and owns an open task.
+- **Steps to Reproduce:**
+  1. Send `PUT /api/tasks/<id>` with `{"done": "false"}`.
+- **Expected Result:** 400 (wrong data type), or the task stays open.
+- **Actual Result:** 200 OK and the task becomes done. Python's `bool("false")` is `True`, because any non-empty text counts as true.
+- **Severity:** Moderate
+- **Priority:** Medium
+- **Status:** Open
+- **Evidence:** `04_Web_API/evidence_api_tasks.txt`, `04_Web_API/evidence_ui_vs_api.txt`
+- **Related Test Case:** `API-TSK-PUT-06`, `TC-API-UI-22`
+
+### Defect ID: D-024
+- **Title:** `DELETE /api/tasks/<id>` returns 200 "ok" for a task that does not exist or was already deleted
+- **Affected Feature:** F-13 Delete Task (JSON API, `api_delete_task`)
+- **Environment:** Python 3, pytest with Flask test client, Localhost (http://127.0.0.1:5000)
+- **Preconditions:** User is logged in through the API.
+- **Steps to Reproduce:**
+  1. Send `DELETE /api/tasks/99999` (no such task).
+  2. Or delete one of your tasks, then send the same `DELETE` again.
+- **Expected Result:** 404 `{"error": "not found"}`, the same as `GET` and `PUT` for a missing task.
+- **Actual Result:** 200 `{"result": "ok"}` every time. The caller is told the delete worked when nothing was deleted.
+- **Severity:** Minor
+- **Priority:** Low
+- **Status:** Open
+- **Evidence:** `04_Web_API/evidence_api_tasks.txt`, `04_Web_API/evidence_api_delete_dashboard.txt`
+- **Related Test Case:** `API-TSK-DEL-02`, `API-DD-02`, `TC-API-UI-23`
+
+### Defect ID: D-025
+- **Title:** Any logged-in user can permanently delete another user's task through `DELETE /api/tasks/<id>` (IDOR)
+- **Affected Feature:** F-13 Delete Task (JSON API, `app.py` line 459: `DELETE FROM tasks WHERE id = ?` with no `user_id`)
+- **Environment:** Python 3, pytest with Flask test client, Localhost (http://127.0.0.1:5000)
+- **Preconditions:** Two accounts exist. User A owns a task.
+- **Steps to Reproduce:**
+  1. As User A, create a task and note its `id`.
+  2. As User B, send `DELETE /api/tasks/<id of A's task>`.
+  3. As User A, send `GET /api/tasks/<id>`.
+- **Expected Result:** Step 2 returns 403 or 404 and the task is kept. Step 3 returns 200.
+- **Actual Result:** Step 2 returns 200 `{"result": "ok"}`. Step 3 returns 404: User A's task is **permanently deleted** by another user. The web delete route checks the owner (`AND user_id = ?`), so only the API is affected. The code comment confirms it: "deletes by id only".
+- **Severity:** Critical
+- **Priority:** High
+- **Status:** Open
+- **Evidence:** `04_Web_API/evidence_api_tasks.txt`, `04_Web_API/evidence_api_delete_dashboard.txt`, `04_Web_API/evidence_ui_vs_api.txt`
+- **Related Test Case:** `API-TSK-DEL-05`, `API-DD-01`, `TC-API-UI-24`, threat `TH-21` (Week 5), risk R1
+- **Suggested Fix:** Add `AND user_id = ?` to the delete query and return 404 when no row was deleted.
