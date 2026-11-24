@@ -1,0 +1,389 @@
+﻿============================= test session starts =============================
+platform win32 -- Python 3.11.5, pytest-9.2.0, pluggy-1.7.0 -- C:\Users\user\OneDrive - Universiti Teknologi PETRONAS\SUBJECT STQA\pytodo_pro_student\env\bin\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\user\OneDrive - Universiti Teknologi PETRONAS\SUBJECT STQA\pytodo_pro_student
+plugins: cov-7.1.0
+collecting ... collected 36 items
+
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_getall_01_valid_default PASSED [  2%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_getall_02_valid_filters PASSED [  5%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_getall_03_sql_injection_q PASSED [  8%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_getall_04_unclosed_quote_q FAILED [ 11%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_getall_05_missing_auth PASSED [ 13%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_getall_06_wrong_type_pagination PASSED [ 16%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_getall_07_edge_high_page PASSED [ 19%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_getone_01_valid_own_task PASSED [ 22%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_getone_02_not_found PASSED [ 25%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_getone_03_missing_auth PASSED [ 27%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_getone_04_wrong_type_id PASSED [ 30%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_getone_05_cross_user_idor PASSED [ 33%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_post_01_valid_full PASSED [ 36%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_post_02_valid_minimal PASSED [ 38%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_post_03_invalid_whitespace_title PASSED [ 41%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_post_04_invalid_due_date_format FAILED [ 44%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_post_05_missing_title PASSED [ 47%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_post_06_missing_auth PASSED [ 50%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_post_07_wrong_type_title FAILED [ 52%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_post_08_edge_invalid_category_id FAILED [ 55%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_put_01_valid_update PASSED [ 58%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_put_02_valid_toggle_done PASSED [ 61%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_put_03_invalid_empty_title FAILED [ 63%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_put_04_not_found PASSED [ 66%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_put_05_missing_fields_noop PASSED [ 69%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_put_06_wrong_type_done_string FAILED [ 72%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_put_07_cross_user_idor PASSED [ 75%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_del_01_valid_delete PASSED [ 77%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_del_02_invalid_not_found FAILED [ 80%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_del_03_missing_auth PASSED [ 83%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_del_04_wrong_type_id PASSED [ 86%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_del_05_cross_user_idor FAILED [ 88%]
+04_Web_API/tests/test_api_tasks.py::test_api_dash_01_valid_mixed_metrics FAILED [ 91%]
+04_Web_API/tests/test_api_tasks.py::test_api_dash_02_valid_empty_metrics PASSED [ 94%]
+04_Web_API/tests/test_api_tasks.py::test_api_dash_03_missing_auth PASSED [ 97%]
+04_Web_API/tests/test_api_tasks.py::test_api_dash_04_edge_method_not_allowed PASSED [100%]
+
+================================== FAILURES ===================================
+___________________ test_api_tsk_getall_04_unclosed_quote_q ___________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_api_tsk_getall_04_unclosed_quote_q(client):
+        register_and_login(client)
+>       res = client.get("/api/tasks?q=test'")
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+04_Web_API\tests\test_api_tasks.py:73: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+env\lib\python3.11\site-packages\werkzeug\test.py:1166: in get
+    return self.open(*args, **kw)
+           ^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\flask\testing.py:235: in open
+    response = super().open(
+env\lib\python3.11\site-packages\werkzeug\test.py:1120: in open
+    response_parts = self.run_wsgi_app(request.environ, buffered=buffered)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\werkzeug\test.py:992: in run_wsgi_app
+    rv = run_wsgi_app(self.application, environ, buffered=buffered)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\werkzeug\test.py:1268: in run_wsgi_app
+    app_rv = app(environ, start_response)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\flask\app.py:1498: in __call__
+    return self.wsgi_app(environ, start_response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\flask\app.py:1476: in wsgi_app
+    response = self.handle_exception(e)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\flask\app.py:1473: in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\flask\app.py:882: in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\flask\app.py:880: in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\flask\app.py:865: in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app.py:130: in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    @app.route("/api/tasks", methods=["GET"])
+    @login_required_api
+    def api_list_tasks():
+        db = get_db()
+        page = request.args.get("page", default=0, type=int)
+        per_page = request.args.get("per_page", default=10, type=int)
+        category = request.args.get("category", "").strip()
+        status = request.args.get("status", "").strip()
+        q = request.args.get("q", "").strip()
+    
+        query = "SELECT * FROM tasks WHERE user_id = ?"
+        params = [session["user_id"]]
+    
+        cat_id = get_category_id_by_name(db, category) if category else None
+        if cat_id:
+            query += " AND category_id = ?"
+            params.append(cat_id)
+    
+        if status == "done":
+            query += " AND done = 1"
+        elif status == "open":
+            query += " AND done = 0"
+    
+        if q:
+            # Search is intentionally simple: build the LIKE pattern directly.
+            query += f" AND title LIKE '%{q}%'"
+    
+        query += " ORDER BY id DESC LIMIT ? OFFSET ?"
+        params.extend([per_page, page * per_page])
+    
+>       rows = db.execute(query, params).fetchall()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       sqlite3.OperationalError: unrecognized token: "' ORDER BY id DESC LIMIT ? OFFSET ?"
+
+app.py:384: OperationalError
+________________ test_api_tsk_post_04_invalid_due_date_format _________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_api_tsk_post_04_invalid_due_date_format(client):
+        register_and_login(client)
+>       res = client.post("/api/tasks", json={"title": "Bad date test", "due_date": "not-a-date"})
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+04_Web_API\tests\test_api_tasks.py:174: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+env\lib\python3.11\site-packages\werkzeug\test.py:1171: in post
+    return self.open(*args, **kw)
+           ^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\flask\testing.py:235: in open
+    response = super().open(
+env\lib\python3.11\site-packages\werkzeug\test.py:1120: in open
+    response_parts = self.run_wsgi_app(request.environ, buffered=buffered)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\werkzeug\test.py:992: in run_wsgi_app
+    rv = run_wsgi_app(self.application, environ, buffered=buffered)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\werkzeug\test.py:1268: in run_wsgi_app
+    app_rv = app(environ, start_response)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\flask\app.py:1498: in __call__
+    return self.wsgi_app(environ, start_response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\flask\app.py:1476: in wsgi_app
+    response = self.handle_exception(e)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\flask\app.py:1473: in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\flask\app.py:882: in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\flask\app.py:880: in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\flask\app.py:865: in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app.py:130: in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+app.py:420: in api_create_task
+    return jsonify(row_to_task(row, get_category_name(db, row["category_id"]))), 201
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app.py:94: in row_to_task
+    "urgency": compute_urgency(row["due_date"]) if not row["done"] else "Done",
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+helpers.py:31: in compute_urgency
+    due = datetime.strptime(due_date_str, "%Y-%m-%d").date()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\msys64\ucrt64\lib\python3.11\_strptime.py:568: in _strptime_datetime
+    tt, fraction, gmtoff_fraction = _strptime(data_string, format)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+data_string = 'not-a-date', format = '%Y-%m-%d'
+
+    def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
+        """Return a 2-tuple consisting of a time struct and an int containing
+        the number of microseconds based on the input string and the
+        format string."""
+    
+        for index, arg in enumerate([data_string, format]):
+            if not isinstance(arg, str):
+                msg = "strptime() argument {} must be str, not {}"
+                raise TypeError(msg.format(index, type(arg)))
+    
+        global _TimeRE_cache, _regex_cache
+        with _cache_lock:
+            locale_time = _TimeRE_cache.locale_time
+            if (_getlang() != locale_time.lang or
+                time.tzname != locale_time.tzname or
+                time.daylight != locale_time.daylight):
+                _TimeRE_cache = TimeRE()
+                _regex_cache.clear()
+                locale_time = _TimeRE_cache.locale_time
+            if len(_regex_cache) > _CACHE_MAX_SIZE:
+                _regex_cache.clear()
+            format_regex = _regex_cache.get(format)
+            if not format_regex:
+                try:
+                    format_regex = _TimeRE_cache.compile(format)
+                # KeyError raised when a bad format is found; can be specified as
+                # \\, in which case it was a stray % but with a space after it
+                except KeyError as err:
+                    bad_directive = err.args[0]
+                    if bad_directive == "\\":
+                        bad_directive = "%"
+                    del err
+                    raise ValueError("'%s' is a bad directive in format '%s'" %
+                                        (bad_directive, format)) from None
+                # IndexError only occurs when the format string is "%"
+                except IndexError:
+                    raise ValueError("stray %% in format '%s'" % format) from None
+                _regex_cache[format] = format_regex
+        found = format_regex.match(data_string)
+        if not found:
+>           raise ValueError("time data %r does not match format %r" %
+                             (data_string, format))
+E           ValueError: time data 'not-a-date' does not match format '%Y-%m-%d'
+
+C:\msys64\ucrt64\lib\python3.11\_strptime.py:349: ValueError
+____________________ test_api_tsk_post_07_wrong_type_title ____________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_api_tsk_post_07_wrong_type_title(client):
+        register_and_login(client)
+>       res = client.post("/api/tasks", json={"title": 12345})
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+04_Web_API\tests\test_api_tasks.py:192: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+env\lib\python3.11\site-packages\werkzeug\test.py:1171: in post
+    return self.open(*args, **kw)
+           ^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\flask\testing.py:235: in open
+    response = super().open(
+env\lib\python3.11\site-packages\werkzeug\test.py:1120: in open
+    response_parts = self.run_wsgi_app(request.environ, buffered=buffered)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\werkzeug\test.py:992: in run_wsgi_app
+    rv = run_wsgi_app(self.application, environ, buffered=buffered)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\werkzeug\test.py:1268: in run_wsgi_app
+    app_rv = app(environ, start_response)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\flask\app.py:1498: in __call__
+    return self.wsgi_app(environ, start_response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\flask\app.py:1476: in wsgi_app
+    response = self.handle_exception(e)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\flask\app.py:1473: in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\flask\app.py:882: in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\flask\app.py:880: in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+env\lib\python3.11\site-packages\flask\app.py:865: in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app.py:130: in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    @app.route("/api/tasks", methods=["POST"])
+    @login_required_api
+    def api_create_task():
+        data = request.get_json(silent=True) or {}
+>       title = (data.get("title") or "").strip()
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'int' object has no attribute 'strip'
+
+app.py:405: AttributeError
+________________ test_api_tsk_post_08_edge_invalid_category_id ________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_api_tsk_post_08_edge_invalid_category_id(client):
+        register_and_login(client)
+        res = client.post("/api/tasks", json={"title": "Invalid category", "category_id": 9999})
+>       assert res.status_code == 400
+E       assert 201 == 400
+E        +  where 201 = <WrapperTestResponse streamed [201 CREATED]>.status_code
+
+04_Web_API\tests\test_api_tasks.py:199: AssertionError
+___________________ test_api_tsk_put_03_invalid_empty_title ___________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_api_tsk_put_03_invalid_empty_title(client):
+        register_and_login(client)
+        task_id = client.post("/api/tasks", json={"title": "Keep Title"}).get_json()["id"]
+        res = client.put(f"/api/tasks/{task_id}", json={"title": ""})
+>       assert res.status_code == 400
+E       assert 200 == 400
+E        +  where 200 = <WrapperTestResponse streamed [200 OK]>.status_code
+
+04_Web_API\tests\test_api_tasks.py:232: AssertionError
+_________________ test_api_tsk_put_06_wrong_type_done_string __________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_api_tsk_put_06_wrong_type_done_string(client):
+        register_and_login(client)
+        task_id = client.post("/api/tasks", json={"title": "Bool Type Test"}).get_json()["id"]
+        res = client.put(f"/api/tasks/{task_id}", json={"done": "false"})
+>       assert res.status_code == 400 or res.get_json()["done"] is False
+E       assert (200 == 400 or True is False)
+E        +  where 200 = <WrapperTestResponse 210 bytes [200 OK]>.status_code
+
+04_Web_API\tests\test_api_tasks.py:253: AssertionError
+____________________ test_api_tsk_del_02_invalid_not_found ____________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_api_tsk_del_02_invalid_not_found(client):
+        register_and_login(client)
+        res = client.delete("/api/tasks/99999")
+>       assert res.status_code == 404
+E       assert 200 == 404
+E        +  where 200 = <WrapperTestResponse streamed [200 OK]>.status_code
+
+04_Web_API\tests\test_api_tasks.py:281: AssertionError
+_____________________ test_api_tsk_del_05_cross_user_idor _____________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_api_tsk_del_05_cross_user_idor(client):
+        register_and_login(client, username="owner_del")
+        task_id = client.post("/api/tasks", json={"title": "Do Not Delete"}).get_json()["id"]
+    
+        client.post("/api/register", json={"username": "attacker_del", "password": "Password123"})
+        res = client.delete(f"/api/tasks/{task_id}")
+>       assert res.status_code in (403, 404)
+E       assert 200 in (403, 404)
+E        +  where 200 = <WrapperTestResponse streamed [200 OK]>.status_code
+
+04_Web_API\tests\test_api_tasks.py:301: AssertionError
+____________________ test_api_dash_01_valid_mixed_metrics _____________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_api_dash_01_valid_mixed_metrics(client):
+        register_and_login(client)
+        today = datetime.now().strftime("%Y-%m-%d")
+        client.post("/api/tasks", json={"title": "Overdue Task", "due_date": "2020-01-01"})
+        client.post("/api/tasks", json={"title": "Due Soon Task", "due_date": today})
+        done_id = client.post("/api/tasks", json={"title": "Done Task"}).get_json()["id"]
+        client.put(f"/api/tasks/{done_id}", json={"done": True})
+    
+        res = client.get("/api/dashboard")
+        assert res.status_code == 200
+        data = res.get_json()
+        assert data["total"] == 3
+        assert data["open"] == 2
+>       assert data["overdue"] == 1
+E       assert 2 == 1
+
+04_Web_API\tests\test_api_tasks.py:321: AssertionError
+=========================== short test summary info ===========================
+FAILED 04_Web_API/tests/test_api_tasks.py::test_api_tsk_getall_04_unclosed_quote_q
+FAILED 04_Web_API/tests/test_api_tasks.py::test_api_tsk_post_04_invalid_due_date_format
+FAILED 04_Web_API/tests/test_api_tasks.py::test_api_tsk_post_07_wrong_type_title
+FAILED 04_Web_API/tests/test_api_tasks.py::test_api_tsk_post_08_edge_invalid_category_id
+FAILED 04_Web_API/tests/test_api_tasks.py::test_api_tsk_put_03_invalid_empty_title
+FAILED 04_Web_API/tests/test_api_tasks.py::test_api_tsk_put_06_wrong_type_done_string
+FAILED 04_Web_API/tests/test_api_tasks.py::test_api_tsk_del_02_invalid_not_found
+FAILED 04_Web_API/tests/test_api_tasks.py::test_api_tsk_del_05_cross_user_idor
+FAILED 04_Web_API/tests/test_api_tasks.py::test_api_dash_01_valid_mixed_metrics
+======================== 9 failed, 27 passed in 10.29s ========================
