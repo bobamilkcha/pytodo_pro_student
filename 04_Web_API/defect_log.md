@@ -2,7 +2,7 @@
 
 **Reported by:** Automation/Tool Coordinator (Nisrina)  
 **Test Suite:** `04_Web_API/tests/test_api_auth.py`  
-**Evidence:** `04_Web_API/evidence_api_auth.txt`
+**Evidence:** `04_Web_API/evidence/evidence_api_auth.txt`
 
 | Defect ID | Related Test Case | Endpoint | Severity | Summary | Steps to Reproduce | Expected Result | Actual Result |
 | :--- | :--- | :--- | :---: | :--- | :--- | :--- | :--- |
