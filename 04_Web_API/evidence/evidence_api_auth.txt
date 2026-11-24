@@ -1,0 +1,128 @@
+﻿============================= test session starts =============================
+platform win32 -- Python 3.10.11, pytest-9.2.0, pluggy-1.7.0 -- C:\Users\nisrina\Desktop\pytodo_pro_student\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\nisrina\Desktop\pytodo_pro_student
+plugins: cov-7.1.0
+collecting ... collected 19 items
+
+04_Web_API/tests/test_api_auth.py::test_api_reg_01_valid_registration PASSED [  5%]
+04_Web_API/tests/test_api_auth.py::test_api_reg_02_trimmed_username PASSED [ 10%]
+04_Web_API/tests/test_api_auth.py::test_api_reg_03_invalid_username PASSED [ 15%]
+04_Web_API/tests/test_api_auth.py::test_api_reg_04_invalid_password PASSED [ 21%]
+04_Web_API/tests/test_api_auth.py::test_api_reg_05_missing_username PASSED [ 26%]
+04_Web_API/tests/test_api_auth.py::test_api_reg_06_missing_password PASSED [ 31%]
+04_Web_API/tests/test_api_auth.py::test_api_reg_07_empty_json PASSED     [ 36%]
+04_Web_API/tests/test_api_auth.py::test_api_reg_08_wrong_type_username FAILED [ 42%]
+04_Web_API/tests/test_api_auth.py::test_api_reg_09_duplicate_username FAILED [ 47%]
+04_Web_API/tests/test_api_auth.py::test_api_log_01_valid_login PASSED    [ 52%]
+04_Web_API/tests/test_api_auth.py::test_api_log_02_wrong_password PASSED [ 57%]
+04_Web_API/tests/test_api_auth.py::test_api_log_03_nonexistent_user PASSED [ 63%]
+04_Web_API/tests/test_api_auth.py::test_api_log_04_missing_password PASSED [ 68%]
+04_Web_API/tests/test_api_auth.py::test_api_log_05_empty_json PASSED     [ 73%]
+04_Web_API/tests/test_api_auth.py::test_api_log_06_wrong_type_username FAILED [ 78%]
+04_Web_API/tests/test_api_auth.py::test_api_log_07_non_json_body PASSED  [ 84%]
+04_Web_API/tests/test_api_auth.py::test_api_cat_01_public_categories_list PASSED [ 89%]
+04_Web_API/tests/test_api_auth.py::test_api_cat_02_categories_sorted_alphabetically PASSED [ 94%]
+04_Web_API/tests/test_api_auth.py::test_api_cat_03_unsupported_method PASSED [100%]
+
+================================== FAILURES ===================================
+_____________________ test_api_reg_08_wrong_type_username _____________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_api_reg_08_wrong_type_username(client):
+>       res = client.post("/api/register", json={"username": 12345, "password": "Password123"})
+
+04_Web_API\tests\test_api_auth.py:60: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+venv\lib\site-packages\werkzeug\test.py:1171: in post
+    return self.open(*args, **kw)
+venv\lib\site-packages\flask\testing.py:235: in open
+    response = super().open(
+venv\lib\site-packages\werkzeug\test.py:1120: in open
+    response_parts = self.run_wsgi_app(request.environ, buffered=buffered)
+venv\lib\site-packages\werkzeug\test.py:992: in run_wsgi_app
+    rv = run_wsgi_app(self.application, environ, buffered=buffered)
+venv\lib\site-packages\werkzeug\test.py:1268: in run_wsgi_app
+    app_rv = app(environ, start_response)
+venv\lib\site-packages\flask\app.py:1498: in __call__
+    return self.wsgi_app(environ, start_response)
+venv\lib\site-packages\flask\app.py:1476: in wsgi_app
+    response = self.handle_exception(e)
+venv\lib\site-packages\flask\app.py:1473: in wsgi_app
+    response = self.full_dispatch_request()
+venv\lib\site-packages\flask\app.py:882: in full_dispatch_request
+    rv = self.handle_user_exception(e)
+venv\lib\site-packages\flask\app.py:880: in full_dispatch_request
+    rv = self.dispatch_request()
+venv\lib\site-packages\flask\app.py:865: in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    @app.route("/api/register", methods=["POST"])
+    def api_register():
+        data = request.get_json(silent=True) or {}
+>       username = (data.get("username") or "").strip()
+E       AttributeError: 'int' object has no attribute 'strip'
+
+app.py:318: AttributeError
+_____________________ test_api_reg_09_duplicate_username ______________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_api_reg_09_duplicate_username(client):
+        username = unique_user("dup")
+        first = client.post("/api/register", json={"username": username, "password": "Password123"})
+        assert first.status_code == 201
+    
+        second = client.post("/api/register", json={"username": username, "password": "Password123"})
+>       assert second.status_code in (400, 409)
+E       assert 201 in (400, 409)
+E        +  where 201 = <WrapperTestResponse streamed [201 CREATED]>.status_code
+
+04_Web_API\tests\test_api_auth.py:70: AssertionError
+_____________________ test_api_log_06_wrong_type_username _____________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_api_log_06_wrong_type_username(client):
+>       res = client.post("/api/login", json={"username": 12345, "password": "Password123"})
+
+04_Web_API\tests\test_api_auth.py:120: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+venv\lib\site-packages\werkzeug\test.py:1171: in post
+    return self.open(*args, **kw)
+venv\lib\site-packages\flask\testing.py:235: in open
+    response = super().open(
+venv\lib\site-packages\werkzeug\test.py:1120: in open
+    response_parts = self.run_wsgi_app(request.environ, buffered=buffered)
+venv\lib\site-packages\werkzeug\test.py:992: in run_wsgi_app
+    rv = run_wsgi_app(self.application, environ, buffered=buffered)
+venv\lib\site-packages\werkzeug\test.py:1268: in run_wsgi_app
+    app_rv = app(environ, start_response)
+venv\lib\site-packages\flask\app.py:1498: in __call__
+    return self.wsgi_app(environ, start_response)
+venv\lib\site-packages\flask\app.py:1476: in wsgi_app
+    response = self.handle_exception(e)
+venv\lib\site-packages\flask\app.py:1473: in wsgi_app
+    response = self.full_dispatch_request()
+venv\lib\site-packages\flask\app.py:882: in full_dispatch_request
+    rv = self.handle_user_exception(e)
+venv\lib\site-packages\flask\app.py:880: in full_dispatch_request
+    rv = self.dispatch_request()
+venv\lib\site-packages\flask\app.py:865: in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    @app.route("/api/login", methods=["POST"])
+    def api_login():
+        data = request.get_json(silent=True) or {}
+>       username = (data.get("username") or "").strip()
+E       AttributeError: 'int' object has no attribute 'strip'
+
+app.py:336: AttributeError
+=========================== short test summary info ===========================
+FAILED 04_Web_API/tests/test_api_auth.py::test_api_reg_08_wrong_type_username
+FAILED 04_Web_API/tests/test_api_auth.py::test_api_reg_09_duplicate_username
+FAILED 04_Web_API/tests/test_api_auth.py::test_api_log_06_wrong_type_username
+======================== 3 failed, 16 passed in 1.63s =========================
