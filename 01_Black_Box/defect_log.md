@@ -1,20 +1,20 @@
 # Central Defect Log - PyTodo Pro
 
 ## Summary
-*(Updated 24 Nov 2026, after Week 4. Severity scale and status values follow `test_conventions.md`.)*
+*(Updated 24 Nov 2026, after Week 5. Severity scale and status values follow `test_conventions.md`.)*
 
-- **Total Defect IDs Logged:** 25 (D-001 to D-025)
-- **Unique Defects:** 23
-- **Open Defects:** 23
+- **Total Defect IDs Logged:** 35 (D-001 to D-035)
+- **Unique Defects:** 33
+- **Open Defects:** 33
 - **Closed as Duplicate:** 2 (D-002, D-003 are the same bug as D-001)
 - **Resolved Defects:** 0
 
 | Severity | Count | Defect IDs |
 | :--- | :---: | :--- |
-| Critical | 2 | D-020, D-025 |
-| Major | 6 | D-004, D-006, D-010, D-011, D-013, D-022 |
-| Moderate | 10 | D-001, D-005, D-009, D-012, D-015, D-016, D-017, D-019, D-021, D-023 |
-| Minor | 5 | D-007, D-008, D-014, D-018, D-024 |
+| Critical | 3 | D-020, D-025, D-027 |
+| Major | 9 | D-004, D-006, D-010, D-011, D-013, D-022, D-026, D-029, D-031 |
+| Moderate | 14 | D-001, D-005, D-009, D-012, D-015, D-016, D-017, D-019, D-021, D-023, D-028, D-032, D-033, D-034 |
+| Minor | 7 | D-007, D-008, D-014, D-018, D-024, D-030, D-035 |
 
 | Found in | Defect IDs |
 | :--- | :--- |
@@ -22,6 +22,33 @@
 | Week 2 (white-box) | D-006 |
 | Week 3 (GUI, usability, accessibility) | D-007 to D-018 |
 | Week 4 (web and API) | D-019 to D-025 |
+| Week 5 (security) | D-026 to D-035 |
+
+### Week 5 security test cases mapped to this log
+
+`05_Security_Performance/security_test_cases.md` first used draft IDs D-015 to D-026, which were already taken in this log. Its Defect ID column has now been corrected to the IDs below. This table is kept as a record of the change.
+
+| Test Case | Threat | Draft ID in `security_test_cases.md` | Logged as |
+| :--- | :--- | :--- | :--- |
+| TC-SEC-01 | TH-01 | D-015 (New) | **D-026** (new) |
+| TC-SEC-02 | TH-02 | D-013 | **D-013** (existing) |
+| TC-SEC-03 | TH-03 | D-016 (New) | **D-027** (new) |
+| TC-SEC-04 | TH-04 | D-017 (New) | **D-028** (new) |
+| TC-SEC-05 | TH-05 | D-010 | **D-010** (existing) |
+| TC-SEC-06 | TH-06 | D-018 (New) | **D-029** (new) |
+| TC-SEC-07 | TH-07 | D-019 (New) | **D-020** (existing) |
+| TC-SEC-08 | TH-08 | D-014 | **D-014** (existing) |
+| TC-SEC-09 | TH-09 | D-011 | **D-011** (existing) |
+| TC-SEC-10 | TH-10 | D-020 (New) | **D-030** (new) |
+| TC-SEC-11 | TH-11 | D-021 (New) | **D-031** (new) |
+| TC-SEC-12 | TH-12 | D-022 (New) | **D-032** (new) |
+| TC-SEC-14 | TH-14 | D-023 (New) | **D-020** (existing, same unsafe query) |
+| TC-SEC-15 | TH-15 | D-024 (New) | **D-033** (new) |
+| TC-SEC-17 | TH-17 | D-006 | **D-006** (existing) |
+| TC-SEC-18 | TH-18 | D-012 | **D-034** (new; D-012 is the title length limit) |
+| TC-SEC-19 | TH-19 | D-015 (New) | **D-026** (new, same as TC-SEC-01) |
+| TC-SEC-20 | TH-20 | D-025 (New) | **D-035** (new) |
+| TC-SEC-21 | TH-21 | D-026 (New) | **D-025** (existing) |
 
 ### Week 4 draft IDs mapped to this log
 
@@ -154,6 +181,7 @@ Week 4 files used temporary IDs. This table shows where each one is logged, so t
 - **Related Test Case:** `TC-WB-F14-10`
 - **Suggested Fix:** Validate `due_date` on the server before saving, and catch `ValueError` in `compute_urgency`.
 - **Week 4 retest:** Confirmed again by `API-TSK-POST-04` and `TC-API-UI-15`. New effect found by `API-DD-10`: once such a task exists, `GET /api/dashboard` also returns 500, so the user's dashboard stops working.
+- **Week 5 retest:** `TC-SEC-17` (threat TH-17, Denial of service) confirms it through the web route as well: one task with due date `04-11-2026` makes `GET /` return 500, so the user can no longer open their task list.
 
 ### Defect ID: D-007
 - **Title:** Invalid CSS selector `-` on line 1 of `style.css` disables `box-sizing: border-box`, so form inputs overflow their container
@@ -219,6 +247,7 @@ Week 4 files used temporary IDs. This table shows where each one is logged, so t
 - **Status:** Open
 - **Evidence:** `03_Special_Testing/evidence/GUI_testing/GUI-10.png`
 - **Related Test Case:** `GUI-10`
+- **Week 5 retest:** `TC-SEC-05` (threat TH-05, Tampering) confirms **stored XSS**: a title of `<script>alert(1)</script>` is saved and rendered unescaped on `/`. Today it only runs in the owner's own browser, but together with the missing CSRF protection (D-029) another website could create such a task for a logged-in user.
 
 ### Defect ID: D-011
 - **Title:** A task title made only of spaces is accepted, creating a row with no visible title
@@ -237,6 +266,7 @@ Week 4 files used temporary IDs. This table shows where each one is logged, so t
 - **Evidence:** `03_Special_Testing/evidence/usability_testing/US-11b.png` (blank row at the bottom of the table)
 - **Related Test Case:** `US-11`
 - **Week 4 retest:** `WTS-VAL-03` (Aida, draft "D-009") shows the same gap on the web **edit** route as well as create: `new_task()` and `edit_task()` only rely on the HTML `required` attribute. Evidence: `WTS-VAL-03.png` is referenced in `web_test_scenarios.md` but is not in the repo yet.
+- **Week 5 retest:** `TC-SEC-09` (threat TH-09) confirms the web route returns 302 and saves a blank title.
 
 ### Defect ID: D-012
 - **Title:** No maximum title length, so a very long title fills the task table with one huge row
@@ -273,6 +303,7 @@ Week 4 files used temporary IDs. This table shows where each one is logged, so t
 - **Related Test Case:** `US-04`, `TC-BB-002`
 - **Note:** Week 1 case `TC-BB-002` ("Registration fails when username already exists") is marked Pass. That result conflicts with this retest and should be re-run and changed to Fail.
 - **Week 4 retest:** Confirmed through the API. `API-REG-09` (draft DEF-API-02) and `TC-API-UI-04`: `POST /api/register` returns 201 for an existing username.
+- **Week 5 retest:** `TC-SEC-02` (threat TH-02, Spoofing) confirms it again. Two accounts with the same name can be mistaken for each other.
 
 ### Defect ID: D-014
 - **Title:** Underscore `_` in the search box works as a wildcard and matches any single character
@@ -290,6 +321,7 @@ Week 4 files used temporary IDs. This table shows where each one is logged, so t
 - **Evidence:** `03_Special_Testing/evidence/usability_testing/US-24.png`
 - **Related Test Case:** `US-24`, `TC-WB-F11-11`
 - **Week 4 retest:** `TC-API-UI-25` and `TC-API-UI-26`: `GET /api/tasks?q=` also treats `_` and `%` as wildcards. In the API this comes from the same unsafe query as D-020.
+- **Week 5 retest:** `TC-SEC-08` (threat TH-08) confirms `%` is also a wildcard in the web search.
 
 ### Defect ID: D-015
 - **Title:** Done task titles and the empty-list message fail the 4.5:1 colour contrast minimum (2.84:1)
@@ -389,6 +421,7 @@ Week 4 files used temporary IDs. This table shows where each one is logged, so t
 - **Evidence:** `04_Web_API/evidence/evidence_api_tasks.txt`, `04_Web_API/evidence/evidence_ui_vs_api.txt`
 - **Related Test Case:** `API-TSK-GETALL-04`, `TC-API-UI-27`, threat `TH-07` (Week 5)
 - **Suggested Fix:** Use a parameterised query (`AND title LIKE ?` with `f"%{q}%"` as the parameter).
+- **Week 5 retest:** `TC-SEC-07` confirms the syntax error. `TC-SEC-14` sent `' OR 1=1 --` as User 2: the payload changed the SQL statement (the `--` removed the `LIMIT ? OFFSET ?` part), which caused a 500 error (`Incorrect number of bindings`). User 1's data was **not** returned in this test, but the query structure can clearly be changed by the user, so the risk stays Critical.
 
 ### Defect ID: D-021
 - **Title:** `POST /api/tasks` accepts a `category_id` that does not exist
@@ -469,3 +502,168 @@ Week 4 files used temporary IDs. This table shows where each one is logged, so t
 - **Evidence:** `04_Web_API/evidence/evidence_api_tasks.txt`, `04_Web_API/evidence/evidence_api_delete_dashboard.txt`, `04_Web_API/evidence/evidence_ui_vs_api.txt`
 - **Related Test Case:** `API-TSK-DEL-05`, `API-DD-01`, `TC-API-UI-24`, threat `TH-21` (Week 5), risk R1
 - **Suggested Fix:** Add `AND user_id = ?` to the delete query and return 404 when no row was deleted.
+- **Week 5 retest:** `TC-SEC-21` (threat TH-21, Elevation of privilege) confirms it. In contrast, `TC-SEC-22` passed: the **web** edit, toggle and delete routes do check the owner.
+
+### Defect ID: D-026
+- **Title:** No rate limiting or lockout on login: unlimited password guesses are accepted on both `/login` and `/api/login`
+- **Affected Feature:** F-03 Login, F-16 API Login (`login_page`, `api_login` in `app.py`)
+- **Environment:** Python 3, pytest with Flask test client, isolated temporary SQLite database (local copy only)
+- **Preconditions:** Test account `syasya_test1` exists and is logged out.
+- **Steps to Reproduce:**
+  1. Send 10 `POST /login` requests in a row with the wrong password.
+  2. Send 20 `POST /api/login` requests in a row with the wrong password.
+- **Expected Result:** After a few failed attempts the account is temporarily locked, slowed down, or the server returns `429 Too Many Requests`.
+- **Actual Result:** All 10 web attempts return 200 with "Invalid username or password." and all 20 API attempts return 401. There is no delay, lockout or 429 response, so an attacker can keep guessing passwords.
+- **Severity:** Major
+- **Priority:** High
+- **Status:** Open
+- **Evidence:** `05_Security_Performance/evidence_security.txt` (`test_sec_01`, `test_sec_19`)
+- **Related Test Case:** `TC-SEC-01`, `TC-SEC-19`, threats `TH-01` (Spoofing) and `TH-19` (Denial of service)
+- **Suggested Fix:** Limit failed attempts per username and per IP (for example with Flask-Limiter) and return 429 after the limit.
+
+### Defect ID: D-027
+- **Title:** Hard-coded `SECRET_KEY` lets anyone who reads the source forge a valid session cookie and log in as any user
+- **Affected Feature:** F-04 Session, all logged-in pages and API routes (`app.py` line 28: `app.config["SECRET_KEY"] = "pytodo-pro-dev-secret"`)
+- **Environment:** Python 3, pytest with Flask test client, isolated temporary SQLite database (local copy only)
+- **Preconditions:** Two test accounts exist (`syasya_test1` id 1, `syasya_test2` id 2). The tester is logged out.
+- **Steps to Reproduce:**
+  1. Using the key from `app.py`, sign a Flask session cookie with `{"user_id": 2, "username": "syasya_test2"}`.
+  2. Send `GET /` with this cookie.
+- **Expected Result:** The forged cookie is rejected and the user is sent to `/login`.
+- **Actual Result:** 200 OK. The app loads `syasya_test2`'s session without any password. The key is in the public repository, so anyone can impersonate any user.
+- **Severity:** Critical
+- **Priority:** High
+- **Status:** Open
+- **Evidence:** `05_Security_Performance/evidence_security.txt` (`test_sec_03`)
+- **Related Test Case:** `TC-SEC-03`, threat `TH-03` (Spoofing), asset A-05
+- **Suggested Fix:** Load a long random key from an environment variable, never commit it, and change it if it has been exposed.
+
+### Defect ID: D-028
+- **Title:** A session cookie copied before logout still works after logout
+- **Affected Feature:** F-05 Logout (`app.py` lines 179–181: `logout()` only calls `session.clear()`)
+- **Environment:** Python 3, pytest with Flask test client, isolated temporary SQLite database (local copy only)
+- **Preconditions:** `syasya_test1` is logged in.
+- **Steps to Reproduce:**
+  1. Copy the `session` cookie value after login.
+  2. Call `GET /logout`.
+  3. Send `GET /` again with the old cookie value.
+- **Expected Result:** The old cookie is no longer accepted and the user is sent to `/login`.
+- **Actual Result:** 200 OK. The old cookie still gives full access. Flask's default cookie is stored on the client and logout only clears the browser's copy, so a stolen cookie stays valid.
+- **Severity:** Moderate
+- **Priority:** Medium
+- **Status:** Open
+- **Evidence:** `05_Security_Performance/evidence_security.txt` (`test_sec_04`)
+- **Related Test Case:** `TC-SEC-04`, threat `TH-04` (Spoofing)
+- **Suggested Fix:** Use server-side sessions or store a session version per user that is changed on logout, and set a session expiry time.
+
+### Defect ID: D-029
+- **Title:** Web forms have no CSRF protection, so another website can create, edit, toggle or delete tasks for a logged-in user
+- **Affected Feature:** F-08 Create Task, F-10 Edit Task, F-12 Mark done, F-13 Delete Task (`task_form.html`, `index.html`)
+- **Environment:** Python 3, pytest with Flask test client, isolated temporary SQLite database (local copy only)
+- **Preconditions:** `syasya_test1` is logged in.
+- **Steps to Reproduce:**
+  1. Request `GET /tasks/new` and inspect the form HTML.
+  2. Check the other POST forms in `index.html` (toggle, delete).
+- **Expected Result:** Every state-changing form has a hidden anti-CSRF token that the server checks.
+- **Actual Result:** No form has a CSRF token, and the server accepts POST requests without one. Because the session cookie also has no `SameSite` attribute (D-033), a page on another site could submit these forms using the user's session.
+- **Severity:** Major
+- **Priority:** Medium
+- **Status:** Open
+- **Evidence:** `05_Security_Performance/evidence_security.txt` (`test_sec_06`)
+- **Related Test Case:** `TC-SEC-06`, threat `TH-06` (Tampering)
+- **Suggested Fix:** Add CSRF tokens to all POST forms (for example Flask-WTF `CSRFProtect`) and set `SameSite=Lax` on the cookie.
+
+### Defect ID: D-030
+- **Title:** No audit trail: create, edit and delete actions are not recorded anywhere
+- **Affected Feature:** F-08, F-10, F-13 (database has only `users`, `categories` and `tasks` tables)
+- **Environment:** Python 3, pytest with Flask test client, isolated temporary SQLite database (local copy only)
+- **Preconditions:** `syasya_test1` is logged in.
+- **Steps to Reproduce:**
+  1. Create a task, then delete it with `POST /tasks/1/delete`.
+  2. Look in the database for any audit or activity log table.
+- **Expected Result:** The delete is recorded with user id, action, task id and time.
+- **Actual Result:** No audit table exists. A deleted task leaves no record, so the team cannot prove who deleted what (for example after D-025).
+- **Severity:** Minor
+- **Priority:** Low
+- **Status:** Open
+- **Evidence:** `05_Security_Performance/evidence_security.txt` (`test_sec_10`)
+- **Related Test Case:** `TC-SEC-10`, threat `TH-10` (Repudiation)
+
+### Defect ID: D-031
+- **Title:** Debug mode is hard-coded on (`app.run(debug=True)`), which exposes the Werkzeug debugger and full error details
+- **Affected Feature:** Server configuration (`app.py` line 482)
+- **Environment:** Source code review of `app.py`; behaviour checked on the local copy only
+- **Preconditions:** Read access to `app.py`.
+- **Steps to Reproduce:**
+  1. Open the last lines of `app.py`.
+- **Expected Result:** Debug mode is off by default and can only be turned on for local development (for example through an environment variable).
+- **Actual Result:** `app.run(debug=True)` is always on when the app is started with `python app.py`, which is how the team runs it. In that mode, any 500 error (such as D-006 or D-020) shows a full stack trace with code and file paths in the browser, and the interactive Werkzeug debugger can run code if someone can reach it.
+- **Severity:** Major
+- **Priority:** High
+- **Status:** Open
+- **Evidence:** `05_Security_Performance/evidence_security.txt` (`test_sec_11`)
+- **Related Test Case:** `TC-SEC-11`, threat `TH-11` (Information disclosure), asset A-07
+- **Suggested Fix:** Read the debug setting from an environment variable that is off by default, and never run the development server in production.
+
+### Defect ID: D-032
+- **Title:** Logged-in pages send no `Cache-Control` header, so they can still be viewed with the Back button after logout
+- **Affected Feature:** F-05 Logout, F-09 Task list, F-15 Dashboard
+- **Environment:** Python 3, pytest with Flask test client, isolated temporary SQLite database (local copy only)
+- **Preconditions:** `syasya_test1` is logged in.
+- **Steps to Reproduce:**
+  1. Send `GET /dashboard` and read the response headers.
+- **Expected Result:** The response includes `Cache-Control: no-store`, so the browser does not keep a copy.
+- **Actual Result:** No `Cache-Control` header is sent. After logout, pressing Back can show the cached task list or dashboard on a shared computer (also seen as US-29 in Week 3).
+- **Severity:** Moderate
+- **Priority:** Medium
+- **Status:** Open
+- **Evidence:** `05_Security_Performance/evidence_security.txt` (`test_sec_12`)
+- **Related Test Case:** `TC-SEC-12`, threat `TH-12` (Information disclosure), usability `US-29`
+
+### Defect ID: D-033
+- **Title:** Session cookie is missing the `SameSite` and `Secure` attributes
+- **Affected Feature:** F-04 Session (Flask cookie settings in `app.py`)
+- **Environment:** Python 3, pytest with Flask test client, isolated temporary SQLite database (local copy only)
+- **Preconditions:** None.
+- **Steps to Reproduce:**
+  1. Send `POST /register` with a new user.
+  2. Read the `Set-Cookie` response header.
+- **Expected Result:** The cookie has `HttpOnly`, `SameSite=Lax` (or `Strict`) and, when served over HTTPS, `Secure`.
+- **Actual Result:** Only `HttpOnly` is set. Without `SameSite` the cookie is sent with cross-site requests (making D-029 possible), and without `Secure` it could be sent over plain HTTP.
+- **Severity:** Moderate
+- **Priority:** Low
+- **Status:** Open
+- **Evidence:** `05_Security_Performance/evidence_security.txt` (`test_sec_15`)
+- **Related Test Case:** `TC-SEC-15`, threat `TH-15` (Information disclosure)
+- **Suggested Fix:** Set `SESSION_COOKIE_SAMESITE="Lax"` and, for HTTPS deployments, `SESSION_COOKIE_SECURE=True`.
+
+### Defect ID: D-034
+- **Title:** `GET /api/tasks` has no upper limit on `per_page`, so one request can return every task at once
+- **Affected Feature:** F-19 API task list (`app.py` line 359)
+- **Environment:** Python 3, pytest with Flask test client, isolated temporary SQLite database (local copy only)
+- **Preconditions:** `syasya_test1` owns 25 tasks.
+- **Steps to Reproduce:**
+  1. Send `GET /api/tasks?per_page=1000`.
+- **Expected Result:** The server caps the page size (for example at 20 or 100).
+- **Actual Result:** All 25 tasks are returned. With many tasks, very large `per_page` values make the server load the whole table in one request, which wastes memory and time under load.
+- **Severity:** Moderate
+- **Priority:** Low
+- **Status:** Open
+- **Evidence:** `05_Security_Performance/evidence_security.txt` (`test_sec_18`)
+- **Related Test Case:** `TC-SEC-18`, threat `TH-18` (Denial of service)
+- **Suggested Fix:** Use `per_page = min(max(per_page, 1), 100)`.
+
+### Defect ID: D-035
+- **Title:** Logout works through a simple GET request, so any link or image on another site can log the user out
+- **Affected Feature:** F-05 Logout (`app.py` line 179: `@app.route("/logout")` accepts GET)
+- **Environment:** Python 3, pytest with Flask test client, isolated temporary SQLite database (local copy only)
+- **Preconditions:** `syasya_test1` is logged in.
+- **Steps to Reproduce:**
+  1. Send `GET /logout` (as an `<img src>` on another page would).
+- **Expected Result:** Logout requires a POST request with a CSRF token. `GET /logout` returns 405 and the session stays active.
+- **Actual Result:** `GET /logout` clears the session and redirects (302) to `/login`.
+- **Severity:** Minor
+- **Priority:** Low
+- **Status:** Open
+- **Evidence:** `05_Security_Performance/evidence_security.txt` (`test_sec_20`)
+- **Related Test Case:** `TC-SEC-20`, threat `TH-20` (Denial of service)
