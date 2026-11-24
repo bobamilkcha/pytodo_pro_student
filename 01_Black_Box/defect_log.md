@@ -370,7 +370,7 @@ Week 4 files used temporary IDs. This table shows where each one is logged, so t
 - **Severity:** Moderate
 - **Priority:** Medium
 - **Status:** Open
-- **Evidence:** `04_Web_API/evidence_api_auth.txt`, `04_Web_API/evidence_api_tasks.txt`, `04_Web_API/evidence_ui_vs_api.txt`
+- **Evidence:** `04_Web_API/evidence/evidence_api_auth.txt`, `04_Web_API/evidence/evidence_api_tasks.txt`, `04_Web_API/evidence/evidence_ui_vs_api.txt`
 - **Related Test Case:** `API-REG-08`, `API-LOG-06`, `API-TSK-POST-07`, `TC-API-UI-06` (drafts DEF-API-01, DEF-API-03)
 - **Suggested Fix:** Check `isinstance(value, str)` before `.strip()`, and check the body is a JSON object, returning 400 otherwise.
 
@@ -386,7 +386,7 @@ Week 4 files used temporary IDs. This table shows where each one is logged, so t
 - **Severity:** Critical
 - **Priority:** High
 - **Status:** Open
-- **Evidence:** `04_Web_API/evidence_api_tasks.txt`, `04_Web_API/evidence_ui_vs_api.txt`
+- **Evidence:** `04_Web_API/evidence/evidence_api_tasks.txt`, `04_Web_API/evidence/evidence_ui_vs_api.txt`
 - **Related Test Case:** `API-TSK-GETALL-04`, `TC-API-UI-27`, threat `TH-07` (Week 5)
 - **Suggested Fix:** Use a parameterised query (`AND title LIKE ?` with `f"%{q}%"` as the parameter).
 
@@ -402,7 +402,7 @@ Week 4 files used temporary IDs. This table shows where each one is logged, so t
 - **Severity:** Moderate
 - **Priority:** Low
 - **Status:** Open
-- **Evidence:** `04_Web_API/evidence_api_tasks.txt`, `04_Web_API/evidence_ui_vs_api.txt`
+- **Evidence:** `04_Web_API/evidence/evidence_api_tasks.txt`, `04_Web_API/evidence/evidence_ui_vs_api.txt`
 - **Related Test Case:** `API-TSK-POST-08`, `TC-API-UI-16`
 
 ### Defect ID: D-022
@@ -418,7 +418,7 @@ Week 4 files used temporary IDs. This table shows where each one is logged, so t
 - **Severity:** Major
 - **Priority:** Medium
 - **Status:** Open
-- **Evidence:** `04_Web_API/evidence_api_tasks.txt`, `04_Web_API/evidence_ui_vs_api.txt`
+- **Evidence:** `04_Web_API/evidence/evidence_api_tasks.txt`, `04_Web_API/evidence/evidence_ui_vs_api.txt`
 - **Related Test Case:** `API-TSK-PUT-03`, `TC-API-UI-18`
 
 ### Defect ID: D-023
@@ -433,7 +433,7 @@ Week 4 files used temporary IDs. This table shows where each one is logged, so t
 - **Severity:** Moderate
 - **Priority:** Medium
 - **Status:** Open
-- **Evidence:** `04_Web_API/evidence_api_tasks.txt`, `04_Web_API/evidence_ui_vs_api.txt`
+- **Evidence:** `04_Web_API/evidence/evidence_api_tasks.txt`, `04_Web_API/evidence/evidence_ui_vs_api.txt`
 - **Related Test Case:** `API-TSK-PUT-06`, `TC-API-UI-22`
 
 ### Defect ID: D-024
@@ -449,7 +449,7 @@ Week 4 files used temporary IDs. This table shows where each one is logged, so t
 - **Severity:** Minor
 - **Priority:** Low
 - **Status:** Open
-- **Evidence:** `04_Web_API/evidence_api_tasks.txt`, `04_Web_API/evidence_api_delete_dashboard.txt`
+- **Evidence:** `04_Web_API/evidence/evidence_api_tasks.txt`, `04_Web_API/evidence/evidence_api_delete_dashboard.txt`
 - **Related Test Case:** `API-TSK-DEL-02`, `API-DD-02`, `TC-API-UI-23`
 
 ### Defect ID: D-025
@@ -466,6 +466,6 @@ Week 4 files used temporary IDs. This table shows where each one is logged, so t
 - **Severity:** Critical
 - **Priority:** High
 - **Status:** Open
-- **Evidence:** `04_Web_API/evidence_api_tasks.txt`, `04_Web_API/evidence_api_delete_dashboard.txt`, `04_Web_API/evidence_ui_vs_api.txt`
+- **Evidence:** `04_Web_API/evidence/evidence_api_tasks.txt`, `04_Web_API/evidence/evidence_api_delete_dashboard.txt`, `04_Web_API/evidence/evidence_ui_vs_api.txt`
 - **Related Test Case:** `API-TSK-DEL-05`, `API-DD-01`, `TC-API-UI-24`, threat `TH-21` (Week 5), risk R1
 - **Suggested Fix:** Add `AND user_id = ?` to the delete query and return 404 when no row was deleted.
