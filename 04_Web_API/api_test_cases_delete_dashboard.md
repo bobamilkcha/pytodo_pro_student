@@ -4,7 +4,7 @@
 **Endpoints:** `DELETE /api/tasks/<int:task_id>`, `GET /api/dashboard`
 **Test Script:** `tests/test_api_delete_dashboard.py`
 **Evidence:** `evidence_api_delete_dashboard.txt`
-**Run:** 24 Nov 2026, Python 3, pytest with Flask test client. Each test uses its own temporary database.
+**Run:** Python 3, pytest with Flask test client. Each test uses its own temporary database.
 **Summary:** 10 Test Cases - **6 Passed, 4 Failed**
 
 ---
