@@ -5,6 +5,8 @@
 **Automated Test Suite & Evidence:** `05_Security_Performance/tests/test_security.py` & `05_Security_Performance/evidence_security.txt`  
 **Execution Summary:** **22 Total Security Test Cases** — **3 Passed** (security control verified), **19 Failed** (vulnerability confirmed on local test environment)
 
+**Revision note (24 Nov 2026, Defect & Metrics Coordinator – Nafiesa):** Only the **Defect ID** column was changed, to match the central defect log (`01_Black_Box/defect_log.md`). The first draft IDs (D-015 to D-026) were already used in Weeks 3 and 4, so new findings are now D-026 to D-035 and findings that match earlier bugs use their original IDs. The full old-to-new mapping is in the defect log. Test steps, results and evidence are unchanged.  
+
 ---
 
 ## 1. Safe Testing Environment & Rules
