@@ -1,7 +1,7 @@
 # Week 4: API Test Cases (All 9 Endpoints)
 
 **Prepared & Executed by:** Automation/Tool Coordinator (Nisrina — Sections 1–3) & Test Design Coordinator (Aida — Sections 4–9)  
-**Test Scripts & Evidence:** `tests/test_api_auth.py` (`evidence_api_auth.txt`), `tests/test_api_tasks.py` (`evidence_api_tasks.txt`)  
+**Test Scripts & Evidence:** `tests/test_api_auth.py` (`evidence/evidence_api_auth.txt`), `tests/test_api_tasks.py` (`evidence/evidence_api_tasks.txt`)  
 **Summary:** 55 Total Test Cases — **43 Passed, 12 Failed** (Nisrina: 16 Passed, 3 Failed | Aida: 27 Passed, 9 Failed)
 
 ## 1. `POST /api/register`
