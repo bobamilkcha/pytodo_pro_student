@@ -1,7 +1,6 @@
 # Week 5: Performance Results - Interpretation, Limitations and Recommendations
 
 **Prepared by:** Nafiesa (Defect & Metrics Coordinator)
-**Date:** 25 Nov 2026
 **Based on:** `performance_plan.md`, `performance_results.md` and `locustfile.py` (Nisrina, Automation/Tool Coordinator)
 **Confirmation run:** `evidence_performance_rerun.txt` (same script, second machine)
 
