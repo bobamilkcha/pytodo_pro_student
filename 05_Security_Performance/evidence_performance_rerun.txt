@@ -1,4 +1,4 @@
-Week 5 performance re-run (confirmation) - Nafiesa, 25 Nov 2026
+Week 5 performance re-run (confirmation)
 Purpose: check that the pattern in performance_results.md repeats on a second machine.
 Script: 05_Security_Performance/locustfile.py (unchanged). Locust 2.47.0, Python 3.13, Linux, 2 CPU cores.
 Server: python -c "import app; app.app.run(debug=True, use_reloader=False)" (Flask dev server, fresh pytodo_pro.db).
