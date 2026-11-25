@@ -1,0 +1,39 @@
+Week 5 performance re-run (confirmation) - Nafiesa, 25 Nov 2026
+Purpose: check that the pattern in performance_results.md repeats on a second machine.
+Script: 05_Security_Performance/locustfile.py (unchanged). Locust 2.47.0, Python 3.13, Linux, 2 CPU cores.
+Server: python -c "import app; app.app.run(debug=True, use_reloader=False)" (Flask dev server, fresh pytodo_pro.db).
+Load generator and server on the SAME machine. Commands: locust -f locustfile.py --headless -u U -r R -t 30s --host http://127.0.0.1:5000
+
+=== Stage: 10 users (spawn rate 2/s, 30 s)
+Endpoint                     Requests  Fail   Avg ms  Median    P95   Max ms   req/s
+/api/categories [GET]              33     0        3       3      5        7    1.14
+/api/dashboard [GET]               63     0        3       3      5        7    2.18
+/api/login                         10     0       71      72     86       86    0.35
+/api/register                      10     0       79      80    100      103    0.35
+/api/tasks [GET]                   68     0        3       3      4        6    2.35
+/api/tasks [POST]                  24     0        6       5      9       18    0.83
+/api/tasks/<id> [DELETE]           24     0        3       3      4        5    0.83
+Aggregated                        232     0       10       3     73      103    8.02
+
+=== Stage: 50 users (spawn rate 10/s, 30 s)
+Endpoint                     Requests  Fail   Avg ms  Median    P95   Max ms   req/s
+/api/categories [GET]             190     0        3       2      5       48    6.55
+/api/dashboard [GET]              295     0        4       2     11       57   10.17
+/api/login                         50     0      312     320    350      407    1.72
+/api/register                      50     0      359     350    430      482    1.72
+/api/tasks [GET]                  336     0        4       2     16       56   11.59
+/api/tasks [POST]                  73     0        9       4     44       72    2.52
+/api/tasks/<id> [DELETE]           73     0        7       3     48       62    2.52
+Aggregated                       1067     0       35       3    330      482   36.79
+
+=== Stage: 100 users (spawn rate 20/s, 30 s)
+Endpoint                     Requests  Fail   Avg ms  Median    P95   Max ms   req/s
+/api/categories [GET]             326     0       29       2    190      939    11.2
+/api/dashboard [GET]              474     0       59       3    520     1266   16.29
+/api/login                        100     0     1521    1600   2300     2448    3.44
+/api/register                     100     0     1578    1700   2400     2589    3.44
+/api/tasks [GET]                  616     0       43       3    320      897   21.17
+/api/tasks [POST]                 183     0       36       4    190      857    6.29
+/api/tasks/<id> [DELETE]          183     0       33       4    150      831    6.29
+Aggregated                       1982     0      195       3   1600     2589   68.11
+
