@@ -1,0 +1,148 @@
+﻿============================= test session starts =============================
+platform win32 -- Python 3.10.11, pytest-9.2.0, pluggy-1.7.0 -- C:\Users\nisrina\Desktop\pytodo_pro_student\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\nisrina\Desktop\pytodo_pro_student
+configfile: pytest.ini
+plugins: locust-2.46.0, cov-7.1.0
+collecting ... collected 23 items
+
+06_Automation_Regression/tests/api/test_api_auth.py::test_api_reg_01_valid_registration PASSED [  4%]
+06_Automation_Regression/tests/api/test_api_auth.py::test_api_reg_02_trimmed_username PASSED [  8%]
+06_Automation_Regression/tests/api/test_api_auth.py::test_api_reg_03_invalid_username PASSED [ 13%]
+06_Automation_Regression/tests/api/test_api_auth.py::test_api_reg_04_invalid_password PASSED [ 17%]
+06_Automation_Regression/tests/api/test_api_auth.py::test_api_reg_05_missing_username PASSED [ 21%]
+06_Automation_Regression/tests/api/test_api_auth.py::test_api_reg_06_missing_password PASSED [ 26%]
+06_Automation_Regression/tests/api/test_api_auth.py::test_api_reg_07_empty_json PASSED [ 30%]
+06_Automation_Regression/tests/api/test_api_auth.py::test_api_reg_08_wrong_type_username FAILED [ 34%]
+06_Automation_Regression/tests/api/test_api_auth.py::test_api_reg_09_duplicate_username FAILED [ 39%]
+06_Automation_Regression/tests/api/test_api_auth.py::test_api_log_01_valid_login PASSED [ 43%]
+06_Automation_Regression/tests/api/test_api_auth.py::test_api_log_02_wrong_password PASSED [ 47%]
+06_Automation_Regression/tests/api/test_api_auth.py::test_api_log_03_nonexistent_user PASSED [ 52%]
+06_Automation_Regression/tests/api/test_api_auth.py::test_api_log_04_missing_password PASSED [ 56%]
+06_Automation_Regression/tests/api/test_api_auth.py::test_api_log_05_empty_json PASSED [ 60%]
+06_Automation_Regression/tests/api/test_api_auth.py::test_api_log_06_wrong_type_username FAILED [ 65%]
+06_Automation_Regression/tests/api/test_api_auth.py::test_api_log_07_non_json_body PASSED [ 69%]
+06_Automation_Regression/tests/api/test_api_auth.py::test_tc_bb_bva_f08_01_empty_task_title PASSED [ 73%]
+06_Automation_Regression/tests/api/test_api_auth.py::test_tc_bb_bva_f08_02_single_char_task_title PASSED [ 78%]
+06_Automation_Regression/tests/ui/test_ui_auth.py::test_wts_01_02_08_auth_lifecycle PASSED [ 82%]
+06_Automation_Regression/tests/ui/test_ui_tasks.py::test_wts_03_06_07_task_lifecycle_and_confirm_dialog PASSED [ 86%]
+06_Automation_Regression/tests/unit/test_bva_unit.py::test_tc_bb_bva_f01_01_seven_char_password PASSED [ 91%]
+06_Automation_Regression/tests/unit/test_bva_unit.py::test_tc_bb_bva_f01_02_eight_char_password FAILED [ 95%]
+06_Automation_Regression/tests/unit/test_bva_unit.py::test_tc_bb_bva_f01_03_nine_char_password PASSED [100%]
+
+================================== FAILURES ===================================
+_____________________ test_api_reg_08_wrong_type_username _____________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_api_reg_08_wrong_type_username(client):
+        """API-REG-08 (Defect D-019): Non-string username returns 400 instead of 500."""
+>       res = client.post("/api/register", json={"username": 12345, "password": "Password123"})
+
+06_Automation_Regression\tests\api\test_api_auth.py:68: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+venv\lib\site-packages\werkzeug\test.py:1171: in post
+    return self.open(*args, **kw)
+venv\lib\site-packages\flask\testing.py:235: in open
+    response = super().open(
+venv\lib\site-packages\werkzeug\test.py:1120: in open
+    response_parts = self.run_wsgi_app(request.environ, buffered=buffered)
+venv\lib\site-packages\werkzeug\test.py:992: in run_wsgi_app
+    rv = run_wsgi_app(self.application, environ, buffered=buffered)
+venv\lib\site-packages\werkzeug\test.py:1268: in run_wsgi_app
+    app_rv = app(environ, start_response)
+venv\lib\site-packages\flask\app.py:1498: in __call__
+    return self.wsgi_app(environ, start_response)
+venv\lib\site-packages\flask\app.py:1476: in wsgi_app
+    response = self.handle_exception(e)
+venv\lib\site-packages\flask\app.py:1473: in wsgi_app
+    response = self.full_dispatch_request()
+venv\lib\site-packages\flask\app.py:882: in full_dispatch_request
+    rv = self.handle_user_exception(e)
+venv\lib\site-packages\flask\app.py:880: in full_dispatch_request
+    rv = self.dispatch_request()
+venv\lib\site-packages\flask\app.py:865: in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    @app.route("/api/register", methods=["POST"])
+    def api_register():
+        data = request.get_json(silent=True) or {}
+>       username = (data.get("username") or "").strip()
+E       AttributeError: 'int' object has no attribute 'strip'
+
+app.py:318: AttributeError
+_____________________ test_api_reg_09_duplicate_username ______________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    @pytest.mark.regression
+    def test_api_reg_09_duplicate_username(client):
+        """API-REG-09 / TC-BB-002 (Defect D-013): Duplicate username must be rejected."""
+        username = unique_user("dup")
+        first = client.post("/api/register", json={"username": username, "password": "Password123"})
+        assert first.status_code == 201
+    
+        second = client.post("/api/register", json={"username": username, "password": "Password123"})
+>       assert second.status_code in (400, 409)
+E       assert 201 in (400, 409)
+E        +  where 201 = <WrapperTestResponse streamed [201 CREATED]>.status_code
+
+06_Automation_Regression\tests\api\test_api_auth.py:80: AssertionError
+_____________________ test_api_log_06_wrong_type_username _____________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_api_log_06_wrong_type_username(client):
+        """API-LOG-06 (Defect D-019): Non-string username returns 400 or 401 instead of 500."""
+>       res = client.post("/api/login", json={"username": 12345, "password": "Password123"})
+
+06_Automation_Regression\tests\api\test_api_auth.py:135: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+venv\lib\site-packages\werkzeug\test.py:1171: in post
+    return self.open(*args, **kw)
+venv\lib\site-packages\flask\testing.py:235: in open
+    response = super().open(
+venv\lib\site-packages\werkzeug\test.py:1120: in open
+    response_parts = self.run_wsgi_app(request.environ, buffered=buffered)
+venv\lib\site-packages\werkzeug\test.py:992: in run_wsgi_app
+    rv = run_wsgi_app(self.application, environ, buffered=buffered)
+venv\lib\site-packages\werkzeug\test.py:1268: in run_wsgi_app
+    app_rv = app(environ, start_response)
+venv\lib\site-packages\flask\app.py:1498: in __call__
+    return self.wsgi_app(environ, start_response)
+venv\lib\site-packages\flask\app.py:1476: in wsgi_app
+    response = self.handle_exception(e)
+venv\lib\site-packages\flask\app.py:1473: in wsgi_app
+    response = self.full_dispatch_request()
+venv\lib\site-packages\flask\app.py:882: in full_dispatch_request
+    rv = self.handle_user_exception(e)
+venv\lib\site-packages\flask\app.py:880: in full_dispatch_request
+    rv = self.dispatch_request()
+venv\lib\site-packages\flask\app.py:865: in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    @app.route("/api/login", methods=["POST"])
+    def api_login():
+        data = request.get_json(silent=True) or {}
+>       username = (data.get("username") or "").strip()
+E       AttributeError: 'int' object has no attribute 'strip'
+
+app.py:336: AttributeError
+__________________ test_tc_bb_bva_f01_02_eight_char_password __________________
+
+    @pytest.mark.regression
+    def test_tc_bb_bva_f01_02_eight_char_password():
+        """TC-BB-BVA-F01-02 (Defect D-004): 8-character password (exact boundary) must be accepted."""
+>       assert is_valid_password("Pass1234") is True
+E       AssertionError: assert False is True
+E        +  where False = is_valid_password('Pass1234')
+
+06_Automation_Regression\tests\unit\test_bva_unit.py:13: AssertionError
+=========================== short test summary info ===========================
+FAILED 06_Automation_Regression/tests/api/test_api_auth.py::test_api_reg_08_wrong_type_username
+FAILED 06_Automation_Regression/tests/api/test_api_auth.py::test_api_reg_09_duplicate_username
+FAILED 06_Automation_Regression/tests/api/test_api_auth.py::test_api_log_06_wrong_type_username
+FAILED 06_Automation_Regression/tests/unit/test_bva_unit.py::test_tc_bb_bva_f01_02_eight_char_password
+======================== 4 failed, 19 passed in 12.36s ========================

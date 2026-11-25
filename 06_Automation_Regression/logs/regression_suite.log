@@ -1,0 +1,44 @@
+﻿============================= test session starts =============================
+platform win32 -- Python 3.10.11, pytest-9.2.0, pluggy-1.7.0 -- C:\Users\nisrina\Desktop\pytodo_pro_student\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\nisrina\Desktop\pytodo_pro_student
+configfile: pytest.ini
+plugins: locust-2.46.0, cov-7.1.0
+collecting ... collected 23 items / 20 deselected / 3 selected
+
+06_Automation_Regression/tests/api/test_api_auth.py::test_api_reg_09_duplicate_username FAILED [ 33%]
+06_Automation_Regression/tests/api/test_api_auth.py::test_tc_bb_bva_f08_01_empty_task_title PASSED [ 66%]
+06_Automation_Regression/tests/unit/test_bva_unit.py::test_tc_bb_bva_f01_02_eight_char_password FAILED [100%]
+
+================================== FAILURES ===================================
+_____________________ test_api_reg_09_duplicate_username ______________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    @pytest.mark.regression
+    def test_api_reg_09_duplicate_username(client):
+        """API-REG-09 / TC-BB-002 (Defect D-013): Duplicate username must be rejected."""
+        username = unique_user("dup")
+        first = client.post("/api/register", json={"username": username, "password": "Password123"})
+        assert first.status_code == 201
+    
+        second = client.post("/api/register", json={"username": username, "password": "Password123"})
+>       assert second.status_code in (400, 409)
+E       assert 201 in (400, 409)
+E        +  where 201 = <WrapperTestResponse streamed [201 CREATED]>.status_code
+
+06_Automation_Regression\tests\api\test_api_auth.py:80: AssertionError
+__________________ test_tc_bb_bva_f01_02_eight_char_password __________________
+
+    @pytest.mark.regression
+    def test_tc_bb_bva_f01_02_eight_char_password():
+        """TC-BB-BVA-F01-02 (Defect D-004): 8-character password (exact boundary) must be accepted."""
+>       assert is_valid_password("Pass1234") is True
+E       AssertionError: assert False is True
+E        +  where False = is_valid_password('Pass1234')
+
+06_Automation_Regression\tests\unit\test_bva_unit.py:13: AssertionError
+=========================== short test summary info ===========================
+FAILED 06_Automation_Regression/tests/api/test_api_auth.py::test_api_reg_09_duplicate_username
+FAILED 06_Automation_Regression/tests/unit/test_bva_unit.py::test_tc_bb_bva_f01_02_eight_char_password
+================= 2 failed, 1 passed, 20 deselected in 0.68s ==================
