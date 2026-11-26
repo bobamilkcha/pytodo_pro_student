@@ -1,6 +1,11 @@
-# Week 2 Testing Metrics Summary - PyTodo Pro  (not done yet)
+# Week 2 Testing Metrics Summary - PyTodo Pro
 
-**Prepared by:** (Defect & Metrics Coordinator)
+**Prepared by:** Nafiesa (Defect & Metrics Coordinator)
+
+> **Week 7 correction (26 Nov 2026):**
+> - `toggle_task` (F-12) has no white-box tests. It is recorded as **Not tested** with this reason: the unit was assigned but not started in Week 2. Its server-side behaviour was later tested by the state transition cases `TC-BB-069` to `TC-BB-079` (Week 1 design, run in Week 7) and by `06_Automation_Regression/tests/api/test_state_transition.py`.
+> - `TC-WB-F11-11` (`%` wildcard, D-014) and `TC-WB-F15-03` (exactly 7 days, D-005) were written to **reproduce** the defect, so pytest passes while the defect is present. Against the expected behaviour in the specification, both test cases are **Fail**. The master test repository (`07_Test_Management/master_test_repository.md`) records them as Fail, so Week 2 is **24 passed, 4 failed** of 28. The table below shows the original Week 2 pytest result.
+
 **Scope:** White-box testing of the 4 units in `selected_units.md`
 
 **Contributors:**
