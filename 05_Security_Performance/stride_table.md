@@ -16,7 +16,7 @@ STRIDE is a checklist for thinking about what could go wrong with a system. The 
 | A-03 | Tasks | `tasks` table. `/`, `/tasks/new`, `/tasks/<id>/...`, `/api/tasks` | Titles, descriptions and dates are private. Losing or leaking them hurts the user. |
 | A-04 | Session cookie | The `session` cookie Flask sets after login | Whoever holds the cookie is logged in as that user. |
 | A-05 | Secret key | `app.config["SECRET_KEY"]` in `app.py` | Flask uses it to sign the cookie. Anyone who knows it can make a cookie that looks real. |
-| A-06 | Database file | `pytodo_pro.db` in the project folder. It is tracked by git | All users, hashes and tasks are in this one file. |
+| A-06 | Database file | `pytodo_pro.db` in the project folder. It is not tracked by git (it is in `.gitignore`) | All users, hashes and tasks are in this one file. |
 | A-07 | The app and server | `app.py`, `app.run(debug=True)`, the Werkzeug debug console, the Flask dev server | If it is down or taken over, nothing works. Debug mode gives extra access. |
 
 ## 3. Safe testing rules
@@ -45,7 +45,7 @@ How to read the ratings. **Likelihood** is how easy it would be to happen if som
 | TH-10 | Repudiation | A-01, A-03 | All routes | A user could say "I did not delete that task" and we could not prove it. Nothing records who did what and when. Failed logins are not recorded either. | No logging code in `app.py` or `helpers.py`. Tasks only store `created_at` and `completed_at`. Flask only prints requests to the console. | M | L | Create, edit and delete a task, then look in the console output and in `pytodo_pro.db` for any record of the delete. | Test now |
 | TH-11 | Information disclosure | A-07 | Any error page, `/console` | Debug mode shows error pages with source code and variables. It also turns on the Werkzeug console, which can run Python code if someone gets past its PIN. It is only reachable from other machines if the host is changed. | `app.py` last line: `app.run(debug=True)`. Feature inventory risk 8. | M | H | On `127.0.0.1` open `/console` and see if it loads. Note what the error page shows when we get a 500 error. | Test now |
 | TH-12 | Information disclosure | A-03, A-04 | `/dashboard`, `/` after `/logout` | After logout, the Back button shows old pages with the user's tasks and counts. On a shared computer the next person can read them. | No `Cache-Control` header is set in `app.py`. US-29 (seen on the dashboard). | M | M | Log out, press Back and see which pages still show. Repeat on the task list. | Test now |
-| TH-13 | Information disclosure | A-02, A-06 | `pytodo_pro.db` | The database file sits in the project folder and is committed to git. Anyone with the repo can read usernames and password hashes. We do not know if our repo is public. | `git ls-files` lists `pytodo_pro.db`. Passwords are hashed with `generate_password_hash` in `app.py::register_page` (we think scrypt with a salt, to confirm). `/static/` only serves the static folder, so the app does not serve the file. | M | H | Open the database file on our own machine with a viewer and check the `password_hash` of our test accounts starts with a hash type like `scrypt:` and not the plain password. | Test now |
+| TH-13 | Information disclosure | A-02, A-06 | `pytodo_pro.db` | The database file sits in the project folder. Anyone who can open the project folder on the machine can read usernames and password hashes. The file is not committed to git, so a copy of the repo does not contain it. | `.gitignore` lists `pytodo_pro.db` and `git ls-files` shows no `.db` file (checked 26 Nov). Passwords are hashed with `generate_password_hash` in `app.py::register_page` (we think scrypt with a salt, to confirm). `/static/` only serves the static folder, so the app does not serve the file. | M | H | Open the database file on our own machine with a viewer and check the `password_hash` of our test accounts starts with a hash type like `scrypt:` and not the plain password. | Test now |
 | TH-14 | Information disclosure | A-01, A-02, A-03 | GET `/api/tasks?q=` | Same SQL problem as TH-07, but used for reading. Someone could read other users' tasks, and maybe the `users` table with its password hashes. | Same code as TH-07 (`app.py::api_list_tasks`). The `users` table has a `password_hash` column. | H | H | With two test accounts, check that account 2 can see account 1's tasks through `q`. We only try this on our own accounts. | Week 4 |
 | TH-15 | Information disclosure | A-04 | The `session` cookie | The cookie holds the user id and username in a readable form (it is signed, not encrypted). We think it has no Secure flag, and the app sets no SameSite option. On plain http it can be copied on a shared network. | `app.py` sets no `SESSION_COOKIE_*` options. We think Flask's defaults are HttpOnly on and Secure off. Suspected, to confirm by testing. | L | M | In DevTools (Application, Cookies) check the HttpOnly, Secure and SameSite columns for our cookie. | Test now |
 | TH-16 | Information disclosure | A-07 | GET `/api/categories` | It works without logging in. Category names are not secret, so harm is small. | F-17 in the feature inventory. `app.py::api_categories` has no login check. | H | L | Open `http://127.0.0.1:5000/api/categories` in a private window. | Test now |
@@ -55,6 +55,37 @@ How to read the ratings. **Likelihood** is how easy it would be to happen if som
 | TH-20 | Denial of service | A-04 | GET `/logout` | A link or image on another page can log the user out, because logout is a plain GET link. It is annoying but does not leak data. | `app.py::logout` has no `methods` limit, so it accepts GET. US-29. | M | L | Type `127.0.0.1:5000/logout` in the address bar while logged in. Also put it in an `<img>` tag on our test page from TH-06. | Test now |
 | TH-21 | Elevation of privilege | A-03 | DELETE `/api/tasks/<id>` | Any logged-in user can delete any other user's task by changing the id. | `app.py::api_delete_task` has the comment "deletes by id only" and no `user_id` in the query. Feature inventory risk 2, F-22. | H | H | Log in as `syasya_test2`, delete the id of one of `syasya_test1`'s tasks, then log in as `syasya_test1` and check it is gone. | Week 4 |
 | TH-22 | Elevation of privilege | A-03 | `/tasks/<id>/edit`, `/toggle`, `/delete`, GET and PUT `/api/tasks/<id>` | A user opens, edits, toggles or deletes another user's task by changing the id. The code looks safe, because each of these queries also checks `user_id`. | `edit_task`, `toggle_task`, `delete_task_web`, `api_get_task` and `api_update_task` all use `AND user_id = ?`. Looks safe, to confirm by testing. | L | H | As `syasya_test2` open `/tasks/<id of a test1 task>/edit`. For toggle and delete, change the id in the form action using DevTools. Check nothing changes. | Test now |
+
+### 4.1 Outcome after the Week 5 tests (added 26 Nov)
+
+This table was written before the tests. We added the results later so it matches `security_test_cases.md` and `07_Test_Management/defect_log.md`. A Fail means the weakness is confirmed.
+
+| Threat | Test | Result | Defect |
+|---|---|---|---|
+| TH-01 | TC-SEC-01 | Fail | D-026 |
+| TH-02 | TC-SEC-02 | Fail | D-013 |
+| TH-03 | TC-SEC-03 | Fail | D-027 |
+| TH-04 | TC-SEC-04 | Fail | D-028 |
+| TH-05 | TC-SEC-05 | Fail | D-010 |
+| TH-06 | TC-SEC-06 | Fail | D-029 |
+| TH-07 | TC-SEC-07 | Fail | D-020 |
+| TH-08 | TC-SEC-08 | Fail | D-014 |
+| TH-09 | TC-SEC-09 | Fail | D-011 |
+| TH-10 | TC-SEC-10 | Fail | D-030 |
+| TH-11 | TC-SEC-11 | Fail | D-031 |
+| TH-12 | TC-SEC-12 | Fail | D-032 |
+| TH-13 | TC-SEC-13 | Pass | none |
+| TH-14 | TC-SEC-14 | Fail | D-020 |
+| TH-15 | TC-SEC-15 | Fail | D-033 |
+| TH-16 | TC-SEC-16 | Pass | none |
+| TH-17 | TC-SEC-17 | Fail | D-006 |
+| TH-18 | TC-SEC-18 | Fail | D-034 (the title length part is D-012) |
+| TH-19 | TC-SEC-19 | Fail | D-026 |
+| TH-20 | TC-SEC-20 | Fail | D-035 |
+| TH-21 | TC-SEC-21 | Fail | D-025 |
+| TH-22 | TC-SEC-22 | Pass | none |
+
+TH-13 changed after testing: the database is not in git, so the threat is only about someone who can open the project folder. The Likelihood and Impact ratings in the table above were not changed. They were set when we thought the file was in git, so the group should look at them again.
 
 Note on Elevation of privilege: the app has no admin role. There are only two kinds of visitor, anonymous and logged in. So here it means acting as another user or touching their data. TH-03, TH-07 and TH-14 also belong to this idea.
 

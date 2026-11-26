@@ -682,7 +682,7 @@ Week 4 files used temporary IDs. This table shows where each one is logged, so t
 - **Actual Result:** Back returns to the previous page (the old task list), not the login page. We did not check whether actions on that page are refused. Not yet tested: step 4 of TC-BB-067 (click Dashboard or press F5).
 - **Severity:** Moderate
 - **Priority:** Medium
-- **Status:** Open
+- **Status:** Closed (Duplicate of D-032). Same cause and fix. See the final log in `07_Test_Management/defect_log.md`.
 - **Evidence:** None yet. Screenshot needed. `evidence/ST/st_check_output.txt` shows the pages send no `Cache-Control`, `Expires` or `Pragma` header.
 - **Related Test Case:** `TC-BB-067`
 - **Suggested Fix:** Send `Cache-Control: no-store` on authenticated pages.
