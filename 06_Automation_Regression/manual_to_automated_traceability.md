@@ -2,7 +2,7 @@
 
 **Prepared by:** Test Design Coordinator (Aida)  
 **Target Application:** PyTodo Pro  
-**Scope:** Full mapping of all 42 automated test functions across `06_Automation_Regression/tests/` (`unit/`, `api/`, `ui/`) back to their original manual/white-box/security Test Case IDs, Feature Requirements, and Linked Defects.
+**Scope:** Full mapping of all 85 automated tests (79 test functions; 5 of them run more than once with different data) across `06_Automation_Regression/tests/` (`unit/`, `api/`, `ui/`) back to their original manual/white-box/security Test Case IDs, Feature Requirements, and Linked Defects.
 
 ---
 
@@ -12,11 +12,16 @@
 | :--- | :--- | :--- | :---: | :---: |
 | **PyTest Unit** | `tests/unit/test_bva_unit.py` | Automation/Tool Coordinator | 3 | 1 |
 | **PyTest Unit** | `tests/unit/test_ep_urgency_unit.py` | Test Design Coordinator | 6 | 1 |
+| **PyTest Unit / Route** | `tests/unit/test_reg_decision_table.py` | Defect & Metrics Coordinator | 19 | 13 |
 | **PyTest API** | `tests/api/test_api_auth.py` | Automation/Tool Coordinator | 18 | 2 |
 | **PyTest API / Route** | `tests/api/test_ep_and_core_api.py` | Test Design Coordinator | 13 | 9 |
+| **PyTest API** | `tests/api/test_reg_api_delete_dashboard.py` | Defect & Metrics Coordinator | 10 | 7 |
 | **Selenium Browser UI** | `tests/ui/test_ui_auth.py` | Automation/Tool Coordinator | 1 | 0 *(excluded by design)* |
 | **Selenium Browser UI** | `tests/ui/test_ui_tasks.py` | Automation/Tool Coordinator | 1 | 0 *(excluded by design)* |
-| **Total** | **6 Test Files** | | **42** | **13** |
+| **PyTest HTML/CSS (no browser)** | `tests/ui/test_reg_accessibility_markup.py` | Defect & Metrics Coordinator | 14 | 12 |
+| **Total** | **9 Test Files** | | **85** | **45** |
+
+*Note: `test_reg_d004_01` runs 3 times (7, 8, 9 characters), and `test_acc_01_login_register...`, `test_acc_01_task_form...`, `test_acc_03...`, and `test_acc_07...` run twice each. That is why 79 functions give 85 tests.*
 
 ---
 
@@ -40,6 +45,28 @@
 | `test_tc_bb_009_near_future_due_soon` | `TC-BB-009`, `TC-WB-F14-05`, `TC-WB-F14-06` | Week 1 (EP) / Week 2 (White-Box) | F-14: Urgency badge | No | — |
 | `test_tc_bb_010_far_future_upcoming` | `TC-BB-010`, `TC-WB-F14-07`, `TC-WB-F14-08` | Week 1 (EP) / Week 2 (White-Box) | F-14: Urgency badge | No | — |
 | `test_tc_wb_f14_09_invalid_date_format_raises_value_error` | `TC-WB-F14-09` | Week 2 (White-Box) | F-14: Urgency badge | No | — |
+
+### 2.3 `06_Automation_Regression/tests/unit/test_reg_decision_table.py`
+
+| Automated Test Function | Original TC ID(s) | Source Week / Technique | Feature / Requirement | Regression Marker | Linked Defect |
+| :--- | :--- | :--- | :--- | :---: | :---: |
+| `test_tc_bb_f03_01_rule1_user_exists_correct_password` | `TC-BB-F03-01` | Week 1 (Decision Table) | F-03: Login (web) | Yes | — |
+| `test_tc_bb_f03_02_rule2_user_exists_wrong_password` | `TC-BB-F03-02` | Week 1 (Decision Table) | F-03: Login (web) | Yes | — |
+| `test_tc_bb_f03_03_rule3_unknown_user_correct_password` | `TC-BB-F03-03` | Week 1 (Decision Table) | F-03: Login (web) | No | — |
+| `test_tc_bb_f03_04_rule4_unknown_user_wrong_password` | `TC-BB-F03-04` | Week 1 (Decision Table) | F-03: Login (web) | No | — |
+| `test_tc_bb_f11_01_no_filters_shows_all` | `TC-BB-F11-01` | Week 1 (Decision Table) | F-11: Filter and search | No | — |
+| `test_tc_bb_f11_02_all_three_filters_combined` | `TC-BB-F11-02` | Week 1 (Decision Table) | F-11: Filter and search | Yes | — |
+| `test_tc_bb_f11_03_status_done_only` | `TC-BB-F11-03` | Week 1 (Decision Table) | F-11: Filter and search | No | — |
+| `test_tc_bb_f11_04_no_match_shows_empty_message` | `TC-BB-F11-04` | Week 1 (Decision Table) | F-11: Filter and search | No | — |
+| `test_tc_bb_f14_01_open_task_no_due_date` | `TC-BB-F14-01` | Week 1 (Decision Table) | F-14: Urgency badge | No | — |
+| `test_tc_bb_f14_02_open_task_due_today` | `TC-BB-F14-02`, `TC-BB-008` | Week 1 (Decision Table / EP) | F-14: Urgency badge | Yes | D-001 |
+| `test_tc_bb_f14_03_open_task_due_tomorrow` | `TC-BB-F14-03` | Week 1 (Decision Table) | F-14: Urgency badge | Yes | — |
+| `test_tc_bb_f14_04_done_task_due_yesterday` | `TC-BB-F14-04` | Week 1 (Decision Table) | F-14: Urgency badge | Yes | — |
+| `test_reg_d004_01_password_length_boundary` (×3: 7, 8, 9 chars) | `TC-BB-BVA-F01-01`, `-02`, `-03` | Week 1 (BVA) / Week 6 (known-defect check) | F-01: Register | Yes | D-004 |
+| `test_reg_d004_02_web_register_accepts_8_char_password` | `TC-BB-BVA-F01-02` | Week 1 (BVA) / Week 6 (known-defect check) | F-01: Register (web) | Yes | D-004 |
+| `test_reg_d004_03_api_register_accepts_8_char_password` | `TC-API-UI-02` | Week 4 (UI vs API) / Week 6 (known-defect check) | F-02: Register (API) | Yes | D-004 |
+| `test_reg_d001_01_helper_due_today` | `TC-WB-F14-04` | Week 2 (White-Box) / Week 6 (known-defect check) | F-14: Urgency badge | Yes | D-001 |
+| `test_reg_d001_02_dashboard_does_not_count_today_as_overdue` | `API-DASH-01`, `TC-BB-F14-02` | Week 4 (API) / Week 6 (known-defect check) | F-16: Dashboard (API) | Yes | D-001 |
 
 ---
 
@@ -81,14 +108,29 @@
 | `test_tc_sec_21_cross_user_delete_blocked` | `TC-SEC-21`, `API-TSK-DEL-05`, `API-DD-01` | Week 4 (API) / Week 5 (Security) | F-22: API delete task (IDOR) | Yes | D-025 |
 | `test_tc_sec_05_stored_xss_escaped_in_task_list` | `TC-SEC-05`, `GUI-10` | Week 3 (GUI) / Week 5 (Security) | F-09: Task list | Yes | D-010 |
 | `test_tc_sec_22_web_delete_enforces_owner_check` | `TC-SEC-22`, `WTS-VAL-06` | Week 4 (Web Val) / Week 5 (Security) | F-13: Delete task (web) | Yes | — |
-| `test_gui_01_style_css_universal_box_sizing` | `GUI-01` | Week 3 (GUI) | F-01, F-03, F-08, F-10: CSS layout | No | D-007 |
+| `test_gui_01_style_css_universal_box_sizing` | `GUI-01` | Week 3 (GUI) | F-01, F-03, F-08, F-10: CSS layout | No | D-007 (Closed: not reproducible) |
 | `test_acc_01_form_labels_have_for_attribute` | `GUI-02`, `ACC-01` | Week 3 (GUI / Accessibility) | F-01, F-03, F-08, F-10: Form labels | No | D-009 |
 | `test_acc_02_toggle_button_has_aria_label` | `ACC-02` | Week 3 (Accessibility) | F-12: Mark done / reopen | No | D-016 |
 | `test_acc_09_viewport_meta_tag_present` | `ACC-09` | Week 3 (Accessibility) | All Web Pages: Mobile reflow | No | D-017 |
 
+### 3.3 `06_Automation_Regression/tests/api/test_reg_api_delete_dashboard.py`
+
+| Automated Test Function | Original TC ID(s) | Source Week / Technique | Feature / Requirement | Regression Marker | Linked Defect |
+| :--- | :--- | :--- | :--- | :---: | :---: |
+| `test_api_dd_01_cross_user_delete_loses_data` | `API-DD-01`, `TC-SEC-21` | Week 4 (API) / Week 5 (Security) | F-22: API delete task (IDOR) | Yes | D-025 |
+| `test_api_dd_02_delete_same_task_twice` | `API-DD-02`, `API-TSK-DEL-02` | Week 4 (API) | F-22: API delete task | Yes | D-024 |
+| `test_api_dd_03_delete_updates_dashboard` | `API-DD-03` | Week 4 (API) | F-22, F-16: Delete / Dashboard | No | — |
+| `test_api_dd_04_dashboard_counts_only_own_tasks` | `API-DD-04` | Week 4 (API) | F-16: Dashboard (API) | Yes | — |
+| `test_api_dd_05_done_task_not_overdue` | `API-DD-05` | Week 4 (API) | F-16: Dashboard (API) | No | — |
+| `test_api_dd_06_due_soon_upper_boundary` | `API-DD-06` | Week 4 (API, BVA) | F-16: Dashboard (API) | Yes | — |
+| `test_api_dd_07_overdue_lower_boundary` | `API-DD-07` | Week 4 (API, BVA) | F-16: Dashboard (API) | Yes | — |
+| `test_api_dd_08_completed_exactly_7_days_ago` | `API-DD-08`, `TC-BB-BVA-F15-01` | Week 1 (BVA) / Week 4 (API) | F-16: Dashboard (API) | Yes | D-005 |
+| `test_api_dd_09_completed_8_days_ago_not_counted` | `API-DD-09` | Week 4 (API, BVA) | F-16: Dashboard (API) | No | — |
+| `test_api_dd_10_dashboard_with_bad_due_date` | `API-DD-10`, `TC-WB-F14-10` | Week 2 (White-Box) / Week 4 (API) | F-16: Dashboard (API) | Yes | D-006 |
+
 ---
 
-## 4. End-to-End Browser UI Layer Traceability (`tests/ui/`)
+## 4. End-to-End Browser & HTML/CSS UI Layer Traceability (`tests/ui/`)
 
 ### 4.1 `06_Automation_Regression/tests/ui/test_ui_auth.py` & `tests/ui/test_ui_tasks.py`
 
@@ -96,3 +138,22 @@
 | :--- | :--- | :--- | :--- | :--- | :---: | :---: |
 | `test_wts_01_02_08_auth_lifecycle` | `tests/ui/test_ui_auth.py` | `WTS-01`, `WTS-02`, `WTS-08` | Week 4 (Web Workflow) | F-01, F-03, F-05, F-06: Auth lifecycle | No *(Selenium UI)* | — |
 | `test_wts_03_06_07_task_lifecycle_and_confirm_dialog` | `tests/ui/test_ui_tasks.py` | `WTS-03`, `WTS-06`, `WTS-07`, `TC-BB-076`, `GUI-11` | Week 1 (State) / Week 3 (GUI) / Week 4 (Web Flow) | F-08, F-12, F-13: Task lifecycle & confirm dialog | No *(Selenium UI)* | — |
+
+### 4.2 `06_Automation_Regression/tests/ui/test_reg_accessibility_markup.py`
+
+These tests read the page HTML and CSS through the Flask test client. They do **not** open a browser, so they are fast and are included in the regression suite.
+
+| Automated Test Function | Script File | Original TC ID(s) | Source Week / Technique | Feature / Requirement | Regression Marker | Linked Defect |
+| :--- | :--- | :--- | :--- | :--- | :---: | :---: |
+| `test_acc_01_login_register_fields_have_labels` (×2: `/login`, `/register`) | `tests/ui/test_reg_accessibility_markup.py` | `ACC-01`, `GUI-02` | Week 3 (Accessibility) | F-01, F-03: Form labels | Yes | D-009 |
+| `test_acc_01_task_form_fields_have_labels` (×2: new, edit) | `tests/ui/test_reg_accessibility_markup.py` | `ACC-01` | Week 3 (Accessibility) | F-08, F-10: Form labels | Yes | D-009 |
+| `test_acc_08_filter_controls_have_names` | `tests/ui/test_reg_accessibility_markup.py` | `ACC-08` | Week 3 (Accessibility) | F-11: Filter and search | Yes | D-009 |
+| `test_acc_02_done_toggle_has_accessible_name` | `tests/ui/test_reg_accessibility_markup.py` | `ACC-02` | Week 3 (Accessibility) | F-12: Mark done / reopen | Yes | D-016 |
+| `test_acc_03_grey_text_contrast` (×2: done title, empty message) | `tests/ui/test_reg_accessibility_markup.py` | `ACC-03` | Week 3 (Accessibility) | F-09: Task list | Yes | D-015 |
+| `test_acc_05_each_page_has_unique_title_and_one_h1` | `tests/ui/test_reg_accessibility_markup.py` | `ACC-05` | Week 3 (Accessibility) | All pages | No | — |
+| `test_acc_07_page_language_set` (×2: `/login`, `/register`) | `tests/ui/test_reg_accessibility_markup.py` | `ACC-07` | Week 3 (Accessibility) | All pages | Yes | — |
+| `test_acc_12_badges_have_text` | `tests/ui/test_reg_accessibility_markup.py` | `ACC-12` | Week 3 (Accessibility) | F-14: Urgency badge | No | — |
+| `test_acc_09_viewport_meta_present` | `tests/ui/test_reg_accessibility_markup.py` | `ACC-09` | Week 3 (Accessibility) | All pages: mobile reflow | Yes | D-017 |
+| `test_gui_08_empty_list_message_without_filters` | `tests/ui/test_reg_accessibility_markup.py` | `GUI-08` | Week 3 (GUI) | F-09: Task list | Yes | D-008 |
+
+**Overlap note:** `test_acc_01`, `test_acc_02` and `test_acc_09` in section 3.2 check the same defects (D-009, D-016, D-017) as the tests above. Both are fine to keep. The section 3.2 tests do a quick text search; these check each field one by one.
