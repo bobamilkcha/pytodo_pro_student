@@ -10,7 +10,7 @@ This plan says how we test PyTodo Pro, what we covered, and whether we met our o
 
 We wrote this plan in Week 7, after testing. It is not the plan we started with. It records what we actually did and what we learnt. Some parts changed along the way. For example, Week 1 had only web features in scope, and the API, security and performance came later.
 
-Numbers come from our own files. Where the files disagree, we say so. The file `07_Test_Management/cross_check_defects.md` lists the open disagreements. The brief also mentions an `execution_status` file, but there is no such file in `07_Test_Management/` yet. We used `cross_check_defects.md`, `06_Automation_Regression/execution_report.md` and the weekly metrics files instead.
+Numbers come from our own files. Where the files disagree, we say so. The file `07_Test_Management/cross_check_defects.md` tracks open disagreements, while `07_Test_Management/execution_status.md` summarizes the reconciled execution and regression counts across Weeks 1–6 alongside `06_Automation_Regression/execution_report.md` and the weekly metrics files.
 
 ## 2. Test objectives
 
@@ -109,7 +109,7 @@ Week 6 result (`06_Automation_Regression/manual_to_automated_traceability.md`): 
 - Tests for a known defect assert the correct behaviour. They fail while the defect exists and turn green when it is fixed. A new failure that does not match a known defect is a new problem.
 - Selenium scripts are excluded because they are slow and can fail for reasons that are not bugs. We run them before a release or a demo.
 - We run the suite after every change to the app and after every claimed fix. We have not done a retest yet, because no defect has been fixed.
-- Note: `06_Automation_Regression/execution_report.md` still shows 85 tests and 45 regression tests. It does not yet include `test_state_transition.py` (18 tests). `cross_check_defects.md` lists this as open.
+- Note: `06_Automation_Regression/execution_report.md` and `06_Automation_Regression/logs/` are now synced with the full 10-file suite (103 tests: 69 pass, 34 fail; 51 regression tests: 22 pass, 29 fail), including `test_state_transition.py` (18 tests).
 
 ## 5. Test environment
 
@@ -206,7 +206,7 @@ We use these before starting a test phase.
 | EX-8 | Regression suite passes, except known defects | Met in the sense that all 29 failures are known defects. It is not green. 22 of 51 pass. | `cross_check_defects.md` |
 | EX-9 | Performance targets: average below 200 ms, P95 below 500 ms, errors below 1%, throughput grows with users | Partly met. At 100 users: average 95 ms, error rate 0%, throughput grows. The overall P95 is 520 ms, which is above target. | `performance_results.md` |
 | EX-10 | One defect log with unique IDs, severity, priority and status | Met for `07_Test_Management/defect_log.md`. The copies in `01_Black_Box/` and `04_Web_API/` are older and differ. | `defect_log.md` |
-| EX-11 | The master test repository matches the weekly files | Not met yet. It is cut off, and some test descriptions and statuses do not match their source. Aida has not applied the fixes yet. | `cross_check_defects.md` |
+| EX-11 | The master test repository matches the weekly files | Mostly met. Aida resolved the truncated file and reconciled the 286 unique Weeks 1–5 items plus 103 Week 6 runs; minor remaining items are tracked in `cross_check_defects.md`. | `master_test_repository.md`, `cross_check_defects.md` |
 
 Summary: we met 5 of 11, partly met 1 (EX-9), and did not meet 5 (EX-3, EX-4, EX-6, EX-7, EX-11). EX-6 and EX-7 need defects to be fixed. That part is outside what we can do in this course.
 
@@ -347,5 +347,6 @@ All paths are from the project root. Files in `07_Test_Management/` are in the s
 | 7 | Master test repository | [master_test_repository.md](master_test_repository.md) |
 | 7 | Requirements traceability matrix | [rtm.md](rtm.md) |
 | 7 | Final defect log | [defect_log.md](defect_log.md) |
+| 7 | Execution and regression status summary | [execution_status.md](execution_status.md) |
 | 7 | Cross-check of IDs and counts | [cross_check_defects.md](cross_check_defects.md) |
 | 7 | This test plan | [test_plan.md](test_plan.md) |
