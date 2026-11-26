@@ -1,0 +1,1961 @@
+Full test run of all existing test files (Weeks 2, 4, 5) - pre-check by Nafiesa
+Date: 25 Nov 2026. Fresh clone, Python 3, Flask 3.0.3, pytest 9.1.1. Each file run separately: pytest <file> -v -rA
+
+################ 02_White_Box_Coverage/compute_urgency/tests/test_compute_urgency.py
+============================= test session starts ==============================
+platform linux -- Python 3.13.18, pytest-9.1.1, pluggy-1.6.0 -- /usr/local/bin/python3
+rootdir: /home/claude/repo/pytodo_pro_student
+plugins: platformdirs-4.13.5, anyio-4.15.1, cov-7.1.0
+collecting ... collected 13 items
+
+02_White_Box_Coverage/compute_urgency/tests/test_compute_urgency.py::test_wb_f14_01_none_due_date PASSED [  7%]
+02_White_Box_Coverage/compute_urgency/tests/test_compute_urgency.py::test_wb_f14_02_empty_string_due_date PASSED [ 15%]
+02_White_Box_Coverage/compute_urgency/tests/test_compute_urgency.py::test_wb_f14_03_past_date_is_overdue PASSED [ 23%]
+02_White_Box_Coverage/compute_urgency/tests/test_compute_urgency.py::test_wb_f14_04_due_today_label FAILED [ 30%]
+02_White_Box_Coverage/compute_urgency/tests/test_compute_urgency.py::test_wb_f14_05_one_day_away_is_due_soon PASSED [ 38%]
+02_White_Box_Coverage/compute_urgency/tests/test_compute_urgency.py::test_wb_f14_06_two_days_away_is_due_soon PASSED [ 46%]
+02_White_Box_Coverage/compute_urgency/tests/test_compute_urgency.py::test_wb_f14_07_three_days_away_is_upcoming PASSED [ 53%]
+02_White_Box_Coverage/compute_urgency/tests/test_compute_urgency.py::test_wb_f14_08_default_today_used_when_not_given PASSED [ 61%]
+02_White_Box_Coverage/compute_urgency/tests/test_compute_urgency.py::test_wb_f14_09_bad_format_raises_value_error[04-11-2026] PASSED [ 69%]
+02_White_Box_Coverage/compute_urgency/tests/test_compute_urgency.py::test_wb_f14_09_bad_format_raises_value_error[abc] PASSED [ 76%]
+02_White_Box_Coverage/compute_urgency/tests/test_compute_urgency.py::test_wb_f14_09_bad_format_raises_value_error[2026-02-30] PASSED [ 84%]
+02_White_Box_Coverage/compute_urgency/tests/test_compute_urgency.py::test_wb_f14_09_bad_format_raises_value_error[ ] PASSED [ 92%]
+02_White_Box_Coverage/compute_urgency/tests/test_compute_urgency.py::test_wb_f14_10_bad_due_date_via_api_breaks_task_list FAILED [100%]
+
+=================================== FAILURES ===================================
+________________________ test_wb_f14_04_due_today_label ________________________
+
+    def test_wb_f14_04_due_today_label():
+        """TC-WB-F14-04: due today -> "Due Today" per docstring/README.
+    
+        Expected to FAIL. Line 33 uses `due <= today`, so a task due today
+        takes the Overdue path. There is no "Due Today" branch in the code.
+        Linked defect: D-001.
+        """
+>       assert compute_urgency(iso(TODAY), today=TODAY) == "Due Today"
+E       AssertionError: assert 'Overdue' == 'Due Today'
+E         
+E         - Due Today
+E         + Overdue
+
+02_White_Box_Coverage/compute_urgency/tests/test_compute_urgency.py:70: AssertionError
+_____________ test_wb_f14_10_bad_due_date_via_api_breaks_task_list _____________
+
+tmp_path = PosixPath('/tmp/pytest-of-root/pytest-18/test_wb_f14_10_bad_due_date_vi0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7fabfee682b0>
+
+    def test_wb_f14_10_bad_due_date_via_api_breaks_task_list(tmp_path, monkeypatch):
+        """TC-WB-F14-10: a bad due_date saved through the API should not break the app.
+    
+        Expected: the API rejects the bad date (400), or the task list still loads (200).
+        Expected to FAIL: POST /api/tasks stores any string, then GET /api/tasks
+        calls compute_urgency on it (via row_to_task) and returns HTTP 500.
+        The JSON API is used because it needs no HTML templates.
+        """
+        import app as app_module
+    
+        monkeypatch.setattr(app_module, "DATABASE", str(tmp_path / "test.db"))
+        app_module.app.config["TESTING"] = False  # let Flask return 500 instead of re-raising
+        app_module.app.config["PROPAGATE_EXCEPTIONS"] = False
+        app_module.init_db()
+    
+        client = app_module.app.test_client()
+        reg = client.post("/api/register", json={"username": "wb_tester", "password": "password123"})
+        assert reg.status_code == 201
+    
+        # Control: the task list works before the bad task exists.
+        assert client.get("/api/tasks").status_code == 200
+    
+        create = client.post("/api/tasks", json={"title": "Bad date task", "due_date": "04-11-2026"})
+        listing = client.get("/api/tasks")
+    
+>       assert create.status_code == 400 or listing.status_code == 200, (
+            f"API create returned HTTP {create.status_code}; "
+            f"task list then returned HTTP {listing.status_code}"
+        )
+E       AssertionError: API create returned HTTP 500; task list then returned HTTP 500
+E       assert (500 == 400 or 500 == 200)
+E        +  where 500 = <WrapperTestResponse streamed [500 INTERNAL SERVER ERROR]>.status_code
+E        +  and   500 = <WrapperTestResponse streamed [500 INTERNAL SERVER ERROR]>.status_code
+
+02_White_Box_Coverage/compute_urgency/tests/test_compute_urgency.py:141: AssertionError
+------------------------------ Captured log call -------------------------------
+ERROR    app:app.py:838 Exception on /api/tasks [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.13/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.13/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.13/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/home/claude/repo/pytodo_pro_student/app.py", line 130, in wrapper
+    return f(*args, **kwargs)
+  File "/home/claude/repo/pytodo_pro_student/app.py", line 420, in api_create_task
+    return jsonify(row_to_task(row, get_category_name(db, row["category_id"]))), 201
+                   ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/repo/pytodo_pro_student/app.py", line 94, in row_to_task
+    "urgency": compute_urgency(row["due_date"]) if not row["done"] else "Done",
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/claude/repo/pytodo_pro_student/helpers.py", line 31, in compute_urgency
+    due = datetime.strptime(due_date_str, "%Y-%m-%d").date()
+          ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/_strptime.py", line 789, in _strptime_datetime
+    tt, fraction, gmtoff_fraction = _strptime(data_string, format)
+                                    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/_strptime.py", line 555, in _strptime
+    raise ValueError("time data %r does not match format %r" %
+                     (data_string, format))
+ValueError: time data '04-11-2026' does not match format '%Y-%m-%d'
+ERROR    app:app.py:838 Exception on /api/tasks [GET]
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.13/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.13/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.13/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/home/claude/repo/pytodo_pro_student/app.py", line 130, in wrapper
+    return f(*args, **kwargs)
+  File "/home/claude/repo/pytodo_pro_student/app.py", line 385, in api_list_tasks
+    tasks = [row_to_task(r, get_category_name(db, r["category_id"])) for r in rows]
+             ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/repo/pytodo_pro_student/app.py", line 94, in row_to_task
+    "urgency": compute_urgency(row["due_date"]) if not row["done"] else "Done",
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/claude/repo/pytodo_pro_student/helpers.py", line 31, in compute_urgency
+    due = datetime.strptime(due_date_str, "%Y-%m-%d").date()
+          ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/_strptime.py", line 789, in _strptime_datetime
+    tt, fraction, gmtoff_fraction = _strptime(data_string, format)
+                                    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/_strptime.py", line 555, in _strptime
+    raise ValueError("time data %r does not match format %r" %
+                     (data_string, format))
+ValueError: time data '04-11-2026' does not match format '%Y-%m-%d'
+==================================== PASSES ====================================
+- generated xml file: /home/claude/w6/logs/02_White_Box_Coverage__compute_urgency__tests__test_compute_urgency.xml -
+=========================== short test summary info ============================
+PASSED 02_White_Box_Coverage/compute_urgency/tests/test_compute_urgency.py::test_wb_f14_01_none_due_date
+PASSED 02_White_Box_Coverage/compute_urgency/tests/test_compute_urgency.py::test_wb_f14_02_empty_string_due_date
+PASSED 02_White_Box_Coverage/compute_urgency/tests/test_compute_urgency.py::test_wb_f14_03_past_date_is_overdue
+PASSED 02_White_Box_Coverage/compute_urgency/tests/test_compute_urgency.py::test_wb_f14_05_one_day_away_is_due_soon
+PASSED 02_White_Box_Coverage/compute_urgency/tests/test_compute_urgency.py::test_wb_f14_06_two_days_away_is_due_soon
+PASSED 02_White_Box_Coverage/compute_urgency/tests/test_compute_urgency.py::test_wb_f14_07_three_days_away_is_upcoming
+PASSED 02_White_Box_Coverage/compute_urgency/tests/test_compute_urgency.py::test_wb_f14_08_default_today_used_when_not_given
+PASSED 02_White_Box_Coverage/compute_urgency/tests/test_compute_urgency.py::test_wb_f14_09_bad_format_raises_value_error[04-11-2026]
+PASSED 02_White_Box_Coverage/compute_urgency/tests/test_compute_urgency.py::test_wb_f14_09_bad_format_raises_value_error[abc]
+PASSED 02_White_Box_Coverage/compute_urgency/tests/test_compute_urgency.py::test_wb_f14_09_bad_format_raises_value_error[2026-02-30]
+PASSED 02_White_Box_Coverage/compute_urgency/tests/test_compute_urgency.py::test_wb_f14_09_bad_format_raises_value_error[ ]
+FAILED 02_White_Box_Coverage/compute_urgency/tests/test_compute_urgency.py::test_wb_f14_04_due_today_label
+FAILED 02_White_Box_Coverage/compute_urgency/tests/test_compute_urgency.py::test_wb_f14_10_bad_due_date_via_api_breaks_task_list
+========================= 2 failed, 11 passed in 0.21s =========================
+
+################ 02_White_Box_Coverage/index/tests/test_index.py
+============================= test session starts ==============================
+platform linux -- Python 3.13.18, pytest-9.1.1, pluggy-1.6.0 -- /usr/local/bin/python3
+rootdir: /home/claude/repo/pytodo_pro_student
+plugins: platformdirs-4.13.5, anyio-4.15.1, cov-7.1.0
+collecting ... collected 11 items
+
+02_White_Box_Coverage/index/tests/test_index.py::test_index_unauthenticated_redirects PASSED [  9%]
+02_White_Box_Coverage/index/tests/test_index.py::test_index_no_filters_empty_tasks PASSED [ 18%]
+02_White_Box_Coverage/index/tests/test_index.py::test_index_no_filters_returns_only_own_tasks PASSED [ 27%]
+02_White_Box_Coverage/index/tests/test_index.py::test_index_valid_category_filter PASSED [ 36%]
+02_White_Box_Coverage/index/tests/test_index.py::test_index_unknown_category_filter_ignored PASSED [ 45%]
+02_White_Box_Coverage/index/tests/test_index.py::test_index_status_filter_done PASSED [ 54%]
+02_White_Box_Coverage/index/tests/test_index.py::test_index_status_filter_open PASSED [ 63%]
+02_White_Box_Coverage/index/tests/test_index.py::test_index_unknown_status_filter_ignored PASSED [ 72%]
+02_White_Box_Coverage/index/tests/test_index.py::test_index_search_query_filter PASSED [ 81%]
+02_White_Box_Coverage/index/tests/test_index.py::test_index_combined_filters PASSED [ 90%]
+02_White_Box_Coverage/index/tests/test_index.py::test_index_search_sql_wildcard_unescaped PASSED [100%]
+
+==================================== PASSES ====================================
+- generated xml file: /home/claude/w6/logs/02_White_Box_Coverage__index__tests__test_index.xml -
+=========================== short test summary info ============================
+PASSED 02_White_Box_Coverage/index/tests/test_index.py::test_index_unauthenticated_redirects
+PASSED 02_White_Box_Coverage/index/tests/test_index.py::test_index_no_filters_empty_tasks
+PASSED 02_White_Box_Coverage/index/tests/test_index.py::test_index_no_filters_returns_only_own_tasks
+PASSED 02_White_Box_Coverage/index/tests/test_index.py::test_index_valid_category_filter
+PASSED 02_White_Box_Coverage/index/tests/test_index.py::test_index_unknown_category_filter_ignored
+PASSED 02_White_Box_Coverage/index/tests/test_index.py::test_index_status_filter_done
+PASSED 02_White_Box_Coverage/index/tests/test_index.py::test_index_status_filter_open
+PASSED 02_White_Box_Coverage/index/tests/test_index.py::test_index_unknown_status_filter_ignored
+PASSED 02_White_Box_Coverage/index/tests/test_index.py::test_index_search_query_filter
+PASSED 02_White_Box_Coverage/index/tests/test_index.py::test_index_combined_filters
+PASSED 02_White_Box_Coverage/index/tests/test_index.py::test_index_search_sql_wildcard_unescaped
+============================== 11 passed in 0.19s ==============================
+
+################ 02_White_Box_Coverage/test_helpers.py
+============================= test session starts ==============================
+platform linux -- Python 3.13.18, pytest-9.1.1, pluggy-1.6.0 -- /usr/local/bin/python3
+rootdir: /home/claude/repo/pytodo_pro_student
+plugins: platformdirs-4.13.5, anyio-4.15.1, cov-7.1.0
+collecting ... collected 7 items
+
+02_White_Box_Coverage/test_helpers.py::test_completed_within_bounds PASSED [ 14%]
+02_White_Box_Coverage/test_helpers.py::test_completed_older_than_n_days PASSED [ 28%]
+02_White_Box_Coverage/test_helpers.py::test_completed_exactly_n_days_ago PASSED [ 42%]
+02_White_Box_Coverage/test_helpers.py::test_completed_in_future PASSED   [ 57%]
+02_White_Box_Coverage/test_helpers.py::test_invalid_date_format PASSED   [ 71%]
+02_White_Box_Coverage/test_helpers.py::test_empty_date PASSED            [ 85%]
+02_White_Box_Coverage/test_helpers.py::test_completed_default_now PASSED [100%]
+
+==================================== PASSES ====================================
+- generated xml file: /home/claude/w6/logs/02_White_Box_Coverage__test_helpers.xml -
+=========================== short test summary info ============================
+PASSED 02_White_Box_Coverage/test_helpers.py::test_completed_within_bounds
+PASSED 02_White_Box_Coverage/test_helpers.py::test_completed_older_than_n_days
+PASSED 02_White_Box_Coverage/test_helpers.py::test_completed_exactly_n_days_ago
+PASSED 02_White_Box_Coverage/test_helpers.py::test_completed_in_future
+PASSED 02_White_Box_Coverage/test_helpers.py::test_invalid_date_format
+PASSED 02_White_Box_Coverage/test_helpers.py::test_empty_date
+PASSED 02_White_Box_Coverage/test_helpers.py::test_completed_default_now
+============================== 7 passed in 0.02s ===============================
+
+################ 04_Web_API/test_api_smoke.py
+============================= test session starts ==============================
+platform linux -- Python 3.13.18, pytest-9.1.1, pluggy-1.6.0 -- /usr/local/bin/python3
+rootdir: /home/claude/repo/pytodo_pro_student
+plugins: platformdirs-4.13.5, anyio-4.15.1, cov-7.1.0
+collecting ... collected 2 items
+
+04_Web_API/test_api_smoke.py::test_get_categories_returns_200 PASSED     [ 50%]
+04_Web_API/test_api_smoke.py::test_tasks_requires_auth PASSED            [100%]
+
+==================================== PASSES ====================================
+--- generated xml file: /home/claude/w6/logs/04_Web_API__test_api_smoke.xml ----
+=========================== short test summary info ============================
+PASSED 04_Web_API/test_api_smoke.py::test_get_categories_returns_200
+PASSED 04_Web_API/test_api_smoke.py::test_tasks_requires_auth
+============================== 2 passed in 0.07s ===============================
+
+################ 04_Web_API/tests/test_api_auth.py
+============================= test session starts ==============================
+platform linux -- Python 3.13.18, pytest-9.1.1, pluggy-1.6.0 -- /usr/local/bin/python3
+rootdir: /home/claude/repo/pytodo_pro_student
+plugins: platformdirs-4.13.5, anyio-4.15.1, cov-7.1.0
+collecting ... collected 19 items
+
+04_Web_API/tests/test_api_auth.py::test_api_reg_01_valid_registration PASSED [  5%]
+04_Web_API/tests/test_api_auth.py::test_api_reg_02_trimmed_username PASSED [ 10%]
+04_Web_API/tests/test_api_auth.py::test_api_reg_03_invalid_username PASSED [ 15%]
+04_Web_API/tests/test_api_auth.py::test_api_reg_04_invalid_password PASSED [ 21%]
+04_Web_API/tests/test_api_auth.py::test_api_reg_05_missing_username PASSED [ 26%]
+04_Web_API/tests/test_api_auth.py::test_api_reg_06_missing_password PASSED [ 31%]
+04_Web_API/tests/test_api_auth.py::test_api_reg_07_empty_json PASSED     [ 36%]
+04_Web_API/tests/test_api_auth.py::test_api_reg_08_wrong_type_username FAILED [ 42%]
+04_Web_API/tests/test_api_auth.py::test_api_reg_09_duplicate_username FAILED [ 47%]
+04_Web_API/tests/test_api_auth.py::test_api_log_01_valid_login PASSED    [ 52%]
+04_Web_API/tests/test_api_auth.py::test_api_log_02_wrong_password PASSED [ 57%]
+04_Web_API/tests/test_api_auth.py::test_api_log_03_nonexistent_user PASSED [ 63%]
+04_Web_API/tests/test_api_auth.py::test_api_log_04_missing_password PASSED [ 68%]
+04_Web_API/tests/test_api_auth.py::test_api_log_05_empty_json PASSED     [ 73%]
+04_Web_API/tests/test_api_auth.py::test_api_log_06_wrong_type_username FAILED [ 78%]
+04_Web_API/tests/test_api_auth.py::test_api_log_07_non_json_body PASSED  [ 84%]
+04_Web_API/tests/test_api_auth.py::test_api_cat_01_public_categories_list PASSED [ 89%]
+04_Web_API/tests/test_api_auth.py::test_api_cat_02_categories_sorted_alphabetically PASSED [ 94%]
+04_Web_API/tests/test_api_auth.py::test_api_cat_03_unsupported_method PASSED [100%]
+
+=================================== FAILURES ===================================
+_____________________ test_api_reg_08_wrong_type_username ______________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_api_reg_08_wrong_type_username(client):
+>       res = client.post("/api/register", json={"username": 12345, "password": "Password123"})
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+04_Web_API/tests/test_api_auth.py:60: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/local/lib/python3.13/site-packages/werkzeug/test.py:1171: in post
+    return self.open(*args, **kw)
+           ^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/testing.py:235: in open
+    response = super().open(
+/usr/local/lib/python3.13/site-packages/werkzeug/test.py:1120: in open
+    response_parts = self.run_wsgi_app(request.environ, buffered=buffered)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/werkzeug/test.py:992: in run_wsgi_app
+    rv = run_wsgi_app(self.application, environ, buffered=buffered)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/werkzeug/test.py:1268: in run_wsgi_app
+    app_rv = app(environ, start_response)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:1498: in __call__
+    return self.wsgi_app(environ, start_response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:1476: in wsgi_app
+    response = self.handle_exception(e)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:1473: in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:882: in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:880: in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:865: in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    @app.route("/api/register", methods=["POST"])
+    def api_register():
+        data = request.get_json(silent=True) or {}
+>       username = (data.get("username") or "").strip()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'int' object has no attribute 'strip'
+
+app.py:318: AttributeError
+______________________ test_api_reg_09_duplicate_username ______________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_api_reg_09_duplicate_username(client):
+        username = unique_user("dup")
+        first = client.post("/api/register", json={"username": username, "password": "Password123"})
+        assert first.status_code == 201
+    
+        second = client.post("/api/register", json={"username": username, "password": "Password123"})
+>       assert second.status_code in (400, 409)
+E       assert 201 in (400, 409)
+E        +  where 201 = <WrapperTestResponse streamed [201 CREATED]>.status_code
+
+04_Web_API/tests/test_api_auth.py:70: AssertionError
+_____________________ test_api_log_06_wrong_type_username ______________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_api_log_06_wrong_type_username(client):
+>       res = client.post("/api/login", json={"username": 12345, "password": "Password123"})
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+04_Web_API/tests/test_api_auth.py:120: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/local/lib/python3.13/site-packages/werkzeug/test.py:1171: in post
+    return self.open(*args, **kw)
+           ^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/testing.py:235: in open
+    response = super().open(
+/usr/local/lib/python3.13/site-packages/werkzeug/test.py:1120: in open
+    response_parts = self.run_wsgi_app(request.environ, buffered=buffered)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/werkzeug/test.py:992: in run_wsgi_app
+    rv = run_wsgi_app(self.application, environ, buffered=buffered)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/werkzeug/test.py:1268: in run_wsgi_app
+    app_rv = app(environ, start_response)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:1498: in __call__
+    return self.wsgi_app(environ, start_response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:1476: in wsgi_app
+    response = self.handle_exception(e)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:1473: in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:882: in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:880: in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:865: in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    @app.route("/api/login", methods=["POST"])
+    def api_login():
+        data = request.get_json(silent=True) or {}
+>       username = (data.get("username") or "").strip()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'int' object has no attribute 'strip'
+
+app.py:336: AttributeError
+==================================== PASSES ====================================
+- generated xml file: /home/claude/w6/logs/04_Web_API__tests__test_api_auth.xml -
+=========================== short test summary info ============================
+PASSED 04_Web_API/tests/test_api_auth.py::test_api_reg_01_valid_registration
+PASSED 04_Web_API/tests/test_api_auth.py::test_api_reg_02_trimmed_username
+PASSED 04_Web_API/tests/test_api_auth.py::test_api_reg_03_invalid_username
+PASSED 04_Web_API/tests/test_api_auth.py::test_api_reg_04_invalid_password
+PASSED 04_Web_API/tests/test_api_auth.py::test_api_reg_05_missing_username
+PASSED 04_Web_API/tests/test_api_auth.py::test_api_reg_06_missing_password
+PASSED 04_Web_API/tests/test_api_auth.py::test_api_reg_07_empty_json
+PASSED 04_Web_API/tests/test_api_auth.py::test_api_log_01_valid_login
+PASSED 04_Web_API/tests/test_api_auth.py::test_api_log_02_wrong_password
+PASSED 04_Web_API/tests/test_api_auth.py::test_api_log_03_nonexistent_user
+PASSED 04_Web_API/tests/test_api_auth.py::test_api_log_04_missing_password
+PASSED 04_Web_API/tests/test_api_auth.py::test_api_log_05_empty_json
+PASSED 04_Web_API/tests/test_api_auth.py::test_api_log_07_non_json_body
+PASSED 04_Web_API/tests/test_api_auth.py::test_api_cat_01_public_categories_list
+PASSED 04_Web_API/tests/test_api_auth.py::test_api_cat_02_categories_sorted_alphabetically
+PASSED 04_Web_API/tests/test_api_auth.py::test_api_cat_03_unsupported_method
+FAILED 04_Web_API/tests/test_api_auth.py::test_api_reg_08_wrong_type_username
+FAILED 04_Web_API/tests/test_api_auth.py::test_api_reg_09_duplicate_username
+FAILED 04_Web_API/tests/test_api_auth.py::test_api_log_06_wrong_type_username
+========================= 3 failed, 16 passed in 0.58s =========================
+
+################ 04_Web_API/tests/test_api_delete_dashboard.py
+============================= test session starts ==============================
+platform linux -- Python 3.13.18, pytest-9.1.1, pluggy-1.6.0 -- /usr/local/bin/python3
+rootdir: /home/claude/repo/pytodo_pro_student
+plugins: platformdirs-4.13.5, anyio-4.15.1, cov-7.1.0
+collecting ... collected 10 items
+
+04_Web_API/tests/test_api_delete_dashboard.py::test_api_dd_01_cross_user_delete_loses_data FAILED [ 10%]
+04_Web_API/tests/test_api_delete_dashboard.py::test_api_dd_02_delete_same_task_twice FAILED [ 20%]
+04_Web_API/tests/test_api_delete_dashboard.py::test_api_dd_03_delete_updates_dashboard PASSED [ 30%]
+04_Web_API/tests/test_api_delete_dashboard.py::test_api_dd_04_dashboard_counts_only_own_tasks PASSED [ 40%]
+04_Web_API/tests/test_api_delete_dashboard.py::test_api_dd_05_done_task_not_overdue PASSED [ 50%]
+04_Web_API/tests/test_api_delete_dashboard.py::test_api_dd_06_due_soon_upper_boundary PASSED [ 60%]
+04_Web_API/tests/test_api_delete_dashboard.py::test_api_dd_07_overdue_lower_boundary PASSED [ 70%]
+04_Web_API/tests/test_api_delete_dashboard.py::test_api_dd_08_completed_exactly_7_days_ago FAILED [ 80%]
+04_Web_API/tests/test_api_delete_dashboard.py::test_api_dd_09_completed_8_days_ago_not_counted PASSED [ 90%]
+04_Web_API/tests/test_api_delete_dashboard.py::test_api_dd_10_dashboard_with_bad_due_date FAILED [100%]
+
+=================================== FAILURES ===================================
+_________________ test_api_dd_01_cross_user_delete_loses_data __________________
+
+user_a = <FlaskClient <Flask 'app'>>, user_b = <FlaskClient <Flask 'app'>>
+
+    def test_api_dd_01_cross_user_delete_loses_data(user_a, user_b):
+        """API-DD-01: After User B sends DELETE for User A's task, User A can still GET the task (200)."""
+        task_id = create(user_a, "A's private task")
+        res_b = user_b.delete(f"/api/tasks/{task_id}")
+        res_a = user_a.get(f"/api/tasks/{task_id}")
+        print(f"B delete -> {res_b.status_code} {res_b.get_json()}; A get -> {res_a.status_code}")
+>       assert res_a.status_code == 200
+E       assert 404 == 200
+E        +  where 404 = <WrapperTestResponse streamed [404 NOT FOUND]>.status_code
+
+04_Web_API/tests/test_api_delete_dashboard.py:88: AssertionError
+----------------------------- Captured stdout call -----------------------------
+B delete -> 200 {'result': 'ok'}; A get -> 404
+____________________ test_api_dd_02_delete_same_task_twice _____________________
+
+user_a = <FlaskClient <Flask 'app'>>
+
+    def test_api_dd_02_delete_same_task_twice(user_a):
+        """API-DD-02: Deleting the same task a second time -> 404 (it no longer exists)."""
+        task_id = create(user_a, "Delete me twice")
+        first = user_a.delete(f"/api/tasks/{task_id}")
+        second = user_a.delete(f"/api/tasks/{task_id}")
+        print(f"first -> {first.status_code}; second -> {second.status_code} {second.get_json()}")
+        assert first.status_code == 200
+>       assert second.status_code == 404
+E       assert 200 == 404
+E        +  where 200 = <WrapperTestResponse 16 bytes [200 OK]>.status_code
+
+04_Web_API/tests/test_api_delete_dashboard.py:98: AssertionError
+----------------------------- Captured stdout call -----------------------------
+first -> 200; second -> 200 {'result': 'ok'}
+_________________ test_api_dd_08_completed_exactly_7_days_ago __________________
+
+user_a = <FlaskClient <Flask 'app'>>
+
+    def test_api_dd_08_completed_exactly_7_days_ago(user_a):
+        """API-DD-08: A task completed exactly 7 days ago is counted in completed_this_week (spec: last 7 days). Retest of D-005."""
+        tid = create(user_a, "Done a week ago")
+        set_completed(tid, 7)
+>       assert user_a.get("/api/dashboard").get_json()["completed_this_week"] == 1
+E       assert 0 == 1
+
+04_Web_API/tests/test_api_delete_dashboard.py:158: AssertionError
+__________________ test_api_dd_10_dashboard_with_bad_due_date __________________
+
+user_a = <FlaskClient <Flask 'app'>>
+
+    def test_api_dd_10_dashboard_with_bad_due_date(user_a):
+        """API-DD-10: If a task with a bad due_date exists, the dashboard still loads (200). Effect of D-006."""
+        user_a.post("/api/tasks", json={"title": "Bad date", "due_date": "31-12-2026"})
+        res = user_a.get("/api/dashboard")
+        print(f"dashboard -> {res.status_code}")
+>       assert res.status_code == 200
+E       assert 500 == 200
+E        +  where 500 = <WrapperTestResponse streamed [500 INTERNAL SERVER ERROR]>.status_code
+
+04_Web_API/tests/test_api_delete_dashboard.py:173: AssertionError
+----------------------------- Captured stdout call -----------------------------
+dashboard -> 500
+------------------------------ Captured log call -------------------------------
+ERROR    app:app.py:838 Exception on /api/tasks [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.13/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.13/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.13/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/home/claude/repo/pytodo_pro_student/app.py", line 130, in wrapper
+    return f(*args, **kwargs)
+  File "/home/claude/repo/pytodo_pro_student/app.py", line 420, in api_create_task
+    return jsonify(row_to_task(row, get_category_name(db, row["category_id"]))), 201
+                   ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/repo/pytodo_pro_student/app.py", line 94, in row_to_task
+    "urgency": compute_urgency(row["due_date"]) if not row["done"] else "Done",
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/claude/repo/pytodo_pro_student/helpers.py", line 31, in compute_urgency
+    due = datetime.strptime(due_date_str, "%Y-%m-%d").date()
+          ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/_strptime.py", line 789, in _strptime_datetime
+    tt, fraction, gmtoff_fraction = _strptime(data_string, format)
+                                    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/_strptime.py", line 555, in _strptime
+    raise ValueError("time data %r does not match format %r" %
+                     (data_string, format))
+ValueError: time data '31-12-2026' does not match format '%Y-%m-%d'
+ERROR    app:app.py:838 Exception on /api/dashboard [GET]
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.13/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.13/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.13/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/home/claude/repo/pytodo_pro_student/app.py", line 130, in wrapper
+    return f(*args, **kwargs)
+  File "/home/claude/repo/pytodo_pro_student/app.py", line 471, in api_dashboard
+    overdue = sum(1 for r in rows if not r["done"] and compute_urgency(r["due_date"]) == "Overdue")
+  File "/home/claude/repo/pytodo_pro_student/app.py", line 471, in <genexpr>
+    overdue = sum(1 for r in rows if not r["done"] and compute_urgency(r["due_date"]) == "Overdue")
+                                                       ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "/home/claude/repo/pytodo_pro_student/helpers.py", line 31, in compute_urgency
+    due = datetime.strptime(due_date_str, "%Y-%m-%d").date()
+          ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/_strptime.py", line 789, in _strptime_datetime
+    tt, fraction, gmtoff_fraction = _strptime(data_string, format)
+                                    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/_strptime.py", line 555, in _strptime
+    raise ValueError("time data %r does not match format %r" %
+                     (data_string, format))
+ValueError: time data '31-12-2026' does not match format '%Y-%m-%d'
+==================================== PASSES ====================================
+- generated xml file: /home/claude/w6/logs/04_Web_API__tests__test_api_delete_dashboard.xml -
+=========================== short test summary info ============================
+PASSED 04_Web_API/tests/test_api_delete_dashboard.py::test_api_dd_03_delete_updates_dashboard
+PASSED 04_Web_API/tests/test_api_delete_dashboard.py::test_api_dd_04_dashboard_counts_only_own_tasks
+PASSED 04_Web_API/tests/test_api_delete_dashboard.py::test_api_dd_05_done_task_not_overdue
+PASSED 04_Web_API/tests/test_api_delete_dashboard.py::test_api_dd_06_due_soon_upper_boundary
+PASSED 04_Web_API/tests/test_api_delete_dashboard.py::test_api_dd_07_overdue_lower_boundary
+PASSED 04_Web_API/tests/test_api_delete_dashboard.py::test_api_dd_09_completed_8_days_ago_not_counted
+FAILED 04_Web_API/tests/test_api_delete_dashboard.py::test_api_dd_01_cross_user_delete_loses_data
+FAILED 04_Web_API/tests/test_api_delete_dashboard.py::test_api_dd_02_delete_same_task_twice
+FAILED 04_Web_API/tests/test_api_delete_dashboard.py::test_api_dd_08_completed_exactly_7_days_ago
+FAILED 04_Web_API/tests/test_api_delete_dashboard.py::test_api_dd_10_dashboard_with_bad_due_date
+========================= 4 failed, 6 passed in 0.90s ==========================
+
+################ 04_Web_API/tests/test_api_tasks.py
+============================= test session starts ==============================
+platform linux -- Python 3.13.18, pytest-9.1.1, pluggy-1.6.0 -- /usr/local/bin/python3
+rootdir: /home/claude/repo/pytodo_pro_student
+plugins: platformdirs-4.13.5, anyio-4.15.1, cov-7.1.0
+collecting ... collected 36 items
+
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_getall_01_valid_default PASSED [  2%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_getall_02_valid_filters PASSED [  5%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_getall_03_sql_injection_q PASSED [  8%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_getall_04_unclosed_quote_q FAILED [ 11%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_getall_05_missing_auth PASSED [ 13%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_getall_06_wrong_type_pagination PASSED [ 16%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_getall_07_edge_high_page PASSED [ 19%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_getone_01_valid_own_task PASSED [ 22%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_getone_02_not_found PASSED [ 25%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_getone_03_missing_auth PASSED [ 27%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_getone_04_wrong_type_id PASSED [ 30%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_getone_05_cross_user_idor PASSED [ 33%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_post_01_valid_full PASSED [ 36%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_post_02_valid_minimal PASSED [ 38%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_post_03_invalid_whitespace_title PASSED [ 41%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_post_04_invalid_due_date_format FAILED [ 44%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_post_05_missing_title PASSED [ 47%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_post_06_missing_auth PASSED [ 50%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_post_07_wrong_type_title FAILED [ 52%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_post_08_edge_invalid_category_id FAILED [ 55%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_put_01_valid_update PASSED [ 58%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_put_02_valid_toggle_done PASSED [ 61%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_put_03_invalid_empty_title FAILED [ 63%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_put_04_not_found PASSED [ 66%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_put_05_missing_fields_noop PASSED [ 69%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_put_06_wrong_type_done_string FAILED [ 72%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_put_07_cross_user_idor PASSED [ 75%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_del_01_valid_delete PASSED [ 77%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_del_02_invalid_not_found FAILED [ 80%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_del_03_missing_auth PASSED [ 83%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_del_04_wrong_type_id PASSED [ 86%]
+04_Web_API/tests/test_api_tasks.py::test_api_tsk_del_05_cross_user_idor FAILED [ 88%]
+04_Web_API/tests/test_api_tasks.py::test_api_dash_01_valid_mixed_metrics FAILED [ 91%]
+04_Web_API/tests/test_api_tasks.py::test_api_dash_02_valid_empty_metrics PASSED [ 94%]
+04_Web_API/tests/test_api_tasks.py::test_api_dash_03_missing_auth PASSED [ 97%]
+04_Web_API/tests/test_api_tasks.py::test_api_dash_04_edge_method_not_allowed PASSED [100%]
+
+=================================== FAILURES ===================================
+___________________ test_api_tsk_getall_04_unclosed_quote_q ____________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_api_tsk_getall_04_unclosed_quote_q(client):
+        register_and_login(client)
+>       res = client.get("/api/tasks?q=test'")
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+04_Web_API/tests/test_api_tasks.py:73: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/local/lib/python3.13/site-packages/werkzeug/test.py:1166: in get
+    return self.open(*args, **kw)
+           ^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/testing.py:235: in open
+    response = super().open(
+/usr/local/lib/python3.13/site-packages/werkzeug/test.py:1120: in open
+    response_parts = self.run_wsgi_app(request.environ, buffered=buffered)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/werkzeug/test.py:992: in run_wsgi_app
+    rv = run_wsgi_app(self.application, environ, buffered=buffered)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/werkzeug/test.py:1268: in run_wsgi_app
+    app_rv = app(environ, start_response)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:1498: in __call__
+    return self.wsgi_app(environ, start_response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:1476: in wsgi_app
+    response = self.handle_exception(e)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:1473: in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:882: in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:880: in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:865: in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app.py:130: in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    @app.route("/api/tasks", methods=["GET"])
+    @login_required_api
+    def api_list_tasks():
+        db = get_db()
+        page = request.args.get("page", default=0, type=int)
+        per_page = request.args.get("per_page", default=10, type=int)
+        category = request.args.get("category", "").strip()
+        status = request.args.get("status", "").strip()
+        q = request.args.get("q", "").strip()
+    
+        query = "SELECT * FROM tasks WHERE user_id = ?"
+        params = [session["user_id"]]
+    
+        cat_id = get_category_id_by_name(db, category) if category else None
+        if cat_id:
+            query += " AND category_id = ?"
+            params.append(cat_id)
+    
+        if status == "done":
+            query += " AND done = 1"
+        elif status == "open":
+            query += " AND done = 0"
+    
+        if q:
+            # Search is intentionally simple: build the LIKE pattern directly.
+            query += f" AND title LIKE '%{q}%'"
+    
+        query += " ORDER BY id DESC LIMIT ? OFFSET ?"
+        params.extend([per_page, page * per_page])
+    
+>       rows = db.execute(query, params).fetchall()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       sqlite3.OperationalError: unrecognized token: "' ORDER BY id DESC LIMIT ? OFFSET ?"
+
+app.py:384: OperationalError
+_________________ test_api_tsk_post_04_invalid_due_date_format _________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_api_tsk_post_04_invalid_due_date_format(client):
+        register_and_login(client)
+>       res = client.post("/api/tasks", json={"title": "Bad date test", "due_date": "not-a-date"})
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+04_Web_API/tests/test_api_tasks.py:174: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/local/lib/python3.13/site-packages/werkzeug/test.py:1171: in post
+    return self.open(*args, **kw)
+           ^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/testing.py:235: in open
+    response = super().open(
+/usr/local/lib/python3.13/site-packages/werkzeug/test.py:1120: in open
+    response_parts = self.run_wsgi_app(request.environ, buffered=buffered)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/werkzeug/test.py:992: in run_wsgi_app
+    rv = run_wsgi_app(self.application, environ, buffered=buffered)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/werkzeug/test.py:1268: in run_wsgi_app
+    app_rv = app(environ, start_response)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:1498: in __call__
+    return self.wsgi_app(environ, start_response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:1476: in wsgi_app
+    response = self.handle_exception(e)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:1473: in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:882: in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:880: in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:865: in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app.py:130: in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+app.py:420: in api_create_task
+    return jsonify(row_to_task(row, get_category_name(db, row["category_id"]))), 201
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app.py:94: in row_to_task
+    "urgency": compute_urgency(row["due_date"]) if not row["done"] else "Done",
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+helpers.py:31: in compute_urgency
+    due = datetime.strptime(due_date_str, "%Y-%m-%d").date()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/_strptime.py:789: in _strptime_datetime
+    tt, fraction, gmtoff_fraction = _strptime(data_string, format)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+data_string = 'not-a-date', format = '%Y-%m-%d'
+
+    def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
+        """Return a 2-tuple consisting of a time struct and an int containing
+        the number of microseconds based on the input string and the
+        format string."""
+    
+        for index, arg in enumerate([data_string, format]):
+            if not isinstance(arg, str):
+                msg = "strptime() argument {} must be str, not {}"
+                raise TypeError(msg.format(index, type(arg)))
+    
+        global _TimeRE_cache, _regex_cache
+        with _cache_lock:
+            locale_time = _TimeRE_cache.locale_time
+            if (_getlang() != locale_time.lang or
+                time.tzname != locale_time.tzname or
+                time.daylight != locale_time.daylight):
+                _TimeRE_cache = TimeRE()
+                _regex_cache.clear()
+                locale_time = _TimeRE_cache.locale_time
+            if len(_regex_cache) > _CACHE_MAX_SIZE:
+                _regex_cache.clear()
+            format_regex = _regex_cache.get(format)
+            if not format_regex:
+                try:
+                    format_regex = _TimeRE_cache.compile(format)
+                # KeyError raised when a bad format is found; can be specified as
+                # \\, in which case it was a stray % but with a space after it
+                except KeyError as err:
+                    bad_directive = err.args[0]
+                    del err
+                    bad_directive = bad_directive.replace('\\s', '')
+                    if not bad_directive:
+                        raise ValueError("stray %% in format '%s'" % format) from None
+                    bad_directive = bad_directive.replace('\\', '', 1)
+                    raise ValueError("'%s' is a bad directive in format '%s'" %
+                                        (bad_directive, format)) from None
+                _regex_cache[format] = format_regex
+        found = format_regex.match(data_string)
+        if not found:
+>           raise ValueError("time data %r does not match format %r" %
+                             (data_string, format))
+E           ValueError: time data 'not-a-date' does not match format '%Y-%m-%d'
+
+/usr/local/lib/python3.13/_strptime.py:555: ValueError
+____________________ test_api_tsk_post_07_wrong_type_title _____________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_api_tsk_post_07_wrong_type_title(client):
+        register_and_login(client)
+>       res = client.post("/api/tasks", json={"title": 12345})
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+04_Web_API/tests/test_api_tasks.py:192: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/local/lib/python3.13/site-packages/werkzeug/test.py:1171: in post
+    return self.open(*args, **kw)
+           ^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/testing.py:235: in open
+    response = super().open(
+/usr/local/lib/python3.13/site-packages/werkzeug/test.py:1120: in open
+    response_parts = self.run_wsgi_app(request.environ, buffered=buffered)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/werkzeug/test.py:992: in run_wsgi_app
+    rv = run_wsgi_app(self.application, environ, buffered=buffered)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/werkzeug/test.py:1268: in run_wsgi_app
+    app_rv = app(environ, start_response)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:1498: in __call__
+    return self.wsgi_app(environ, start_response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:1476: in wsgi_app
+    response = self.handle_exception(e)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:1473: in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:882: in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:880: in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:865: in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app.py:130: in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    @app.route("/api/tasks", methods=["POST"])
+    @login_required_api
+    def api_create_task():
+        data = request.get_json(silent=True) or {}
+>       title = (data.get("title") or "").strip()
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'int' object has no attribute 'strip'
+
+app.py:405: AttributeError
+________________ test_api_tsk_post_08_edge_invalid_category_id _________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_api_tsk_post_08_edge_invalid_category_id(client):
+        register_and_login(client)
+        res = client.post("/api/tasks", json={"title": "Invalid category", "category_id": 9999})
+>       assert res.status_code == 400
+E       assert 201 == 400
+E        +  where 201 = <WrapperTestResponse streamed [201 CREATED]>.status_code
+
+04_Web_API/tests/test_api_tasks.py:199: AssertionError
+___________________ test_api_tsk_put_03_invalid_empty_title ____________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_api_tsk_put_03_invalid_empty_title(client):
+        register_and_login(client)
+        task_id = client.post("/api/tasks", json={"title": "Keep Title"}).get_json()["id"]
+        res = client.put(f"/api/tasks/{task_id}", json={"title": ""})
+>       assert res.status_code == 400
+E       assert 200 == 400
+E        +  where 200 = <WrapperTestResponse streamed [200 OK]>.status_code
+
+04_Web_API/tests/test_api_tasks.py:232: AssertionError
+__________________ test_api_tsk_put_06_wrong_type_done_string __________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_api_tsk_put_06_wrong_type_done_string(client):
+        register_and_login(client)
+        task_id = client.post("/api/tasks", json={"title": "Bool Type Test"}).get_json()["id"]
+        res = client.put(f"/api/tasks/{task_id}", json={"done": "false"})
+>       assert res.status_code == 400 or res.get_json()["done"] is False
+E       assert (200 == 400 or True is False)
+E        +  where 200 = <WrapperTestResponse 210 bytes [200 OK]>.status_code
+
+04_Web_API/tests/test_api_tasks.py:253: AssertionError
+____________________ test_api_tsk_del_02_invalid_not_found _____________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_api_tsk_del_02_invalid_not_found(client):
+        register_and_login(client)
+        res = client.delete("/api/tasks/99999")
+>       assert res.status_code == 404
+E       assert 200 == 404
+E        +  where 200 = <WrapperTestResponse streamed [200 OK]>.status_code
+
+04_Web_API/tests/test_api_tasks.py:281: AssertionError
+_____________________ test_api_tsk_del_05_cross_user_idor ______________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_api_tsk_del_05_cross_user_idor(client):
+        register_and_login(client, username="owner_del")
+        task_id = client.post("/api/tasks", json={"title": "Do Not Delete"}).get_json()["id"]
+    
+        client.post("/api/register", json={"username": "attacker_del", "password": "Password123"})
+        res = client.delete(f"/api/tasks/{task_id}")
+>       assert res.status_code in (403, 404)
+E       assert 200 in (403, 404)
+E        +  where 200 = <WrapperTestResponse streamed [200 OK]>.status_code
+
+04_Web_API/tests/test_api_tasks.py:301: AssertionError
+_____________________ test_api_dash_01_valid_mixed_metrics _____________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_api_dash_01_valid_mixed_metrics(client):
+        register_and_login(client)
+        today = datetime.now().strftime("%Y-%m-%d")
+        client.post("/api/tasks", json={"title": "Overdue Task", "due_date": "2020-01-01"})
+        client.post("/api/tasks", json={"title": "Due Soon Task", "due_date": today})
+        done_id = client.post("/api/tasks", json={"title": "Done Task"}).get_json()["id"]
+        client.put(f"/api/tasks/{done_id}", json={"done": True})
+    
+        res = client.get("/api/dashboard")
+        assert res.status_code == 200
+        data = res.get_json()
+        assert data["total"] == 3
+        assert data["open"] == 2
+>       assert data["overdue"] == 1
+E       assert 2 == 1
+
+04_Web_API/tests/test_api_tasks.py:321: AssertionError
+==================================== PASSES ====================================
+- generated xml file: /home/claude/w6/logs/04_Web_API__tests__test_api_tasks.xml -
+=========================== short test summary info ============================
+PASSED 04_Web_API/tests/test_api_tasks.py::test_api_tsk_getall_01_valid_default
+PASSED 04_Web_API/tests/test_api_tasks.py::test_api_tsk_getall_02_valid_filters
+PASSED 04_Web_API/tests/test_api_tasks.py::test_api_tsk_getall_03_sql_injection_q
+PASSED 04_Web_API/tests/test_api_tasks.py::test_api_tsk_getall_05_missing_auth
+PASSED 04_Web_API/tests/test_api_tasks.py::test_api_tsk_getall_06_wrong_type_pagination
+PASSED 04_Web_API/tests/test_api_tasks.py::test_api_tsk_getall_07_edge_high_page
+PASSED 04_Web_API/tests/test_api_tasks.py::test_api_tsk_getone_01_valid_own_task
+PASSED 04_Web_API/tests/test_api_tasks.py::test_api_tsk_getone_02_not_found
+PASSED 04_Web_API/tests/test_api_tasks.py::test_api_tsk_getone_03_missing_auth
+PASSED 04_Web_API/tests/test_api_tasks.py::test_api_tsk_getone_04_wrong_type_id
+PASSED 04_Web_API/tests/test_api_tasks.py::test_api_tsk_getone_05_cross_user_idor
+PASSED 04_Web_API/tests/test_api_tasks.py::test_api_tsk_post_01_valid_full
+PASSED 04_Web_API/tests/test_api_tasks.py::test_api_tsk_post_02_valid_minimal
+PASSED 04_Web_API/tests/test_api_tasks.py::test_api_tsk_post_03_invalid_whitespace_title
+PASSED 04_Web_API/tests/test_api_tasks.py::test_api_tsk_post_05_missing_title
+PASSED 04_Web_API/tests/test_api_tasks.py::test_api_tsk_post_06_missing_auth
+PASSED 04_Web_API/tests/test_api_tasks.py::test_api_tsk_put_01_valid_update
+PASSED 04_Web_API/tests/test_api_tasks.py::test_api_tsk_put_02_valid_toggle_done
+PASSED 04_Web_API/tests/test_api_tasks.py::test_api_tsk_put_04_not_found
+PASSED 04_Web_API/tests/test_api_tasks.py::test_api_tsk_put_05_missing_fields_noop
+PASSED 04_Web_API/tests/test_api_tasks.py::test_api_tsk_put_07_cross_user_idor
+PASSED 04_Web_API/tests/test_api_tasks.py::test_api_tsk_del_01_valid_delete
+PASSED 04_Web_API/tests/test_api_tasks.py::test_api_tsk_del_03_missing_auth
+PASSED 04_Web_API/tests/test_api_tasks.py::test_api_tsk_del_04_wrong_type_id
+PASSED 04_Web_API/tests/test_api_tasks.py::test_api_dash_02_valid_empty_metrics
+PASSED 04_Web_API/tests/test_api_tasks.py::test_api_dash_03_missing_auth
+PASSED 04_Web_API/tests/test_api_tasks.py::test_api_dash_04_edge_method_not_allowed
+FAILED 04_Web_API/tests/test_api_tasks.py::test_api_tsk_getall_04_unclosed_quote_q
+FAILED 04_Web_API/tests/test_api_tasks.py::test_api_tsk_post_04_invalid_due_date_format
+FAILED 04_Web_API/tests/test_api_tasks.py::test_api_tsk_post_07_wrong_type_title
+FAILED 04_Web_API/tests/test_api_tasks.py::test_api_tsk_post_08_edge_invalid_category_id
+FAILED 04_Web_API/tests/test_api_tasks.py::test_api_tsk_put_03_invalid_empty_title
+FAILED 04_Web_API/tests/test_api_tasks.py::test_api_tsk_put_06_wrong_type_done_string
+FAILED 04_Web_API/tests/test_api_tasks.py::test_api_tsk_del_02_invalid_not_found
+FAILED 04_Web_API/tests/test_api_tasks.py::test_api_tsk_del_05_cross_user_idor
+FAILED 04_Web_API/tests/test_api_tasks.py::test_api_dash_01_valid_mixed_metrics
+========================= 9 failed, 27 passed in 2.61s =========================
+
+################ 04_Web_API/tests/test_ui_vs_api.py
+============================= test session starts ==============================
+platform linux -- Python 3.13.18, pytest-9.1.1, pluggy-1.6.0 -- /usr/local/bin/python3
+rootdir: /home/claude/repo/pytodo_pro_student
+plugins: platformdirs-4.13.5, anyio-4.15.1, cov-7.1.0
+collecting ... collected 30 items
+
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_01_password_7_chars_rejected PASSED [  3%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_02_password_8_chars_accepted FAILED [  6%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_03_password_9_chars_accepted PASSED [ 10%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_04_duplicate_username_rejected FAILED [ 13%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_05_username_2_chars_rejected PASSED [ 16%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_06_username_as_number_rejected FAILED [ 20%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_07_login_empty_password_rejected PASSED [ 23%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_08_login_wrong_password_rejected PASSED [ 26%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_09_create_title_empty_rejected PASSED [ 30%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_10_create_title_only_spaces_rejected PASSED [ 33%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_11_create_title_1_char_accepted PASSED [ 36%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_12_create_title_500_chars_rejected FAILED [ 40%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_13_create_due_date_in_past_is_overdue PASSED [ 43%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_14_create_due_date_today_is_due_today FAILED [ 46%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_15_create_due_date_wrong_format_rejected FAILED [ 50%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_16_create_category_not_found_rejected FAILED [ 53%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_17_edit_missing_task_gives_404 PASSED [ 56%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_18_edit_title_empty_rejected FAILED [ 60%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_19_edit_other_users_task_gives_404 PASSED [ 63%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_20_toggle_done_then_reopen PASSED [ 66%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_21_toggle_missing_task_gives_404 PASSED [ 70%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_22_done_as_text_false_does_not_complete_task FAILED [ 73%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_23_delete_missing_task_gives_404 FAILED [ 76%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_24_delete_other_users_task_is_refused FAILED [ 80%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_25_search_underscore_is_plain_text FAILED [ 83%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_26_search_percent_is_plain_text FAILED [ 86%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_27_search_single_quote_is_plain_text FAILED [ 90%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_28_create_task_without_login_refused PASSED [ 93%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_29_edit_task_without_login_refused PASSED [ 96%]
+04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_30_delete_task_without_login_refused PASSED [100%]
+
+=================================== FAILURES ===================================
+_________________ test_tc_api_ui_02_password_8_chars_accepted __________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_tc_api_ui_02_password_8_chars_accepted(client):
+        # Spec says min 8. We expect this to fail because the code needs more than 8 (D-004).
+        _, res = register(client, password="12345678")
+>       assert res.status_code == 201
+E       assert 400 == 201
+E        +  where 400 = <WrapperTestResponse streamed [400 BAD REQUEST]>.status_code
+
+04_Web_API/tests/test_ui_vs_api.py:96: AssertionError
+________________ test_tc_api_ui_04_duplicate_username_rejected _________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_tc_api_ui_04_duplicate_username_rejected(client):
+        name, first = register(client)
+        assert first.status_code == 201
+        _, second = register(new_client(), username=name)
+>       assert second.status_code in (400, 409)
+E       assert 201 in (400, 409)
+E        +  where 201 = <WrapperTestResponse streamed [201 CREATED]>.status_code
+
+04_Web_API/tests/test_ui_vs_api.py:108: AssertionError
+________________ test_tc_api_ui_06_username_as_number_rejected _________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_tc_api_ui_06_username_as_number_rejected(client):
+        res = client.post("/api/register", json={"username": 12345, "password": PASSWORD})
+>       assert res.status_code == 400
+E       assert 500 == 400
+E        +  where 500 = <WrapperTestResponse streamed [500 INTERNAL SERVER ERROR]>.status_code
+
+04_Web_API/tests/test_ui_vs_api.py:118: AssertionError
+------------------------------ Captured log call -------------------------------
+ERROR    app:app.py:838 Exception on /api/register [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.13/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.13/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.13/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/home/claude/repo/pytodo_pro_student/app.py", line 318, in api_register
+    username = (data.get("username") or "").strip()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'int' object has no attribute 'strip'
+______________ test_tc_api_ui_12_create_title_500_chars_rejected _______________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_tc_api_ui_12_create_title_500_chars_rejected(client):
+        # The spec has no length rule. We assume a limit should exist (D-012),
+        # so we expect 400. Change this test if the group decides there is no limit.
+        register(client)
+        res = client.post("/api/tasks", json={"title": "x" * 500})
+>       assert res.status_code == 400
+E       assert 201 == 400
+E        +  where 201 = <WrapperTestResponse streamed [201 CREATED]>.status_code
+
+04_Web_API/tests/test_ui_vs_api.py:172: AssertionError
+_____________ test_tc_api_ui_14_create_due_date_today_is_due_today _____________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_tc_api_ui_14_create_due_date_today_is_due_today(client):
+        # Spec says "Due Today". We expect this to fail (D-001).
+        register(client)
+        today = date.today().isoformat()
+        res = client.post("/api/tasks", json={"title": "today", "due_date": today})
+        assert res.status_code == 201
+>       assert res.get_json()["urgency"] == "Due Today"
+E       AssertionError: assert 'Overdue' == 'Due Today'
+E         
+E         - Due Today
+E         + Overdue
+
+04_Web_API/tests/test_ui_vs_api.py:189: AssertionError
+___________ test_tc_api_ui_15_create_due_date_wrong_format_rejected ____________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_tc_api_ui_15_create_due_date_wrong_format_rejected(client):
+        register(client)
+        res = client.post("/api/tasks", json={"title": "bad date", "due_date": "04-11-2026"})
+>       assert res.status_code == 400
+E       assert 500 == 400
+E        +  where 500 = <WrapperTestResponse streamed [500 INTERNAL SERVER ERROR]>.status_code
+
+04_Web_API/tests/test_ui_vs_api.py:195: AssertionError
+------------------------------ Captured log call -------------------------------
+ERROR    app:app.py:838 Exception on /api/tasks [POST]
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.13/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.13/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.13/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/home/claude/repo/pytodo_pro_student/app.py", line 130, in wrapper
+    return f(*args, **kwargs)
+  File "/home/claude/repo/pytodo_pro_student/app.py", line 420, in api_create_task
+    return jsonify(row_to_task(row, get_category_name(db, row["category_id"]))), 201
+                   ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/claude/repo/pytodo_pro_student/app.py", line 94, in row_to_task
+    "urgency": compute_urgency(row["due_date"]) if not row["done"] else "Done",
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/claude/repo/pytodo_pro_student/helpers.py", line 31, in compute_urgency
+    due = datetime.strptime(due_date_str, "%Y-%m-%d").date()
+          ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/_strptime.py", line 789, in _strptime_datetime
+    tt, fraction, gmtoff_fraction = _strptime(data_string, format)
+                                    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/_strptime.py", line 555, in _strptime
+    raise ValueError("time data %r does not match format %r" %
+                     (data_string, format))
+ValueError: time data '04-11-2026' does not match format '%Y-%m-%d'
+_____________ test_tc_api_ui_16_create_category_not_found_rejected _____________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_tc_api_ui_16_create_category_not_found_rejected(client):
+        register(client)
+        res = client.post("/api/tasks", json={"title": "bad category", "category_id": 999})
+>       assert res.status_code == 400
+E       assert 201 == 400
+E        +  where 201 = <WrapperTestResponse streamed [201 CREATED]>.status_code
+
+04_Web_API/tests/test_ui_vs_api.py:201: AssertionError
+_________________ test_tc_api_ui_18_edit_title_empty_rejected __________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_tc_api_ui_18_edit_title_empty_rejected(client):
+        register(client)
+        task = make_task(client)
+        res = client.put(f"/api/tasks/{task['id']}", json={"title": ""})
+>       assert res.status_code == 400
+E       assert 200 == 400
+E        +  where 200 = <WrapperTestResponse streamed [200 OK]>.status_code
+
+04_Web_API/tests/test_ui_vs_api.py:218: AssertionError
+_________ test_tc_api_ui_22_done_as_text_false_does_not_complete_task __________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_tc_api_ui_22_done_as_text_false_does_not_complete_task(client):
+        register(client)
+        task = make_task(client)
+        res = client.put(f"/api/tasks/{task['id']}", json={"done": "false"})
+>       assert res.status_code == 400 or res.get_json()["done"] is False
+E       assert (200 == 400 or True is False)
+E        +  where 200 = <WrapperTestResponse 205 bytes [200 OK]>.status_code
+
+04_Web_API/tests/test_ui_vs_api.py:260: AssertionError
+_______________ test_tc_api_ui_23_delete_missing_task_gives_404 ________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_tc_api_ui_23_delete_missing_task_gives_404(client):
+        # We expect this to fail: the API always returns 200.
+        register(client)
+        res = client.delete("/api/tasks/999999")
+>       assert res.status_code == 404
+E       assert 200 == 404
+E        +  where 200 = <WrapperTestResponse streamed [200 OK]>.status_code
+
+04_Web_API/tests/test_ui_vs_api.py:271: AssertionError
+_____________ test_tc_api_ui_24_delete_other_users_task_is_refused _____________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_tc_api_ui_24_delete_other_users_task_is_refused(client):
+        # We expect this to fail: the API delete does not check the owner (TH-21).
+        register(client)
+        task = make_task(client, title="owner's task")
+        other, _ = logged_in_client()
+        res = other.delete(f"/api/tasks/{task['id']}")
+>       assert res.status_code in (403, 404)
+E       assert 200 in (403, 404)
+E        +  where 200 = <WrapperTestResponse streamed [200 OK]>.status_code
+
+04_Web_API/tests/test_ui_vs_api.py:280: AssertionError
+______________ test_tc_api_ui_25_search_underscore_is_plain_text _______________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_tc_api_ui_25_search_underscore_is_plain_text(client):
+        register(client)
+        make_task(client, title="due_today")
+        make_task(client, title="due today")
+        res = client.get("/api/tasks", query_string={"q": "due_today"})
+        assert res.status_code == 200
+>       assert [t["title"] for t in res.get_json()] == ["due_today"]
+E       AssertionError: assert ['due today', 'due_today'] == ['due_today']
+E         
+E         At index 0 diff: 'due today' != 'due_today'
+E         Left contains one more item: 'due_today'
+E         
+E         Full diff:
+E           [
+E         +     'due today',
+E               'due_today',
+E           ]
+
+04_Web_API/tests/test_ui_vs_api.py:295: AssertionError
+________________ test_tc_api_ui_26_search_percent_is_plain_text ________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_tc_api_ui_26_search_percent_is_plain_text(client):
+        register(client)
+        make_task(client, title="100% done")
+        make_task(client, title="100 done")
+        res = client.get("/api/tasks", query_string={"q": "100%"})
+        assert res.status_code == 200
+>       assert [t["title"] for t in res.get_json()] == ["100% done"]
+E       AssertionError: assert ['100 done', '100% done'] == ['100% done']
+E         
+E         At index 0 diff: '100 done' != '100% done'
+E         Left contains one more item: '100% done'
+E         
+E         Full diff:
+E           [
+E         +     '100 done',
+E               '100% done',
+E           ]
+
+04_Web_API/tests/test_ui_vs_api.py:304: AssertionError
+_____________ test_tc_api_ui_27_search_single_quote_is_plain_text ______________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_tc_api_ui_27_search_single_quote_is_plain_text(client):
+        # We expect this to fail: the text is pasted into the SQL (TH-07).
+        register(client)
+        make_task(client, title="it's a task")
+        res = client.get("/api/tasks", query_string={"q": "a'"})
+>       assert res.status_code == 200
+E       assert 500 == 200
+E        +  where 500 = <WrapperTestResponse streamed [500 INTERNAL SERVER ERROR]>.status_code
+
+04_Web_API/tests/test_ui_vs_api.py:312: AssertionError
+------------------------------ Captured log call -------------------------------
+ERROR    app:app.py:838 Exception on /api/tasks [GET]
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.13/site-packages/flask/app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/local/lib/python3.13/site-packages/flask/app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/local/lib/python3.13/site-packages/flask/app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/local/lib/python3.13/site-packages/flask/app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/home/claude/repo/pytodo_pro_student/app.py", line 130, in wrapper
+    return f(*args, **kwargs)
+  File "/home/claude/repo/pytodo_pro_student/app.py", line 384, in api_list_tasks
+    rows = db.execute(query, params).fetchall()
+           ~~~~~~~~~~^^^^^^^^^^^^^^^
+sqlite3.OperationalError: unrecognized token: "' ORDER BY id DESC LIMIT ? OFFSET ?"
+==================================== PASSES ====================================
+- generated xml file: /home/claude/w6/logs/04_Web_API__tests__test_ui_vs_api.xml -
+=========================== short test summary info ============================
+PASSED 04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_01_password_7_chars_rejected
+PASSED 04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_03_password_9_chars_accepted
+PASSED 04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_05_username_2_chars_rejected
+PASSED 04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_07_login_empty_password_rejected
+PASSED 04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_08_login_wrong_password_rejected
+PASSED 04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_09_create_title_empty_rejected
+PASSED 04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_10_create_title_only_spaces_rejected
+PASSED 04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_11_create_title_1_char_accepted
+PASSED 04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_13_create_due_date_in_past_is_overdue
+PASSED 04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_17_edit_missing_task_gives_404
+PASSED 04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_19_edit_other_users_task_gives_404
+PASSED 04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_20_toggle_done_then_reopen
+PASSED 04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_21_toggle_missing_task_gives_404
+PASSED 04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_28_create_task_without_login_refused
+PASSED 04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_29_edit_task_without_login_refused
+PASSED 04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_30_delete_task_without_login_refused
+FAILED 04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_02_password_8_chars_accepted
+FAILED 04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_04_duplicate_username_rejected
+FAILED 04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_06_username_as_number_rejected
+FAILED 04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_12_create_title_500_chars_rejected
+FAILED 04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_14_create_due_date_today_is_due_today
+FAILED 04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_15_create_due_date_wrong_format_rejected
+FAILED 04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_16_create_category_not_found_rejected
+FAILED 04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_18_edit_title_empty_rejected
+FAILED 04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_22_done_as_text_false_does_not_complete_task
+FAILED 04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_23_delete_missing_task_gives_404
+FAILED 04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_24_delete_other_users_task_is_refused
+FAILED 04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_25_search_underscore_is_plain_text
+FAILED 04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_26_search_percent_is_plain_text
+FAILED 04_Web_API/tests/test_ui_vs_api.py::test_tc_api_ui_27_search_single_quote_is_plain_text
+======================== 14 failed, 16 passed in 1.89s =========================
+
+################ 05_Security_Performance/tests/test_security.py
+============================= test session starts ==============================
+platform linux -- Python 3.13.18, pytest-9.1.1, pluggy-1.6.0 -- /usr/local/bin/python3
+rootdir: /home/claude/repo/pytodo_pro_student
+plugins: platformdirs-4.13.5, anyio-4.15.1, cov-7.1.0
+collecting ... collected 22 items
+
+05_Security_Performance/tests/test_security.py::test_sec_01_th01_login_brute_force_rate_limit FAILED [  4%]
+05_Security_Performance/tests/test_security.py::test_sec_02_th02_duplicate_username_registration FAILED [  9%]
+05_Security_Performance/tests/test_security.py::test_sec_03_th03_hardcoded_secret_key_cookie_forgery FAILED [ 13%]
+05_Security_Performance/tests/test_security.py::test_sec_04_th04_session_cookie_replay_after_logout FAILED [ 18%]
+05_Security_Performance/tests/test_security.py::test_sec_05_th05_stored_xss_in_task_title FAILED [ 22%]
+05_Security_Performance/tests/test_security.py::test_sec_06_th06_missing_csrf_token_on_task_form FAILED [ 27%]
+05_Security_Performance/tests/test_security.py::test_sec_07_th07_api_search_sql_injection_syntax_error FAILED [ 31%]
+05_Security_Performance/tests/test_security.py::test_sec_08_th08_web_search_sql_wildcard_escaping FAILED [ 36%]
+05_Security_Performance/tests/test_security.py::test_sec_09_th09_whitespace_title_server_validation FAILED [ 40%]
+05_Security_Performance/tests/test_security.py::test_sec_10_th10_audit_trail_for_task_deletion FAILED [ 45%]
+05_Security_Performance/tests/test_security.py::test_sec_11_th11_debug_mode_disabled_in_source FAILED [ 50%]
+05_Security_Performance/tests/test_security.py::test_sec_12_th12_no_store_cache_control_header FAILED [ 54%]
+05_Security_Performance/tests/test_security.py::test_sec_13_th13_password_stored_as_salted_hash PASSED [ 59%]
+05_Security_Performance/tests/test_security.py::test_sec_14_th14_api_search_sqli_cross_user_data_leak FAILED [ 63%]
+05_Security_Performance/tests/test_security.py::test_sec_15_th15_session_cookie_security_flags FAILED [ 68%]
+05_Security_Performance/tests/test_security.py::test_sec_16_th16_unauthenticated_categories_exposes_no_user_data PASSED [ 72%]
+05_Security_Performance/tests/test_security.py::test_sec_17_th17_malformed_due_date_availability FAILED [ 77%]
+05_Security_Performance/tests/test_security.py::test_sec_18_th18_unbounded_per_page_limit FAILED [ 81%]
+05_Security_Performance/tests/test_security.py::test_sec_19_th19_api_login_burst_throttling FAILED [ 86%]
+05_Security_Performance/tests/test_security.py::test_sec_20_th20_logout_requires_post_not_get FAILED [ 90%]
+05_Security_Performance/tests/test_security.py::test_sec_21_th21_api_delete_cross_user_idor FAILED [ 95%]
+05_Security_Performance/tests/test_security.py::test_sec_22_th22_web_routes_enforce_task_ownership PASSED [100%]
+
+=================================== FAILURES ===================================
+________________ test_sec_01_th01_login_brute_force_rate_limit _________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_sec_01_th01_login_brute_force_rate_limit(client):
+        """TH-01: Repeated failed logins should trigger rate limiting or lockout."""
+        register_web(client, "syasya_test1", "Password123")
+        client.get("/logout")
+    
+        statuses = []
+        for _ in range(10):
+            res = client.post(
+                "/login",
+                data={"username": "syasya_test1", "password": "WrongPassword99"},
+            )
+            statuses.append(res.status_code)
+    
+>       assert any(s in (403, 429) for s in statuses), "No rate limit or lockout after 10 failed logins"
+E       AssertionError: No rate limit or lockout after 10 failed logins
+E       assert False
+E        +  where False = any(<generator object test_sec_01_th01_login_brute_force_rate_limit.<locals>.<genexpr> at 0x7fe585f86b50>)
+
+05_Security_Performance/tests/test_security.py:49: AssertionError
+_______________ test_sec_02_th02_duplicate_username_registration _______________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_sec_02_th02_duplicate_username_registration(client):
+        """TH-02: Registering an existing username should be rejected."""
+        register_web(client, "syasya_test1", "Password123")
+        client.get("/logout")
+        register_web(client, "syasya_test1", "DifferentPass123")
+    
+        with app_module.app.app_context():
+            db = app_module.get_db()
+            count = db.execute(
+                "SELECT COUNT(*) FROM users WHERE username = ?", ("syasya_test1",)
+            ).fetchone()[0]
+    
+>       assert count == 1, f"Duplicate username allowed: {count} accounts created"
+E       AssertionError: Duplicate username allowed: 2 accounts created
+E       assert 2 == 1
+
+05_Security_Performance/tests/test_security.py:64: AssertionError
+_____________ test_sec_03_th03_hardcoded_secret_key_cookie_forgery _____________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_sec_03_th03_hardcoded_secret_key_cookie_forgery(client):
+        """TH-03: Hardcoded SECRET_KEY allows forging a valid session cookie for another user."""
+        register_web(client, "syasya_test1", "Password123")
+        client.get("/logout")
+        register_web(client, "syasya_test2", "Password123")
+        client.get("/logout")
+    
+        serializer = app_module.app.session_interface.get_signing_serializer(app_module.app)
+        forged_cookie = serializer.dumps({"user_id": 2, "username": "syasya_test2"})
+        client.set_cookie("session", forged_cookie)
+    
+        res = client.get("/")
+>       assert res.status_code == 302, "Forged cookie signed with hardcoded SECRET_KEY granted access"
+E       AssertionError: Forged cookie signed with hardcoded SECRET_KEY granted access
+E       assert 200 == 302
+E        +  where 200 = <WrapperTestResponse streamed [200 OK]>.status_code
+
+05_Security_Performance/tests/test_security.py:79: AssertionError
+_____________ test_sec_04_th04_session_cookie_replay_after_logout ______________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_sec_04_th04_session_cookie_replay_after_logout(client):
+        """TH-04: Captured session cookie should not remain valid after /logout."""
+        register_web(client, "syasya_test1", "Password123")
+        client.get("/logout")
+    
+        login_res = client.post(
+            "/login", data={"username": "syasya_test1", "password": "Password123"}
+        )
+        set_cookie = login_res.headers.get("Set-Cookie", "")
+        old_session = set_cookie.split(";")[0].split("=", 1)[1]
+    
+        client.get("/logout")
+        client.set_cookie("session", old_session)
+        res = client.get("/")
+>       assert res.status_code == 302, "Old session cookie still authenticated user after logout"
+E       AssertionError: Old session cookie still authenticated user after logout
+E       assert 200 == 302
+E        +  where 200 = <WrapperTestResponse streamed [200 OK]>.status_code
+
+05_Security_Performance/tests/test_security.py:96: AssertionError
+__________________ test_sec_05_th05_stored_xss_in_task_title ___________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_sec_05_th05_stored_xss_in_task_title(client):
+        """TH-05: HTML/script tags in task title should be escaped, not rendered raw."""
+        register_web(client, "syasya_test1", "Password123")
+        payload = "<script>alert(1)</script>"
+        client.post("/tasks/new", data={"title": payload})
+    
+        res = client.get("/")
+>       assert payload.encode() not in res.data, "Unescaped <script> tag rendered via |safe filter"
+E       AssertionError: Unescaped <script> tag rendered via |safe filter
+E       assert b'<script>alert(1)</script>' not in b'<!doctype html>\n<html lang="en">\n<head>\n    <meta charset="utf-8">\n    <title>Tasks \xe2\x80\x94 PyTodo Pro</title>\n    <link rel="stylesheet" href="/static/style.css">\n</head>\n<body>\n    <nav class="topnav">\n        <a class="brand" href="/">PyTodo Pro</a>\n        \n        <div class="nav-links">\n            <a href="/">Tasks</a>\n            <a href="/dashboard">Dashboard</a>\n            <span class="nav-user">syasya_test1</span>\n            <a href="/logout">Log out</a>\n        </div>\n        \n    </nav>\n    <div class="container">\n        \n<div class="page-header">\n    <h1>My Tasks</h1>\n    <a class="btn" href="/tasks/new">+ New Task</a>\n</div>\n\n<form method="get" class="filters">\n    <select name="category" onchange="this.form.submit()">\n        <option value="">All categories</option>\n        \n        <option value="Personal" >Personal</option>\n        \n        <option value="Study" >Study</option>\n        \n        <option value="Urgent" >Urgent</option>\n        \n        <option value="Work" >Work</option>\n        \n    </select>\n    <select name="status" onchange="this.form.submit()">\n        <option value="">All statuses</option>\n ...Search title..." value="">\n    <button type="submit">Filter</button>\n</form>\n\n<table class="task-table">\n    <thead>\n        <tr>\n            <th></th>\n            <th>Title</th>\n            <th>Category</th>\n            <th>Due Date</th>\n            <th>Urgency</th>\n            <th></th>\n        </tr>\n    </thead>\n    <tbody>\n        \n        <tr class="">\n            <td>\n                <form method="post" action="/tasks/1/toggle">\n                    <button type="submit" class="check-btn">\xe2\x97\x8b</button>\n                </form>\n            </td>\n            <td class="title-cell"><script>alert(1)</script></td>\n            <td>\xe2\x80\x94</td>\n            <td>\xe2\x80\x94</td>\n            <td><span class="badge badge-no-due-date">No due date</span></td>\n            <td class="actions">\n                <a href="/tasks/1/edit">Edit</a>\n                <form method="post" action="/tasks/1/delete" onsubmit="return confirm(\'Delete this task?\');">\n                    <button type="submit" class="link-btn">Delete</button>\n                </form>\n            </td>\n        </tr>\n        \n    </tbody>\n</table>\n\n    </div>\n</body>\n</html>'
+E        +  where b'<script>alert(1)</script>' = <built-in method encode of str object at 0x7fe5864f7550>()
+E        +    where <built-in method encode of str object at 0x7fe5864f7550> = '<script>alert(1)</script>'.encode
+E        +  and   b'<!doctype html>\n<html lang="en">\n<head>\n    <meta charset="utf-8">\n    <title>Tasks \xe2\x80\x94 PyTodo Pro</title>\n    <link rel="stylesheet" href="/static/style.css">\n</head>\n<body>\n    <nav class="topnav">\n        <a class="brand" href="/">PyTodo Pro</a>\n        \n        <div class="nav-links">\n            <a href="/">Tasks</a>\n            <a href="/dashboard">Dashboard</a>\n            <span class="nav-user">syasya_test1</span>\n            <a href="/logout">Log out</a>\n        </div>\n        \n    </nav>\n    <div class="container">\n        \n<div class="page-header">\n    <h1>My Tasks</h1>\n    <a class="btn" href="/tasks/new">+ New Task</a>\n</div>\n\n<form method="get" class="filters">\n    <select name="category" onchange="this.form.submit()">\n        <option value="">All categories</option>\n        \n        <option value="Personal" >Personal</option>\n        \n        <option value="Study" >Study</option>\n        \n        <option value="Urgent" >Urgent</option>\n        \n        <option value="Work" >Work</option>\n        \n    </select>\n    <select name="status" onchange="this.form.submit()">\n        <option value="">All statuses</option>\n ...Search title..." value="">\n    <button type="submit">Filter</button>\n</form>\n\n<table class="task-table">\n    <thead>\n        <tr>\n            <th></th>\n            <th>Title</th>\n            <th>Category</th>\n            <th>Due Date</th>\n            <th>Urgency</th>\n            <th></th>\n        </tr>\n    </thead>\n    <tbody>\n        \n        <tr class="">\n            <td>\n                <form method="post" action="/tasks/1/toggle">\n                    <button type="submit" class="check-btn">\xe2\x97\x8b</button>\n                </form>\n            </td>\n            <td class="title-cell"><script>alert(1)</script></td>\n            <td>\xe2\x80\x94</td>\n            <td>\xe2\x80\x94</td>\n            <td><span class="badge badge-no-due-date">No due date</span></td>\n            <td class="actions">\n                <a href="/tasks/1/edit">Edit</a>\n                <form method="post" action="/tasks/1/delete" onsubmit="return confirm(\'Delete this task?\');">\n                    <button type="submit" class="link-btn">Delete</button>\n                </form>\n            </td>\n        </tr>\n        \n    </tbody>\n</table>\n\n    </div>\n</body>\n</html>' = <WrapperTestResponse 2421 bytes [200 OK]>.data
+
+05_Security_Performance/tests/test_security.py:110: AssertionError
+_______________ test_sec_06_th06_missing_csrf_token_on_task_form _______________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_sec_06_th06_missing_csrf_token_on_task_form(client):
+        """TH-06: State-changing POST forms should include CSRF protection."""
+        register_web(client, "syasya_test1", "Password123")
+        form_page = client.get("/tasks/new")
+>       assert b"csrf" in form_page.data.lower(), "No CSRF token found in /tasks/new form"
+E       AssertionError: No CSRF token found in /tasks/new form
+E       assert b'csrf' in b'<!doctype html>\n<html lang="en">\n<head>\n    <meta charset="utf-8">\n    <title>new task \xe2\x80\x94 pytodo pro</title>\n    <link rel="stylesheet" href="/static/style.css">\n</head>\n<body>\n    <nav class="topnav">\n        <a class="brand" href="/">pytodo pro</a>\n        \n        <div class="nav-links">\n            <a href="/">tasks</a>\n            <a href="/dashboard">dashboard</a>\n            <span class="nav-user">syasya_test1</span>\n            <a href="/logout">log out</a>\n        </div>\n        \n    </nav>\n    <div class="container">\n        \n<h1>new task</h1>\n<form method="post" class="task-form">\n    <label>title</label>\n    <input type="text" name="title" value="" required>\n\n    <label>description</label>\n    <textarea name="description" rows="3"></textarea>\n\n    <label>category</label>\n    <select name="category_id">\n        <option value="">none</option>\n        \n        <option value="2" >personal</option>\n        \n        <option value="3" >study</option>\n        \n        <option value="4" >urgent</option>\n        \n        <option value="1" >work</option>\n        \n    </select>\n\n    <label>due date</label>\n    <input type="date" name="due_date" value="">\n\n    <button type="submit">create task</button>\n    <a class="btn-secondary" href="/">cancel</a>\n</form>\n\n    </div>\n</body>\n</html>'
+E        +  where b'<!doctype html>\n<html lang="en">\n<head>\n    <meta charset="utf-8">\n    <title>new task \xe2\x80\x94 pytodo pro</title>\n    <link rel="stylesheet" href="/static/style.css">\n</head>\n<body>\n    <nav class="topnav">\n        <a class="brand" href="/">pytodo pro</a>\n        \n        <div class="nav-links">\n            <a href="/">tasks</a>\n            <a href="/dashboard">dashboard</a>\n            <span class="nav-user">syasya_test1</span>\n            <a href="/logout">log out</a>\n        </div>\n        \n    </nav>\n    <div class="container">\n        \n<h1>new task</h1>\n<form method="post" class="task-form">\n    <label>title</label>\n    <input type="text" name="title" value="" required>\n\n    <label>description</label>\n    <textarea name="description" rows="3"></textarea>\n\n    <label>category</label>\n    <select name="category_id">\n        <option value="">none</option>\n        \n        <option value="2" >personal</option>\n        \n        <option value="3" >study</option>\n        \n        <option value="4" >urgent</option>\n        \n        <option value="1" >work</option>\n        \n    </select>\n\n    <label>due date</label>\n    <input type="date" name="due_date" value="">\n\n    <button type="submit">create task</button>\n    <a class="btn-secondary" href="/">cancel</a>\n</form>\n\n    </div>\n</body>\n</html>' = <built-in method lower of bytes object at 0x304456a0>()
+E        +    where <built-in method lower of bytes object at 0x304456a0> = b'<!doctype html>\n<html lang="en">\n<head>\n    <meta charset="utf-8">\n    <title>New Task \xe2\x80\x94 PyTodo Pro</title>\n    <link rel="stylesheet" href="/static/style.css">\n</head>\n<body>\n    <nav class="topnav">\n        <a class="brand" href="/">PyTodo Pro</a>\n        \n        <div class="nav-links">\n            <a href="/">Tasks</a>\n            <a href="/dashboard">Dashboard</a>\n            <span class="nav-user">syasya_test1</span>\n            <a href="/logout">Log out</a>\n        </div>\n        \n    </nav>\n    <div class="container">\n        \n<h1>New Task</h1>\n<form method="post" class="task-form">\n    <label>Title</label>\n    <input type="text" name="title" value="" required>\n\n    <label>Description</label>\n    <textarea name="description" rows="3"></textarea>\n\n    <label>Category</label>\n    <select name="category_id">\n        <option value="">None</option>\n        \n        <option value="2" >Personal</option>\n        \n        <option value="3" >Study</option>\n        \n        <option value="4" >Urgent</option>\n        \n        <option value="1" >Work</option>\n        \n    </select>\n\n    <label>Due Date</label>\n    <input type="date" name="due_date" value="">\n\n    <button type="submit">Create Task</button>\n    <a class="btn-secondary" href="/">Cancel</a>\n</form>\n\n    </div>\n</body>\n</html>'.lower
+E        +      where b'<!doctype html>\n<html lang="en">\n<head>\n    <meta charset="utf-8">\n    <title>New Task \xe2\x80\x94 PyTodo Pro</title>\n    <link rel="stylesheet" href="/static/style.css">\n</head>\n<body>\n    <nav class="topnav">\n        <a class="brand" href="/">PyTodo Pro</a>\n        \n        <div class="nav-links">\n            <a href="/">Tasks</a>\n            <a href="/dashboard">Dashboard</a>\n            <span class="nav-user">syasya_test1</span>\n            <a href="/logout">Log out</a>\n        </div>\n        \n    </nav>\n    <div class="container">\n        \n<h1>New Task</h1>\n<form method="post" class="task-form">\n    <label>Title</label>\n    <input type="text" name="title" value="" required>\n\n    <label>Description</label>\n    <textarea name="description" rows="3"></textarea>\n\n    <label>Category</label>\n    <select name="category_id">\n        <option value="">None</option>\n        \n        <option value="2" >Personal</option>\n        \n        <option value="3" >Study</option>\n        \n        <option value="4" >Urgent</option>\n        \n        <option value="1" >Work</option>\n        \n    </select>\n\n    <label>Due Date</label>\n    <input type="date" name="due_date" value="">\n\n    <button type="submit">Create Task</button>\n    <a class="btn-secondary" href="/">Cancel</a>\n</form>\n\n    </div>\n</body>\n</html>' = <WrapperTestResponse 1306 bytes [200 OK]>.data
+
+05_Security_Performance/tests/test_security.py:117: AssertionError
+____________ test_sec_07_th07_api_search_sql_injection_syntax_error ____________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_sec_07_th07_api_search_sql_injection_syntax_error(client):
+        """TH-07: Single quote in /api/tasks?q= should be safely parameterized."""
+        register_web(client, "syasya_test1", "Password123")
+>       res = client.get("/api/tasks?q=a'")
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+05_Security_Performance/tests/test_security.py:123: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/local/lib/python3.13/site-packages/werkzeug/test.py:1166: in get
+    return self.open(*args, **kw)
+           ^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/testing.py:235: in open
+    response = super().open(
+/usr/local/lib/python3.13/site-packages/werkzeug/test.py:1120: in open
+    response_parts = self.run_wsgi_app(request.environ, buffered=buffered)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/werkzeug/test.py:992: in run_wsgi_app
+    rv = run_wsgi_app(self.application, environ, buffered=buffered)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/werkzeug/test.py:1268: in run_wsgi_app
+    app_rv = app(environ, start_response)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:1498: in __call__
+    return self.wsgi_app(environ, start_response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:1476: in wsgi_app
+    response = self.handle_exception(e)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:1473: in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:882: in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:880: in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:865: in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app.py:130: in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    @app.route("/api/tasks", methods=["GET"])
+    @login_required_api
+    def api_list_tasks():
+        db = get_db()
+        page = request.args.get("page", default=0, type=int)
+        per_page = request.args.get("per_page", default=10, type=int)
+        category = request.args.get("category", "").strip()
+        status = request.args.get("status", "").strip()
+        q = request.args.get("q", "").strip()
+    
+        query = "SELECT * FROM tasks WHERE user_id = ?"
+        params = [session["user_id"]]
+    
+        cat_id = get_category_id_by_name(db, category) if category else None
+        if cat_id:
+            query += " AND category_id = ?"
+            params.append(cat_id)
+    
+        if status == "done":
+            query += " AND done = 1"
+        elif status == "open":
+            query += " AND done = 0"
+    
+        if q:
+            # Search is intentionally simple: build the LIKE pattern directly.
+            query += f" AND title LIKE '%{q}%'"
+    
+        query += " ORDER BY id DESC LIMIT ? OFFSET ?"
+        params.extend([per_page, page * per_page])
+    
+>       rows = db.execute(query, params).fetchall()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       sqlite3.OperationalError: unrecognized token: "' ORDER BY id DESC LIMIT ? OFFSET ?"
+
+app.py:384: OperationalError
+______________ test_sec_08_th08_web_search_sql_wildcard_escaping _______________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_sec_08_th08_web_search_sql_wildcard_escaping(client):
+        """TH-08: Literal % in web search should not match unrelated tasks."""
+        register_web(client, "syasya_test1", "Password123")
+        client.post("/tasks/new", data={"title": "100% Completed"})
+        client.post("/tasks/new", data={"title": "Unrelated Task"})
+    
+        res = client.get("/?q=%")
+>       assert b"Unrelated Task" not in res.data, "Unescaped % wildcard matched all tasks"
+E       AssertionError: Unescaped % wildcard matched all tasks
+E       assert b'Unrelated Task' not in b'<!doctype html>\n<html lang="en">\n<head>\n    <meta charset="utf-8">\n    <title>Tasks \xe2\x80\x94 PyTodo Pro</title>\n    <link rel="stylesheet" href="/static/style.css">\n</head>\n<body>\n    <nav class="topnav">\n        <a class="brand" href="/">PyTodo Pro</a>\n        \n        <div class="nav-links">\n            <a href="/">Tasks</a>\n            <a href="/dashboard">Dashboard</a>\n            <span class="nav-user">syasya_test1</span>\n            <a href="/logout">Log out</a>\n        </div>\n        \n    </nav>\n    <div class="container">\n        \n<div class="page-header">\n    <h1>My Tasks</h1>\n    <a class="btn" href="/tasks/new">+ New Task</a>\n</div>\n\n<form method="get" class="filters">\n    <select name="category" onchange="this.form.submit()">\n        <option value="">All categories</option>\n        \n        <option value="Personal" >Personal</option>\n        \n        <option value="Study" >Study</option>\n        \n        <option value="Urgent" >Urgent</option>\n        \n        <option value="Work" >Work</option>\n        \n    </select>\n    <select name="status" onchange="this.form.submit()">\n        <option value="">All statuses</option>\n ...o due date</span></td>\n            <td class="actions">\n                <a href="/tasks/2/edit">Edit</a>\n                <form method="post" action="/tasks/2/delete" onsubmit="return confirm(\'Delete this task?\');">\n                    <button type="submit" class="link-btn">Delete</button>\n                </form>\n            </td>\n        </tr>\n        \n        <tr class="">\n            <td>\n                <form method="post" action="/tasks/1/toggle">\n                    <button type="submit" class="check-btn">\xe2\x97\x8b</button>\n                </form>\n            </td>\n            <td class="title-cell">100% Completed</td>\n            <td>\xe2\x80\x94</td>\n            <td>\xe2\x80\x94</td>\n            <td><span class="badge badge-no-due-date">No due date</span></td>\n            <td class="actions">\n                <a href="/tasks/1/edit">Edit</a>\n                <form method="post" action="/tasks/1/delete" onsubmit="return confirm(\'Delete this task?\');">\n                    <button type="submit" class="link-btn">Delete</button>\n                </form>\n            </td>\n        </tr>\n        \n    </tbody>\n</table>\n\n    </div>\n</body>\n</html>'
+E        +  where b'<!doctype html>\n<html lang="en">\n<head>\n    <meta charset="utf-8">\n    <title>Tasks \xe2\x80\x94 PyTodo Pro</title>\n    <link rel="stylesheet" href="/static/style.css">\n</head>\n<body>\n    <nav class="topnav">\n        <a class="brand" href="/">PyTodo Pro</a>\n        \n        <div class="nav-links">\n            <a href="/">Tasks</a>\n            <a href="/dashboard">Dashboard</a>\n            <span class="nav-user">syasya_test1</span>\n            <a href="/logout">Log out</a>\n        </div>\n        \n    </nav>\n    <div class="container">\n        \n<div class="page-header">\n    <h1>My Tasks</h1>\n    <a class="btn" href="/tasks/new">+ New Task</a>\n</div>\n\n<form method="get" class="filters">\n    <select name="category" onchange="this.form.submit()">\n        <option value="">All categories</option>\n        \n        <option value="Personal" >Personal</option>\n        \n        <option value="Study" >Study</option>\n        \n        <option value="Urgent" >Urgent</option>\n        \n        <option value="Work" >Work</option>\n        \n    </select>\n    <select name="status" onchange="this.form.submit()">\n        <option value="">All statuses</option>\n ...o due date</span></td>\n            <td class="actions">\n                <a href="/tasks/2/edit">Edit</a>\n                <form method="post" action="/tasks/2/delete" onsubmit="return confirm(\'Delete this task?\');">\n                    <button type="submit" class="link-btn">Delete</button>\n                </form>\n            </td>\n        </tr>\n        \n        <tr class="">\n            <td>\n                <form method="post" action="/tasks/1/toggle">\n                    <button type="submit" class="check-btn">\xe2\x97\x8b</button>\n                </form>\n            </td>\n            <td class="title-cell">100% Completed</td>\n            <td>\xe2\x80\x94</td>\n            <td>\xe2\x80\x94</td>\n            <td><span class="badge badge-no-due-date">No due date</span></td>\n            <td class="actions">\n                <a href="/tasks/1/edit">Edit</a>\n                <form method="post" action="/tasks/1/delete" onsubmit="return confirm(\'Delete this task?\');">\n                    <button type="submit" class="link-btn">Delete</button>\n                </form>\n            </td>\n        </tr>\n        \n    </tbody>\n</table>\n\n    </div>\n</body>\n</html>' = <WrapperTestResponse 3142 bytes [200 OK]>.data
+
+05_Security_Performance/tests/test_security.py:134: AssertionError
+_____________ test_sec_09_th09_whitespace_title_server_validation ______________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_sec_09_th09_whitespace_title_server_validation(client):
+        """TH-09: Server should reject whitespace-only task titles."""
+        register_web(client, "syasya_test1", "Password123")
+        res = client.post("/tasks/new", data={"title": "     "})
+>       assert res.status_code == 400, "Whitespace-only title was accepted and saved"
+E       AssertionError: Whitespace-only title was accepted and saved
+E       assert 302 == 400
+E        +  where 302 = <WrapperTestResponse streamed [302 FOUND]>.status_code
+
+05_Security_Performance/tests/test_security.py:141: AssertionError
+________________ test_sec_10_th10_audit_trail_for_task_deletion ________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_sec_10_th10_audit_trail_for_task_deletion(client):
+        """TH-10: Destructive actions (task deletion) should leave an audit log record."""
+        register_web(client, "syasya_test1", "Password123")
+        client.post("/tasks/new", data={"title": "Audit Test Task"})
+        client.post("/tasks/1/delete")
+    
+        with app_module.app.app_context():
+            db = app_module.get_db()
+            tables = [
+                r[0]
+                for r in db.execute(
+                    "SELECT name FROM sqlite_master WHERE type='table'"
+                ).fetchall()
+            ]
+    
+>       assert any("audit" in t or "log" in t for t in tables), "No audit log table exists in database"
+E       AssertionError: No audit log table exists in database
+E       assert False
+E        +  where False = any(<generator object test_sec_10_th10_audit_trail_for_task_deletion.<locals>.<genexpr> at 0x7fe585efcba0>)
+
+05_Security_Performance/tests/test_security.py:163: AssertionError
+________________ test_sec_11_th11_debug_mode_disabled_in_source ________________
+
+    def test_sec_11_th11_debug_mode_disabled_in_source():
+        """TH-11: Flask debug=True should not be hardcoded in app.py."""
+        app_source = (ROOT_DIR / "app.py").read_text(encoding="utf-8")
+>       assert "debug=True" not in app_source, "app.run(debug=True) exposes Werkzeug debugger"
+E       AssertionError: app.run(debug=True) exposes Werkzeug debugger
+E       assert 'debug=True' not in '"""\nPyTodo...ebug=True)\n'
+E         
+E         'debug=True' is contained here:
+E           """
+E           PyTodo Pro — a complete, ready-to-test Flask task manager.
+E           
+E           Features: user accounts, categorized tasks with due dates, an urgency
+E           dashboard, and a full JSON REST API — all already implemented. This...
+E         
+E         ...Full output truncated (477 lines hidden), use '-vv' to show
+
+05_Security_Performance/tests/test_security.py:173: AssertionError
+________________ test_sec_12_th12_no_store_cache_control_header ________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_sec_12_th12_no_store_cache_control_header(client):
+        """TH-12: Authenticated pages should send Cache-Control: no-store to prevent Back-button leak."""
+        register_web(client, "syasya_test1", "Password123")
+        res = client.get("/dashboard")
+        cache_control = res.headers.get("Cache-Control", "")
+>       assert "no-store" in cache_control.lower(), "Missing Cache-Control: no-store header on /dashboard"
+E       AssertionError: Missing Cache-Control: no-store header on /dashboard
+E       assert 'no-store' in ''
+E        +  where '' = <built-in method lower of str object at 0x1330958>()
+E        +    where <built-in method lower of str object at 0x1330958> = ''.lower
+
+05_Security_Performance/tests/test_security.py:181: AssertionError
+____________ test_sec_14_th14_api_search_sqli_cross_user_data_leak _____________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_sec_14_th14_api_search_sqli_cross_user_data_leak(client):
+        """TH-14: SQL injection in /api/tasks?q= must not leak another user's private tasks."""
+        register_web(client, "syasya_test1", "Password123")
+        client.post("/api/tasks", json={"title": "Test1 Private Secret"})
+        client.get("/logout")
+    
+        register_web(client, "syasya_test2", "Password123")
+>       res = client.get("/api/tasks?q=' OR 1=1 --")
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+05_Security_Performance/tests/test_security.py:204: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/local/lib/python3.13/site-packages/werkzeug/test.py:1166: in get
+    return self.open(*args, **kw)
+           ^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/testing.py:235: in open
+    response = super().open(
+/usr/local/lib/python3.13/site-packages/werkzeug/test.py:1120: in open
+    response_parts = self.run_wsgi_app(request.environ, buffered=buffered)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/werkzeug/test.py:992: in run_wsgi_app
+    rv = run_wsgi_app(self.application, environ, buffered=buffered)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/werkzeug/test.py:1268: in run_wsgi_app
+    app_rv = app(environ, start_response)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:1498: in __call__
+    return self.wsgi_app(environ, start_response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:1476: in wsgi_app
+    response = self.handle_exception(e)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:1473: in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:882: in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:880: in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:865: in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app.py:130: in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    @app.route("/api/tasks", methods=["GET"])
+    @login_required_api
+    def api_list_tasks():
+        db = get_db()
+        page = request.args.get("page", default=0, type=int)
+        per_page = request.args.get("per_page", default=10, type=int)
+        category = request.args.get("category", "").strip()
+        status = request.args.get("status", "").strip()
+        q = request.args.get("q", "").strip()
+    
+        query = "SELECT * FROM tasks WHERE user_id = ?"
+        params = [session["user_id"]]
+    
+        cat_id = get_category_id_by_name(db, category) if category else None
+        if cat_id:
+            query += " AND category_id = ?"
+            params.append(cat_id)
+    
+        if status == "done":
+            query += " AND done = 1"
+        elif status == "open":
+            query += " AND done = 0"
+    
+        if q:
+            # Search is intentionally simple: build the LIKE pattern directly.
+            query += f" AND title LIKE '%{q}%'"
+    
+        query += " ORDER BY id DESC LIMIT ? OFFSET ?"
+        params.extend([per_page, page * per_page])
+    
+>       rows = db.execute(query, params).fetchall()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       sqlite3.ProgrammingError: Incorrect number of bindings supplied. The current statement uses 1, and there are 3 supplied.
+
+app.py:384: ProgrammingError
+________________ test_sec_15_th15_session_cookie_security_flags ________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_sec_15_th15_session_cookie_security_flags(client):
+        """TH-15: Session cookie should include HttpOnly, SameSite, and Secure flags."""
+        res = register_web(client, "syasya_test1", "Password123")
+        cookie_header = res.headers.get("Set-Cookie", "")
+        assert "HttpOnly" in cookie_header
+>       assert "SameSite" in cookie_header and "Secure" in cookie_header, "Missing SameSite/Secure flags"
+E       AssertionError: Missing SameSite/Secure flags
+E       assert ('SameSite' in 'session=eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6InN5YXN5YV90ZXN0MSJ9.awaE8g.ihteI_5aybKLSVCHJsAHbZ5djls; HttpOnly; Path=/')
+
+05_Security_Performance/tests/test_security.py:214: AssertionError
+_______________ test_sec_17_th17_malformed_due_date_availability _______________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_sec_17_th17_malformed_due_date_availability(client):
+        """TH-17: Malformed due_date should be rejected rather than crashing / with 500."""
+        register_web(client, "syasya_test1", "Password123")
+        client.post("/tasks/new", data={"title": "Bad Date Task", "due_date": "04-11-2026"})
+>       res = client.get("/")
+              ^^^^^^^^^^^^^^^
+
+05_Security_Performance/tests/test_security.py:234: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+/usr/local/lib/python3.13/site-packages/werkzeug/test.py:1166: in get
+    return self.open(*args, **kw)
+           ^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/testing.py:235: in open
+    response = super().open(
+/usr/local/lib/python3.13/site-packages/werkzeug/test.py:1120: in open
+    response_parts = self.run_wsgi_app(request.environ, buffered=buffered)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/werkzeug/test.py:992: in run_wsgi_app
+    rv = run_wsgi_app(self.application, environ, buffered=buffered)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/werkzeug/test.py:1268: in run_wsgi_app
+    app_rv = app(environ, start_response)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:1498: in __call__
+    return self.wsgi_app(environ, start_response)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:1476: in wsgi_app
+    response = self.handle_exception(e)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:1473: in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:882: in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:880: in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/site-packages/flask/app.py:865: in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app.py:121: in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+app.py:216: in index
+    tasks = [row_to_task(r, get_category_name(db, r["category_id"])) for r in rows]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+app.py:94: in row_to_task
+    "urgency": compute_urgency(row["due_date"]) if not row["done"] else "Done",
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+helpers.py:31: in compute_urgency
+    due = datetime.strptime(due_date_str, "%Y-%m-%d").date()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/local/lib/python3.13/_strptime.py:789: in _strptime_datetime
+    tt, fraction, gmtoff_fraction = _strptime(data_string, format)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+data_string = '04-11-2026', format = '%Y-%m-%d'
+
+    def _strptime(data_string, format="%a %b %d %H:%M:%S %Y"):
+        """Return a 2-tuple consisting of a time struct and an int containing
+        the number of microseconds based on the input string and the
+        format string."""
+    
+        for index, arg in enumerate([data_string, format]):
+            if not isinstance(arg, str):
+                msg = "strptime() argument {} must be str, not {}"
+                raise TypeError(msg.format(index, type(arg)))
+    
+        global _TimeRE_cache, _regex_cache
+        with _cache_lock:
+            locale_time = _TimeRE_cache.locale_time
+            if (_getlang() != locale_time.lang or
+                time.tzname != locale_time.tzname or
+                time.daylight != locale_time.daylight):
+                _TimeRE_cache = TimeRE()
+                _regex_cache.clear()
+                locale_time = _TimeRE_cache.locale_time
+            if len(_regex_cache) > _CACHE_MAX_SIZE:
+                _regex_cache.clear()
+            format_regex = _regex_cache.get(format)
+            if not format_regex:
+                try:
+                    format_regex = _TimeRE_cache.compile(format)
+                # KeyError raised when a bad format is found; can be specified as
+                # \\, in which case it was a stray % but with a space after it
+                except KeyError as err:
+                    bad_directive = err.args[0]
+                    del err
+                    bad_directive = bad_directive.replace('\\s', '')
+                    if not bad_directive:
+                        raise ValueError("stray %% in format '%s'" % format) from None
+                    bad_directive = bad_directive.replace('\\', '', 1)
+                    raise ValueError("'%s' is a bad directive in format '%s'" %
+                                        (bad_directive, format)) from None
+                _regex_cache[format] = format_regex
+        found = format_regex.match(data_string)
+        if not found:
+>           raise ValueError("time data %r does not match format %r" %
+                             (data_string, format))
+E           ValueError: time data '04-11-2026' does not match format '%Y-%m-%d'
+
+/usr/local/lib/python3.13/_strptime.py:555: ValueError
+__________________ test_sec_18_th18_unbounded_per_page_limit ___________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_sec_18_th18_unbounded_per_page_limit(client):
+        """TH-18: API pagination per_page parameter should enforce a safe maximum cap."""
+        register_web(client, "syasya_test1", "Password123")
+        for i in range(25):
+            client.post("/api/tasks", json={"title": f"Task {i}"})
+    
+        res = client.get("/api/tasks?per_page=1000")
+>       assert len(res.get_json()) <= 20, "Unbounded per_page returned all 25 tasks without cap"
+E       AssertionError: Unbounded per_page returned all 25 tasks without cap
+E       assert 25 <= 20
+E        +  where 25 = len([{'category': None, 'category_id': None, 'completed_at': None, 'created_at': '2026-11-25T14:49:23.225716', ...}, {'category': None, 'category_id': None, 'completed_at': None, 'created_at': '2026-11-25T14:49:23.224284', ...}, {'category': None, 'category_id': None, 'completed_at': None, 'created_at': '2026-11-25T14:49:23.222786', ...}, {'category': None, 'category_id': None, 'completed_at': None, 'created_at': '2026-11-25T14:49:23.217993', ...}, {'category': None, 'category_id': None, 'completed_at': None, 'created_at': '2026-11-25T14:49:23.216247', ...}, {'category': None, 'category_id': None, 'completed_at': None, 'created_at': '2026-11-25T14:49:23.214913', ...}, ...])
+E        +    where [{'category': None, 'category_id': None, 'completed_at': None, 'created_at': '2026-11-25T14:49:23.225716', ...}, {'category': None, 'category_id': None, 'completed_at': None, 'created_at': '2026-11-25T14:49:23.224284', ...}, {'category': None, 'category_id': None, 'completed_at': None, 'created_at': '2026-11-25T14:49:23.222786', ...}, {'category': None, 'category_id': None, 'completed_at': None, 'created_at': '2026-11-25T14:49:23.217993', ...}, {'category': None, 'category_id': None, 'completed_at': None, 'created_at': '2026-11-25T14:49:23.216247', ...}, {'category': None, 'category_id': None, 'completed_at': None, 'created_at': '2026-11-25T14:49:23.214913', ...}, ...] = get_json()
+E        +      where get_json = <WrapperTestResponse 4858 bytes [200 OK]>.get_json
+
+05_Security_Performance/tests/test_security.py:245: AssertionError
+_________________ test_sec_19_th19_api_login_burst_throttling __________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_sec_19_th19_api_login_burst_throttling(client):
+        """TH-19: Rapid sequential login requests should trigger throttling."""
+        register_web(client, "syasya_test1", "Password123")
+        client.get("/logout")
+    
+        statuses = [
+            client.post("/api/login", json={"username": "syasya_test1", "password": "bad"}).status_code
+            for _ in range(20)
+        ]
+>       assert 429 in statuses, "All 20 rapid login attempts processed with no throttling"
+E       AssertionError: All 20 rapid login attempts processed with no throttling
+E       assert 429 in [401, 401, 401, 401, 401, 401, ...]
+
+05_Security_Performance/tests/test_security.py:257: AssertionError
+________________ test_sec_20_th20_logout_requires_post_not_get _________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_sec_20_th20_logout_requires_post_not_get(client):
+        """TH-20: GET /logout should not terminate session (prevents cross-site image logout)."""
+        register_web(client, "syasya_test1", "Password123")
+        res = client.get("/logout")
+>       assert res.status_code == 405, "GET /logout terminated session without POST/CSRF protection"
+E       AssertionError: GET /logout terminated session without POST/CSRF protection
+E       assert 302 == 405
+E        +  where 302 = <WrapperTestResponse streamed [302 FOUND]>.status_code
+
+05_Security_Performance/tests/test_security.py:264: AssertionError
+_________________ test_sec_21_th21_api_delete_cross_user_idor __________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    def test_sec_21_th21_api_delete_cross_user_idor(client):
+        """TH-21: User B must not be able to delete User A's task via DELETE /api/tasks/<id>."""
+        register_web(client, "syasya_test1", "Password123")
+        task_id = client.post("/api/tasks", json={"title": "Test1 Protected Task"}).get_json()["id"]
+        client.get("/logout")
+    
+        register_web(client, "syasya_test2", "Password123")
+        res = client.delete(f"/api/tasks/{task_id}")
+>       assert res.status_code in (403, 404), "IDOR: User B deleted User A's task via API"
+E       AssertionError: IDOR: User B deleted User A's task via API
+E       assert 200 in (403, 404)
+E        +  where 200 = <WrapperTestResponse streamed [200 OK]>.status_code
+
+05_Security_Performance/tests/test_security.py:279: AssertionError
+==================================== PASSES ====================================
+- generated xml file: /home/claude/w6/logs/05_Security_Performance__tests__test_security.xml -
+=========================== short test summary info ============================
+PASSED 05_Security_Performance/tests/test_security.py::test_sec_13_th13_password_stored_as_salted_hash
+PASSED 05_Security_Performance/tests/test_security.py::test_sec_16_th16_unauthenticated_categories_exposes_no_user_data
+PASSED 05_Security_Performance/tests/test_security.py::test_sec_22_th22_web_routes_enforce_task_ownership
+FAILED 05_Security_Performance/tests/test_security.py::test_sec_01_th01_login_brute_force_rate_limit
+FAILED 05_Security_Performance/tests/test_security.py::test_sec_02_th02_duplicate_username_registration
+FAILED 05_Security_Performance/tests/test_security.py::test_sec_03_th03_hardcoded_secret_key_cookie_forgery
+FAILED 05_Security_Performance/tests/test_security.py::test_sec_04_th04_session_cookie_replay_after_logout
+FAILED 05_Security_Performance/tests/test_security.py::test_sec_05_th05_stored_xss_in_task_title
+FAILED 05_Security_Performance/tests/test_security.py::test_sec_06_th06_missing_csrf_token_on_task_form
+FAILED 05_Security_Performance/tests/test_security.py::test_sec_07_th07_api_search_sql_injection_syntax_error
+FAILED 05_Security_Performance/tests/test_security.py::test_sec_08_th08_web_search_sql_wildcard_escaping
+FAILED 05_Security_Performance/tests/test_security.py::test_sec_09_th09_whitespace_title_server_validation
+FAILED 05_Security_Performance/tests/test_security.py::test_sec_10_th10_audit_trail_for_task_deletion
+FAILED 05_Security_Performance/tests/test_security.py::test_sec_11_th11_debug_mode_disabled_in_source
+FAILED 05_Security_Performance/tests/test_security.py::test_sec_12_th12_no_store_cache_control_header
+FAILED 05_Security_Performance/tests/test_security.py::test_sec_14_th14_api_search_sqli_cross_user_data_leak
+FAILED 05_Security_Performance/tests/test_security.py::test_sec_15_th15_session_cookie_security_flags
+FAILED 05_Security_Performance/tests/test_security.py::test_sec_17_th17_malformed_due_date_availability
+FAILED 05_Security_Performance/tests/test_security.py::test_sec_18_th18_unbounded_per_page_limit
+FAILED 05_Security_Performance/tests/test_security.py::test_sec_19_th19_api_login_burst_throttling
+FAILED 05_Security_Performance/tests/test_security.py::test_sec_20_th20_logout_requires_post_not_get
+FAILED 05_Security_Performance/tests/test_security.py::test_sec_21_th21_api_delete_cross_user_idor
+========================= 19 failed, 3 passed in 3.68s =========================
+

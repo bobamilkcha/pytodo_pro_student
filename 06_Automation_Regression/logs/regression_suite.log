@@ -1,0 +1,633 @@
+﻿============================= test session starts =============================
+platform win32 -- Python 3.10.11, pytest-9.2.0, pluggy-1.7.0 -- C:\Users\nisrina\Desktop\pytodo_pro_student\venv\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\nisrina\Desktop\pytodo_pro_student
+configfile: pytest.ini
+plugins: locust-2.46.0, cov-7.1.0
+collecting ... collected 85 items / 40 deselected / 45 selected
+
+06_Automation_Regression/tests/api/test_api_auth.py::test_api_reg_09_duplicate_username FAILED [  2%]
+06_Automation_Regression/tests/api/test_api_auth.py::test_tc_bb_bva_f08_01_empty_task_title PASSED [  4%]
+06_Automation_Regression/tests/api/test_ep_and_core_api.py::test_tc_bb_004_create_valid_task_api PASSED [  6%]
+06_Automation_Regression/tests/api/test_ep_and_core_api.py::test_tc_bb_005_web_whitespace_title_rejected FAILED [  8%]
+06_Automation_Regression/tests/api/test_ep_and_core_api.py::test_tc_wb_f11_10_combined_web_filters PASSED [ 11%]
+06_Automation_Regression/tests/api/test_ep_and_core_api.py::test_tc_wb_f14_10_bad_due_date_api_rejected FAILED [ 13%]
+06_Automation_Regression/tests/api/test_ep_and_core_api.py::test_api_tsk_put_03_empty_title_on_edit_rejected FAILED [ 15%]
+06_Automation_Regression/tests/api/test_ep_and_core_api.py::test_tc_sec_07_sql_injection_in_search_handled FAILED [ 17%]
+06_Automation_Regression/tests/api/test_ep_and_core_api.py::test_tc_sec_21_cross_user_delete_blocked FAILED [ 20%]
+06_Automation_Regression/tests/api/test_ep_and_core_api.py::test_tc_sec_05_stored_xss_escaped_in_task_list FAILED [ 22%]
+06_Automation_Regression/tests/api/test_ep_and_core_api.py::test_tc_sec_22_web_delete_enforces_owner_check PASSED [ 24%]
+06_Automation_Regression/tests/api/test_reg_api_delete_dashboard.py::test_api_dd_01_cross_user_delete_loses_data FAILED [ 26%]
+06_Automation_Regression/tests/api/test_reg_api_delete_dashboard.py::test_api_dd_02_delete_same_task_twice FAILED [ 28%]
+06_Automation_Regression/tests/api/test_reg_api_delete_dashboard.py::test_api_dd_04_dashboard_counts_only_own_tasks PASSED [ 31%]
+06_Automation_Regression/tests/api/test_reg_api_delete_dashboard.py::test_api_dd_06_due_soon_upper_boundary PASSED [ 33%]
+06_Automation_Regression/tests/api/test_reg_api_delete_dashboard.py::test_api_dd_07_overdue_lower_boundary PASSED [ 35%]
+06_Automation_Regression/tests/api/test_reg_api_delete_dashboard.py::test_api_dd_08_completed_exactly_7_days_ago FAILED [ 37%]
+06_Automation_Regression/tests/api/test_reg_api_delete_dashboard.py::test_api_dd_10_dashboard_with_bad_due_date FAILED [ 40%]
+06_Automation_Regression/tests/ui/test_reg_accessibility_markup.py::test_acc_01_login_register_fields_have_labels[/login] FAILED [ 42%]
+06_Automation_Regression/tests/ui/test_reg_accessibility_markup.py::test_acc_01_login_register_fields_have_labels[/register] FAILED [ 44%]
+06_Automation_Regression/tests/ui/test_reg_accessibility_markup.py::test_acc_01_task_form_fields_have_labels[/tasks/new] FAILED [ 46%]
+06_Automation_Regression/tests/ui/test_reg_accessibility_markup.py::test_acc_01_task_form_fields_have_labels[EDIT] FAILED [ 48%]
+06_Automation_Regression/tests/ui/test_reg_accessibility_markup.py::test_acc_08_filter_controls_have_names FAILED [ 51%]
+06_Automation_Regression/tests/ui/test_reg_accessibility_markup.py::test_acc_02_done_toggle_has_accessible_name FAILED [ 53%]
+06_Automation_Regression/tests/ui/test_reg_accessibility_markup.py::test_acc_03_grey_text_contrast[.task-table tr.done .title-cell] FAILED [ 55%]
+06_Automation_Regression/tests/ui/test_reg_accessibility_markup.py::test_acc_03_grey_text_contrast[.empty] FAILED [ 57%]
+06_Automation_Regression/tests/ui/test_reg_accessibility_markup.py::test_acc_07_page_language_set[/login] PASSED [ 60%]
+06_Automation_Regression/tests/ui/test_reg_accessibility_markup.py::test_acc_07_page_language_set[/register] PASSED [ 62%]
+06_Automation_Regression/tests/ui/test_reg_accessibility_markup.py::test_acc_09_viewport_meta_present FAILED [ 64%]
+06_Automation_Regression/tests/ui/test_reg_accessibility_markup.py::test_gui_08_empty_list_message_without_filters FAILED [ 66%]
+06_Automation_Regression/tests/unit/test_bva_unit.py::test_tc_bb_bva_f01_02_eight_char_password FAILED [ 68%]
+06_Automation_Regression/tests/unit/test_ep_urgency_unit.py::test_tc_bb_008_due_today_urgency FAILED [ 71%]
+06_Automation_Regression/tests/unit/test_reg_decision_table.py::test_tc_bb_f03_01_rule1_user_exists_correct_password PASSED [ 73%]
+06_Automation_Regression/tests/unit/test_reg_decision_table.py::test_tc_bb_f03_02_rule2_user_exists_wrong_password PASSED [ 75%]
+06_Automation_Regression/tests/unit/test_reg_decision_table.py::test_tc_bb_f11_02_all_three_filters_combined PASSED [ 77%]
+06_Automation_Regression/tests/unit/test_reg_decision_table.py::test_tc_bb_f14_02_open_task_due_today FAILED [ 80%]
+06_Automation_Regression/tests/unit/test_reg_decision_table.py::test_tc_bb_f14_03_open_task_due_tomorrow PASSED [ 82%]
+06_Automation_Regression/tests/unit/test_reg_decision_table.py::test_tc_bb_f14_04_done_task_due_yesterday PASSED [ 84%]
+06_Automation_Regression/tests/unit/test_reg_decision_table.py::test_reg_d004_01_password_length_boundary[1234567-False] PASSED [ 86%]
+06_Automation_Regression/tests/unit/test_reg_decision_table.py::test_reg_d004_01_password_length_boundary[12345678-True] FAILED [ 88%]
+06_Automation_Regression/tests/unit/test_reg_decision_table.py::test_reg_d004_01_password_length_boundary[123456789-True] PASSED [ 91%]
+06_Automation_Regression/tests/unit/test_reg_decision_table.py::test_reg_d004_02_web_register_accepts_8_char_password FAILED [ 93%]
+06_Automation_Regression/tests/unit/test_reg_decision_table.py::test_reg_d004_03_api_register_accepts_8_char_password FAILED [ 95%]
+06_Automation_Regression/tests/unit/test_reg_decision_table.py::test_reg_d001_01_helper_due_today FAILED [ 97%]
+06_Automation_Regression/tests/unit/test_reg_decision_table.py::test_reg_d001_02_dashboard_does_not_count_today_as_overdue FAILED [100%]
+
+================================== FAILURES ===================================
+_____________________ test_api_reg_09_duplicate_username ______________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    @pytest.mark.regression
+    def test_api_reg_09_duplicate_username(client):
+        """API-REG-09 / TC-BB-002 (Defect D-013): Duplicate username must be rejected."""
+        username = unique_user("dup")
+        first = client.post("/api/register", json={"username": username, "password": "Password123"})
+        assert first.status_code == 201
+    
+        second = client.post("/api/register", json={"username": username, "password": "Password123"})
+>       assert second.status_code in (400, 409)
+E       assert 201 in (400, 409)
+E        +  where 201 = <WrapperTestResponse streamed [201 CREATED]>.status_code
+
+06_Automation_Regression\tests\api\test_api_auth.py:80: AssertionError
+________________ test_tc_bb_005_web_whitespace_title_rejected _________________
+
+isolated_client = <FlaskClient <Flask 'app'>>
+
+    @pytest.mark.regression
+    def test_tc_bb_005_web_whitespace_title_rejected(isolated_client):
+        """TC-BB-005 / TC-SEC-09 (Defect D-011): Web form must reject whitespace-only title."""
+        register_and_login(isolated_client)
+        isolated_client.post(
+            "/tasks/new",
+            data={"title": "     ", "description": "", "category_id": "", "due_date": ""},
+        )
+        tasks = isolated_client.get("/api/tasks").get_json()
+>       assert len(tasks) == 0
+E       AssertionError: assert 1 == 0
+E        +  where 1 = len([{'category': None, 'category_id': None, 'completed_at': None, 'created_at': '2026-11-26T11:36:08.604881', ...}])
+
+06_Automation_Regression\tests\api\test_ep_and_core_api.py:54: AssertionError
+_________________ test_tc_wb_f14_10_bad_due_date_api_rejected _________________
+
+isolated_client = <FlaskClient <Flask 'app'>>
+
+    @pytest.mark.regression
+    def test_tc_wb_f14_10_bad_due_date_api_rejected(isolated_client):
+        """TC-WB-F14-10 / API-TSK-POST-04 (Defect D-006): Malformed due_date must return 400, not 500."""
+        register_and_login(isolated_client)
+        res = isolated_client.post(
+            "/api/tasks",
+            json={"title": "Bad Date Task", "due_date": "04-11-2026"},
+        )
+>       assert res.status_code == 400
+E       assert 500 == 400
+E        +  where 500 = <WrapperTestResponse streamed [500 INTERNAL SERVER ERROR]>.status_code
+
+06_Automation_Regression\tests\api\test_ep_and_core_api.py:91: AssertionError
+------------------------------ Captured log call ------------------------------
+ERROR    app:app.py:838 Exception on /api/tasks [POST]
+Traceback (most recent call last):
+  File "C:\Users\nisrina\Desktop\pytodo_pro_student\venv\lib\site-packages\flask\app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\nisrina\Desktop\pytodo_pro_student\venv\lib\site-packages\flask\app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\nisrina\Desktop\pytodo_pro_student\venv\lib\site-packages\flask\app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\nisrina\Desktop\pytodo_pro_student\venv\lib\site-packages\flask\app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "C:\Users\nisrina\Desktop\pytodo_pro_student\app.py", line 130, in wrapper
+    return f(*args, **kwargs)
+  File "C:\Users\nisrina\Desktop\pytodo_pro_student\app.py", line 420, in api_create_task
+    return jsonify(row_to_task(row, get_category_name(db, row["category_id"]))), 201
+  File "C:\Users\nisrina\Desktop\pytodo_pro_student\app.py", line 94, in row_to_task
+    "urgency": compute_urgency(row["due_date"]) if not row["done"] else "Done",
+  File "C:\Users\nisrina\Desktop\pytodo_pro_student\helpers.py", line 31, in compute_urgency
+    due = datetime.strptime(due_date_str, "%Y-%m-%d").date()
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\_strptime.py", line 568, in _strptime_datetime
+    tt, fraction, gmtoff_fraction = _strptime(data_string, format)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\_strptime.py", line 349, in _strptime
+    raise ValueError("time data %r does not match format %r" %
+ValueError: time data '04-11-2026' does not match format '%Y-%m-%d'
+______________ test_api_tsk_put_03_empty_title_on_edit_rejected _______________
+
+isolated_client = <FlaskClient <Flask 'app'>>
+
+    @pytest.mark.regression
+    def test_api_tsk_put_03_empty_title_on_edit_rejected(isolated_client):
+        """API-TSK-PUT-03 / TC-API-UI-18 (Defect D-022): PUT /api/tasks/<id> must reject empty title."""
+        register_and_login(isolated_client)
+        created = isolated_client.post("/api/tasks", json={"title": "Original Title"}).get_json()
+        res = isolated_client.put(f"/api/tasks/{created['id']}", json={"title": ""})
+>       assert res.status_code == 400
+E       assert 200 == 400
+E        +  where 200 = <WrapperTestResponse streamed [200 OK]>.status_code
+
+06_Automation_Regression\tests\api\test_ep_and_core_api.py:100: AssertionError
+_______________ test_tc_sec_07_sql_injection_in_search_handled ________________
+
+isolated_client = <FlaskClient <Flask 'app'>>
+
+    @pytest.mark.regression
+    def test_tc_sec_07_sql_injection_in_search_handled(isolated_client):
+        """TC-SEC-07 / API-TSK-GETALL-04 (Defect D-020): Single quote in search query must not cause SQL 500."""
+        register_and_login(isolated_client)
+        res = isolated_client.get("/api/tasks?q=test'")
+>       assert res.status_code == 200
+E       assert 500 == 200
+E        +  where 500 = <WrapperTestResponse streamed [500 INTERNAL SERVER ERROR]>.status_code
+
+06_Automation_Regression\tests\api\test_ep_and_core_api.py:108: AssertionError
+------------------------------ Captured log call ------------------------------
+ERROR    app:app.py:838 Exception on /api/tasks [GET]
+Traceback (most recent call last):
+  File "C:\Users\nisrina\Desktop\pytodo_pro_student\venv\lib\site-packages\flask\app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\nisrina\Desktop\pytodo_pro_student\venv\lib\site-packages\flask\app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\nisrina\Desktop\pytodo_pro_student\venv\lib\site-packages\flask\app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\nisrina\Desktop\pytodo_pro_student\venv\lib\site-packages\flask\app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "C:\Users\nisrina\Desktop\pytodo_pro_student\app.py", line 130, in wrapper
+    return f(*args, **kwargs)
+  File "C:\Users\nisrina\Desktop\pytodo_pro_student\app.py", line 384, in api_list_tasks
+    rows = db.execute(query, params).fetchall()
+sqlite3.OperationalError: unrecognized token: "' ORDER BY id DESC LIMIT ? OFFSET ?"
+__________________ test_tc_sec_21_cross_user_delete_blocked ___________________
+
+isolated_client = <FlaskClient <Flask 'app'>>
+
+    @pytest.mark.regression
+    def test_tc_sec_21_cross_user_delete_blocked(isolated_client):
+        """TC-SEC-21 / API-TSK-DEL-05 (Defect D-025): User B must not be able to delete User A's task."""
+        register_and_login(isolated_client, username="owner_user")
+        created = isolated_client.post("/api/tasks", json={"title": "Owner Private Task"}).get_json()
+    
+        register_and_login(isolated_client, username="attacker_user")
+        res = isolated_client.delete(f"/api/tasks/{created['id']}")
+>       assert res.status_code in (403, 404)
+E       assert 200 in (403, 404)
+E        +  where 200 = <WrapperTestResponse streamed [200 OK]>.status_code
+
+06_Automation_Regression\tests\api\test_ep_and_core_api.py:119: AssertionError
+_______________ test_tc_sec_05_stored_xss_escaped_in_task_list ________________
+
+isolated_client = <FlaskClient <Flask 'app'>>
+
+    @pytest.mark.regression
+    def test_tc_sec_05_stored_xss_escaped_in_task_list(isolated_client):
+        """TC-SEC-05 (Defect D-010): Task title HTML/script tags must be escaped in web task list."""
+        register_and_login(isolated_client)
+        payload = "<script>alert('xss')</script>"
+        isolated_client.post("/api/tasks", json={"title": payload})
+    
+        html = isolated_client.get("/").data.decode("utf-8")
+>       assert payload not in html
+E       assert "<script>ale...s')</script>" not in '<!doctype h...dy>\n</html>'
+E         
+E         "<script>alert('xss')</script>" is contained here:
+E           <!doctype html>
+E           <html lang="en">
+E           <head>
+E               <meta charset="utf-8">
+E               <title>Tasks ù PyTodo Pro</title>...
+E         
+E         ...Full output truncated, use '-vv' to show
+
+06_Automation_Regression\tests\api\test_ep_and_core_api.py:130: AssertionError
+_________________ test_api_dd_01_cross_user_delete_loses_data _________________
+
+user_a = <FlaskClient <Flask 'app'>>, user_b = <FlaskClient <Flask 'app'>>
+
+    @pytest.mark.regression
+    def test_api_dd_01_cross_user_delete_loses_data(user_a, user_b):
+        """API-DD-01: After User B sends DELETE for User A's task, User A can still GET the task (200)."""
+        task_id = create(user_a, "A's private task")
+        res_b = user_b.delete(f"/api/tasks/{task_id}")
+        res_a = user_a.get(f"/api/tasks/{task_id}")
+        print(f"B delete -> {res_b.status_code} {res_b.get_json()}; A get -> {res_a.status_code}")
+>       assert res_a.status_code == 200
+E       assert 404 == 200
+E        +  where 404 = <WrapperTestResponse streamed [404 NOT FOUND]>.status_code
+
+06_Automation_Regression\tests\api\test_reg_api_delete_dashboard.py:91: AssertionError
+---------------------------- Captured stdout call -----------------------------
+B delete -> 200 {'result': 'ok'}; A get -> 404
+____________________ test_api_dd_02_delete_same_task_twice ____________________
+
+user_a = <FlaskClient <Flask 'app'>>
+
+    @pytest.mark.regression
+    def test_api_dd_02_delete_same_task_twice(user_a):
+        """API-DD-02: Deleting the same task a second time -> 404 (it no longer exists)."""
+        task_id = create(user_a, "Delete me twice")
+        first = user_a.delete(f"/api/tasks/{task_id}")
+        second = user_a.delete(f"/api/tasks/{task_id}")
+        print(f"first -> {first.status_code}; second -> {second.status_code} {second.get_json()}")
+        assert first.status_code == 200
+>       assert second.status_code == 404
+E       assert 200 == 404
+E        +  where 200 = <WrapperTestResponse 16 bytes [200 OK]>.status_code
+
+06_Automation_Regression\tests\api\test_reg_api_delete_dashboard.py:102: AssertionError
+---------------------------- Captured stdout call -----------------------------
+first -> 200; second -> 200 {'result': 'ok'}
+_________________ test_api_dd_08_completed_exactly_7_days_ago _________________
+
+user_a = <FlaskClient <Flask 'app'>>
+
+    @pytest.mark.regression
+    def test_api_dd_08_completed_exactly_7_days_ago(user_a):
+        """API-DD-08: A task completed exactly 7 days ago is counted in completed_this_week (spec: last 7 days). Retest of D-005."""
+        tid = create(user_a, "Done a week ago")
+        set_completed(tid, 7)
+>       assert user_a.get("/api/dashboard").get_json()["completed_this_week"] == 1
+E       assert 0 == 1
+
+06_Automation_Regression\tests\api\test_reg_api_delete_dashboard.py:166: AssertionError
+_________________ test_api_dd_10_dashboard_with_bad_due_date __________________
+
+user_a = <FlaskClient <Flask 'app'>>
+
+    @pytest.mark.regression
+    def test_api_dd_10_dashboard_with_bad_due_date(user_a):
+        """API-DD-10: If a task with a bad due_date exists, the dashboard still loads (200). Effect of D-006."""
+        user_a.post("/api/tasks", json={"title": "Bad date", "due_date": "31-12-2026"})
+        res = user_a.get("/api/dashboard")
+        print(f"dashboard -> {res.status_code}")
+>       assert res.status_code == 200
+E       assert 500 == 200
+E        +  where 500 = <WrapperTestResponse streamed [500 INTERNAL SERVER ERROR]>.status_code
+
+06_Automation_Regression\tests\api\test_reg_api_delete_dashboard.py:182: AssertionError
+---------------------------- Captured stdout call -----------------------------
+dashboard -> 500
+------------------------------ Captured log call ------------------------------
+ERROR    app:app.py:838 Exception on /api/tasks [POST]
+Traceback (most recent call last):
+  File "C:\Users\nisrina\Desktop\pytodo_pro_student\venv\lib\site-packages\flask\app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\nisrina\Desktop\pytodo_pro_student\venv\lib\site-packages\flask\app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\nisrina\Desktop\pytodo_pro_student\venv\lib\site-packages\flask\app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\nisrina\Desktop\pytodo_pro_student\venv\lib\site-packages\flask\app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "C:\Users\nisrina\Desktop\pytodo_pro_student\app.py", line 130, in wrapper
+    return f(*args, **kwargs)
+  File "C:\Users\nisrina\Desktop\pytodo_pro_student\app.py", line 420, in api_create_task
+    return jsonify(row_to_task(row, get_category_name(db, row["category_id"]))), 201
+  File "C:\Users\nisrina\Desktop\pytodo_pro_student\app.py", line 94, in row_to_task
+    "urgency": compute_urgency(row["due_date"]) if not row["done"] else "Done",
+  File "C:\Users\nisrina\Desktop\pytodo_pro_student\helpers.py", line 31, in compute_urgency
+    due = datetime.strptime(due_date_str, "%Y-%m-%d").date()
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\_strptime.py", line 568, in _strptime_datetime
+    tt, fraction, gmtoff_fraction = _strptime(data_string, format)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\_strptime.py", line 349, in _strptime
+    raise ValueError("time data %r does not match format %r" %
+ValueError: time data '31-12-2026' does not match format '%Y-%m-%d'
+ERROR    app:app.py:838 Exception on /api/dashboard [GET]
+Traceback (most recent call last):
+  File "C:\Users\nisrina\Desktop\pytodo_pro_student\venv\lib\site-packages\flask\app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\nisrina\Desktop\pytodo_pro_student\venv\lib\site-packages\flask\app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\nisrina\Desktop\pytodo_pro_student\venv\lib\site-packages\flask\app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\nisrina\Desktop\pytodo_pro_student\venv\lib\site-packages\flask\app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "C:\Users\nisrina\Desktop\pytodo_pro_student\app.py", line 130, in wrapper
+    return f(*args, **kwargs)
+  File "C:\Users\nisrina\Desktop\pytodo_pro_student\app.py", line 471, in api_dashboard
+    overdue = sum(1 for r in rows if not r["done"] and compute_urgency(r["due_date"]) == "Overdue")
+  File "C:\Users\nisrina\Desktop\pytodo_pro_student\app.py", line 471, in <genexpr>
+    overdue = sum(1 for r in rows if not r["done"] and compute_urgency(r["due_date"]) == "Overdue")
+  File "C:\Users\nisrina\Desktop\pytodo_pro_student\helpers.py", line 31, in compute_urgency
+    due = datetime.strptime(due_date_str, "%Y-%m-%d").date()
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\_strptime.py", line 568, in _strptime_datetime
+    tt, fraction, gmtoff_fraction = _strptime(data_string, format)
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.10_3.10.3056.0_x64__qbz5n2kfra8p0\lib\_strptime.py", line 349, in _strptime
+    raise ValueError("time data %r does not match format %r" %
+ValueError: time data '31-12-2026' does not match format '%Y-%m-%d'
+____________ test_acc_01_login_register_fields_have_labels[/login] ____________
+
+client = <FlaskClient <Flask 'app'>>, path = '/login'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize("path", FORM_PAGES_LOGGED_OUT)
+    def test_acc_01_login_register_fields_have_labels(client, path):
+        """ACC-01: every input on /login and /register has a linked label. EXPECTED TO FAIL: D-009."""
+        page = parse(client.get(path).data)
+        fields = [a for t, a in page.tags if t == "input" and a.get("type") not in ("hidden", "submit")]
+        unnamed = [a.get("name") for a in fields if not has_name(a, page)]
+>       assert not unnamed, f"{path}: fields with no label: {unnamed}"
+E       AssertionError: /login: fields with no label: ['username', 'password']
+E       assert not ['username', 'password']
+
+06_Automation_Regression\tests\ui\test_reg_accessibility_markup.py:168: AssertionError
+__________ test_acc_01_login_register_fields_have_labels[/register] ___________
+
+client = <FlaskClient <Flask 'app'>>, path = '/register'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize("path", FORM_PAGES_LOGGED_OUT)
+    def test_acc_01_login_register_fields_have_labels(client, path):
+        """ACC-01: every input on /login and /register has a linked label. EXPECTED TO FAIL: D-009."""
+        page = parse(client.get(path).data)
+        fields = [a for t, a in page.tags if t == "input" and a.get("type") not in ("hidden", "submit")]
+        unnamed = [a.get("name") for a in fields if not has_name(a, page)]
+>       assert not unnamed, f"{path}: fields with no label: {unnamed}"
+E       AssertionError: /register: fields with no label: ['username', 'password']
+E       assert not ['username', 'password']
+
+06_Automation_Regression\tests\ui\test_reg_accessibility_markup.py:168: AssertionError
+____________ test_acc_01_task_form_fields_have_labels[/tasks/new] _____________
+
+user_with_tasks = <FlaskClient <Flask 'app'>>, path = '/tasks/new'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize("path", ["/tasks/new", "EDIT"])
+    def test_acc_01_task_form_fields_have_labels(user_with_tasks, path):
+        """ACC-01: every field on the new and edit task forms has a linked label. EXPECTED TO FAIL: D-009."""
+        if path == "EDIT":
+            path = f"/tasks/{user_with_tasks.task_id}/edit"
+        page = parse(user_with_tasks.get(path).data)
+        fields = [a for t, a in page.tags
+                  if t in ("input", "select", "textarea") and a.get("type") not in ("hidden", "submit")]
+        unnamed = [a.get("name") for a in fields if not has_name(a, page)]
+>       assert not unnamed, f"{path}: fields with no label: {unnamed}"
+E       AssertionError: /tasks/new: fields with no label: ['title', 'description', 'category_id', 'due_date']
+E       assert not ['title', 'description', 'category_id', 'due_date']
+
+06_Automation_Regression\tests\ui\test_reg_accessibility_markup.py:181: AssertionError
+_______________ test_acc_01_task_form_fields_have_labels[EDIT] ________________
+
+user_with_tasks = <FlaskClient <Flask 'app'>>, path = '/tasks/1/edit'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize("path", ["/tasks/new", "EDIT"])
+    def test_acc_01_task_form_fields_have_labels(user_with_tasks, path):
+        """ACC-01: every field on the new and edit task forms has a linked label. EXPECTED TO FAIL: D-009."""
+        if path == "EDIT":
+            path = f"/tasks/{user_with_tasks.task_id}/edit"
+        page = parse(user_with_tasks.get(path).data)
+        fields = [a for t, a in page.tags
+                  if t in ("input", "select", "textarea") and a.get("type") not in ("hidden", "submit")]
+        unnamed = [a.get("name") for a in fields if not has_name(a, page)]
+>       assert not unnamed, f"{path}: fields with no label: {unnamed}"
+E       AssertionError: /tasks/1/edit: fields with no label: ['title', 'description', 'category_id', 'due_date']
+E       assert not ['title', 'description', 'category_id', 'due_date']
+
+06_Automation_Regression\tests\ui\test_reg_accessibility_markup.py:181: AssertionError
+___________________ test_acc_08_filter_controls_have_names ____________________
+
+user_with_tasks = <FlaskClient <Flask 'app'>>
+
+    @pytest.mark.regression
+    def test_acc_08_filter_controls_have_names(user_with_tasks):
+        """ACC-08: category, status and search controls on / have a name. EXPECTED TO FAIL: D-009."""
+        page = parse(user_with_tasks.get("/").data)
+        filters = [a for t, a in page.tags if t in ("select", "input") and a.get("name") in ("category", "status", "q")]
+        assert len(filters) == 3
+        unnamed = [a["name"] for a in filters if not has_name(a, page)]
+>       assert not unnamed, f"filter controls with no name: {unnamed}"
+E       AssertionError: filter controls with no name: ['category', 'status', 'q']
+E       assert not ['category', 'status', 'q']
+
+06_Automation_Regression\tests\ui\test_reg_accessibility_markup.py:191: AssertionError
+_________________ test_acc_02_done_toggle_has_accessible_name _________________
+
+user_with_tasks = <FlaskClient <Flask 'app'>>
+
+    @pytest.mark.regression
+    def test_acc_02_done_toggle_has_accessible_name(user_with_tasks):
+        """ACC-02: the done toggle has a name in words, not only a symbol. EXPECTED TO FAIL: D-016."""
+        page = parse(user_with_tasks.get("/").data)
+        toggles = [(a, txt) for a, txt in page.buttons if "check-btn" in a.get("class", "")]
+        assert toggles, "no done toggle found"
+        for attrs, text in toggles:
+            name = attrs.get("aria-label") or attrs.get("title") or text
+>           assert re.search(r"[A-Za-z]", name), f"toggle name is only {name!r}"
+E           AssertionError: toggle name is only '\u2713'
+E           assert None
+E            +  where None = <function search at 0x0000028E9246A290>('[A-Za-z]', '\u2713')
+E            +    where <function search at 0x0000028E9246A290> = re.search
+
+06_Automation_Regression\tests\ui\test_reg_accessibility_markup.py:206: AssertionError
+_______ test_acc_03_grey_text_contrast[.task-table tr.done .title-cell] _______
+
+selector = '.task-table tr.done .title-cell'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize("selector", [".task-table tr.done .title-cell", ".empty"])
+    def test_acc_03_grey_text_contrast(selector):
+        """ACC-03: done titles and the empty message reach 4.5:1 on white. EXPECTED TO FAIL: D-015."""
+        colour = css_colour(selector)
+        ratio = contrast(colour)
+>       assert ratio >= 4.5, f"{selector} uses {colour}: contrast {ratio:.2f}:1"
+E       AssertionError: .task-table tr.done .title-cell uses #999: contrast 2.85:1
+E       assert 2.849027755287037 >= 4.5
+
+06_Automation_Regression\tests\ui\test_reg_accessibility_markup.py:219: AssertionError
+___________________ test_acc_03_grey_text_contrast[.empty] ____________________
+
+selector = '.empty'
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize("selector", [".task-table tr.done .title-cell", ".empty"])
+    def test_acc_03_grey_text_contrast(selector):
+        """ACC-03: done titles and the empty message reach 4.5:1 on white. EXPECTED TO FAIL: D-015."""
+        colour = css_colour(selector)
+        ratio = contrast(colour)
+>       assert ratio >= 4.5, f"{selector} uses {colour}: contrast {ratio:.2f}:1"
+E       AssertionError: .empty uses #999: contrast 2.85:1
+E       assert 2.849027755287037 >= 4.5
+
+06_Automation_Regression\tests\ui\test_reg_accessibility_markup.py:219: AssertionError
+______________________ test_acc_09_viewport_meta_present ______________________
+
+client = <FlaskClient <Flask 'app'>>
+
+    @pytest.mark.regression
+    def test_acc_09_viewport_meta_present(client):
+        """ACC-09: pages include <meta name="viewport">, needed for reflow at 320 px. EXPECTED TO FAIL: D-017."""
+        page = parse(client.get("/login").data)
+>       assert any(t == "meta" and a.get("name") == "viewport" for t, a in page.tags)
+E       assert False
+E        +  where False = any(<generator object test_acc_09_viewport_meta_present.<locals>.<genexpr> at 0x0000028E94BF5150>)
+
+06_Automation_Regression\tests\ui\test_reg_accessibility_markup.py:260: AssertionError
+_______________ test_gui_08_empty_list_message_without_filters ________________
+
+user = <FlaskClient <Flask 'app'>>
+
+    @pytest.mark.regression
+    def test_gui_08_empty_list_message_without_filters(user):
+        """GUI-08: a new user with no tasks and no filters does not see "No tasks match your filters."
+        EXPECTED TO FAIL: D-008."""
+        page = user.get("/").data
+>       assert b"No tasks match your filters." not in page
+E       assert b'No tasks match your filters.' not in b'<!doctype html>\n<html lang="en">\n<head>\n    <meta charset="utf-8">\n    <title>Tasks \xe2\x80\x94 PyTodo Pro</title>\n    <link rel="stylesheet" href="/static/style.css">\n</head>\n<body>\n    <nav class="topnav">\n        <a class="brand" href="/">PyTodo Pro</a>\n        \n        <div class="nav-links">\n            <a href="/">Tasks</a>\n            <a href="/dashboard">Dashboard</a>\n            <span class="nav-user">acc_tester</span>\n            <a href="/logout">Log out</a>\n        </div>\n        \n    </nav>\n    <div class="container">\n        \n<div class="page-header">\n    <h1>My Tasks</h1>\n    <a class="btn" href="/tasks/new">+ New Task</a>\n</div>\n\n<form method="get" class="filters">\n    <select name="category" onchange="this.form.submit()">\n        <option value="">All categories</option>\n        \n        <option value="Personal" >Personal</option>\n        \n        <option value="Study" >Study</option>\n        \n        <option value="Urgent" >Urgent</option>\n        \n        <option value="Work" >Work</option>\n        \n    </select>\n    <select name="status" onchange="this.form.submit()">\n        <option value="">All statuses</option>\n        <option value="open" >Open</option>\n        <option value="done" >Done</option>\n    </select>\n    <input type="text" name="q" placeholder="Search title..." value="">\n    <button type="submit">Filter</button>\n</form>\n\n<table class="task-table">\n    <thead>\n        <tr>\n            <th></th>\n            <th>Title</th>\n            <th>Category</th>\n            <th>Due Date</th>\n            <th>Urgency</th>\n            <th></th>\n        </tr>\n    </thead>\n    <tbody>\n        \n        <tr><td colspan="6" class="empty">No tasks match your filters.</td></tr>\n        \n    </tbody>\n</table>\n\n    </div>\n</body>\n</html>'
+
+06_Automation_Regression\tests\ui\test_reg_accessibility_markup.py:272: AssertionError
+__________________ test_tc_bb_bva_f01_02_eight_char_password __________________
+
+    @pytest.mark.regression
+    def test_tc_bb_bva_f01_02_eight_char_password():
+        """TC-BB-BVA-F01-02 (Defect D-004): 8-character password (exact boundary) must be accepted."""
+>       assert is_valid_password("Pass1234") is True
+E       AssertionError: assert False is True
+E        +  where False = is_valid_password('Pass1234')
+
+06_Automation_Regression\tests\unit\test_bva_unit.py:13: AssertionError
+______________________ test_tc_bb_008_due_today_urgency _______________________
+
+    @pytest.mark.regression
+    def test_tc_bb_008_due_today_urgency():
+        """TC-BB-008 / TC-WB-F14-04 (Defect D-001): Task due today must return 'Due Today'."""
+>       assert compute_urgency("2026-11-10", today=FIXED_TODAY) == "Due Today"
+E       AssertionError: assert 'Overdue' == 'Due Today'
+E         
+E         - Due Today
+E         + Overdue
+
+06_Automation_Regression\tests\unit\test_ep_urgency_unit.py:22: AssertionError
+____________________ test_tc_bb_f14_02_open_task_due_today ____________________
+
+logged_in = <FlaskClient <Flask 'app'>>
+
+    @pytest.mark.regression
+    def test_tc_bb_f14_02_open_task_due_today(logged_in):
+        """TC-BB-F14-02: Open task due today -> "Due Today". EXPECTED TO FAIL: D-001."""
+>       assert urgency(logged_in, add_task(logged_in, "Mock Interview", due=days(0))) == "Due Today"
+E       AssertionError: assert 'Overdue' == 'Due Today'
+E         
+E         - Due Today
+E         + Overdue
+
+06_Automation_Regression\tests\unit\test_reg_decision_table.py:182: AssertionError
+__________ test_reg_d004_01_password_length_boundary[12345678-True] ___________
+
+password = '12345678', expected = True
+
+    @pytest.mark.regression
+    @pytest.mark.parametrize(
+        "password, expected",
+        [
+            ("1234567", False),     # 7 characters: below the limit
+            ("12345678", True),     # 8 characters: exactly the limit. EXPECTED TO FAIL: D-004
+            ("123456789", True),    # 9 characters: above the limit
+        ],
+    )
+    def test_reg_d004_01_password_length_boundary(password, expected):
+        """REG-D004-01: Spec says "at least 8 characters". Checks 7, 8 and 9 characters."""
+>       assert is_valid_password(password) is expected
+E       AssertionError: assert False is True
+E        +  where False = is_valid_password('12345678')
+
+06_Automation_Regression\tests\unit\test_reg_decision_table.py:213: AssertionError
+____________ test_reg_d004_02_web_register_accepts_8_char_password ____________
+
+client = <FlaskClient <Flask 'app'>>
+
+    @pytest.mark.regression
+    def test_reg_d004_02_web_register_accepts_8_char_password(client):
+        """REG-D004-02: Web register with an 8-character password creates the account. EXPECTED TO FAIL: D-004."""
+        res = client.post("/register", data={"username": "eight_chars", "password": "abcd1234"})
+>       assert res.status_code == 302, "8-character password was rejected by /register"
+E       AssertionError: 8-character password was rejected by /register
+E       assert 200 == 302
+E        +  where 200 = <WrapperTestResponse streamed [200 OK]>.status_code
+
+06_Automation_Regression\tests\unit\test_reg_decision_table.py:220: AssertionError
+____________ test_reg_d004_03_api_register_accepts_8_char_password ____________
+
+client = <FlaskClient <Flask 'app'>>
+
+    @pytest.mark.regression
+    def test_reg_d004_03_api_register_accepts_8_char_password(client):
+        """REG-D004-03: API register with an 8-character password returns 201. EXPECTED TO FAIL: D-004."""
+        res = client.post("/api/register", json={"username": "eight_api", "password": "abcd1234"})
+>       assert res.status_code == 201
+E       assert 400 == 201
+E        +  where 400 = <WrapperTestResponse streamed [400 BAD REQUEST]>.status_code
+
+06_Automation_Regression\tests\unit\test_reg_decision_table.py:227: AssertionError
+______________________ test_reg_d001_01_helper_due_today ______________________
+
+    @pytest.mark.regression
+    def test_reg_d001_01_helper_due_today():
+        """REG-D001-01: compute_urgency() for today's date returns "Due Today". EXPECTED TO FAIL: D-001."""
+        today = date(2026, 11, 25)
+>       assert compute_urgency("2026-11-25", today=today) == "Due Today"
+E       AssertionError: assert 'Overdue' == 'Due Today'
+E         
+E         - Due Today
+E         + Overdue
+
+06_Automation_Regression\tests\unit\test_reg_decision_table.py:234: AssertionError
+_________ test_reg_d001_02_dashboard_does_not_count_today_as_overdue __________
+
+logged_in = <FlaskClient <Flask 'app'>>
+
+    @pytest.mark.regression
+    def test_reg_d001_02_dashboard_does_not_count_today_as_overdue(logged_in):
+        """REG-D001-02: A task due today is not counted in the dashboard Overdue number. EXPECTED TO FAIL: D-001."""
+        add_task(logged_in, "Due today", due=days(0))
+        data = logged_in.get("/api/dashboard").get_json()
+>       assert data["overdue"] == 0
+E       assert 1 == 0
+
+06_Automation_Regression\tests\unit\test_reg_decision_table.py:242: AssertionError
+=========================== short test summary info ===========================
+FAILED 06_Automation_Regression/tests/api/test_api_auth.py::test_api_reg_09_duplicate_username
+FAILED 06_Automation_Regression/tests/api/test_ep_and_core_api.py::test_tc_bb_005_web_whitespace_title_rejected
+FAILED 06_Automation_Regression/tests/api/test_ep_and_core_api.py::test_tc_wb_f14_10_bad_due_date_api_rejected
+FAILED 06_Automation_Regression/tests/api/test_ep_and_core_api.py::test_api_tsk_put_03_empty_title_on_edit_rejected
+FAILED 06_Automation_Regression/tests/api/test_ep_and_core_api.py::test_tc_sec_07_sql_injection_in_search_handled
+FAILED 06_Automation_Regression/tests/api/test_ep_and_core_api.py::test_tc_sec_21_cross_user_delete_blocked
+FAILED 06_Automation_Regression/tests/api/test_ep_and_core_api.py::test_tc_sec_05_stored_xss_escaped_in_task_list
+FAILED 06_Automation_Regression/tests/api/test_reg_api_delete_dashboard.py::test_api_dd_01_cross_user_delete_loses_data
+FAILED 06_Automation_Regression/tests/api/test_reg_api_delete_dashboard.py::test_api_dd_02_delete_same_task_twice
+FAILED 06_Automation_Regression/tests/api/test_reg_api_delete_dashboard.py::test_api_dd_08_completed_exactly_7_days_ago
+FAILED 06_Automation_Regression/tests/api/test_reg_api_delete_dashboard.py::test_api_dd_10_dashboard_with_bad_due_date
+FAILED 06_Automation_Regression/tests/ui/test_reg_accessibility_markup.py::test_acc_01_login_register_fields_have_labels[/login]
+FAILED 06_Automation_Regression/tests/ui/test_reg_accessibility_markup.py::test_acc_01_login_register_fields_have_labels[/register]
+FAILED 06_Automation_Regression/tests/ui/test_reg_accessibility_markup.py::test_acc_01_task_form_fields_have_labels[/tasks/new]
+FAILED 06_Automation_Regression/tests/ui/test_reg_accessibility_markup.py::test_acc_01_task_form_fields_have_labels[EDIT]
+FAILED 06_Automation_Regression/tests/ui/test_reg_accessibility_markup.py::test_acc_08_filter_controls_have_names
+FAILED 06_Automation_Regression/tests/ui/test_reg_accessibility_markup.py::test_acc_02_done_toggle_has_accessible_name
+FAILED 06_Automation_Regression/tests/ui/test_reg_accessibility_markup.py::test_acc_03_grey_text_contrast[.task-table tr.done .title-cell]
+FAILED 06_Automation_Regression/tests/ui/test_reg_accessibility_markup.py::test_acc_03_grey_text_contrast[.empty]
+FAILED 06_Automation_Regression/tests/ui/test_reg_accessibility_markup.py::test_acc_09_viewport_meta_present
+FAILED 06_Automation_Regression/tests/ui/test_reg_accessibility_markup.py::test_gui_08_empty_list_message_without_filters
+FAILED 06_Automation_Regression/tests/unit/test_bva_unit.py::test_tc_bb_bva_f01_02_eight_char_password
+FAILED 06_Automation_Regression/tests/unit/test_ep_urgency_unit.py::test_tc_bb_008_due_today_urgency
+FAILED 06_Automation_Regression/tests/unit/test_reg_decision_table.py::test_tc_bb_f14_02_open_task_due_today
+FAILED 06_Automation_Regression/tests/unit/test_reg_decision_table.py::test_reg_d004_01_password_length_boundary[12345678-True]
+FAILED 06_Automation_Regression/tests/unit/test_reg_decision_table.py::test_reg_d004_02_web_register_accepts_8_char_password
+FAILED 06_Automation_Regression/tests/unit/test_reg_decision_table.py::test_reg_d004_03_api_register_accepts_8_char_password
+FAILED 06_Automation_Regression/tests/unit/test_reg_decision_table.py::test_reg_d001_01_helper_due_today
+FAILED 06_Automation_Regression/tests/unit/test_reg_decision_table.py::test_reg_d001_02_dashboard_does_not_count_today_as_overdue
+================ 29 failed, 16 passed, 40 deselected in 10.27s ================
