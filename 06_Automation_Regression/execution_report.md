@@ -10,8 +10,8 @@
 
 | Suite / Run Type | PyTest Command | Total Collected | Passed | Failed | Errors | Duration | Log File |
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :--- |
-| **Full Automated Suite** | `pytest 06_Automation_Regression/tests/ -v` | **85** | **51** | **34** | **0** | **25.67s** | `logs/full_suite.log` |
-| **Regression Suite (`-m regression`)** | `pytest 06_Automation_Regression/tests/ -m regression -v` | **45** *(40 deselected)* | **16** | **29** | **0** | **10.27s** | `logs/regression_suite.log` |
+| **Full Automated Suite (`10` files)** | `pytest 06_Automation_Regression/tests/ -v` | **103** | **69** | **34** | **0** | **~26s** | `logs/full_suite.log` |
+| **Regression Suite (`-m regression`)** | `pytest 06_Automation_Regression/tests/ -m regression -v` | **51** *(52 deselected)* | **22** | **29** | **0** | **14.61s** | `logs/regression_suite.log` |
 
 ---
 
