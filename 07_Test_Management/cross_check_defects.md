@@ -1,7 +1,7 @@
 # Week 7 Cross-Check - Defect IDs, Statuses and Counts
 
 **Prepared by:** Nafiesa (Defect & Metrics Coordinator)
-**Version:** 2, 26 Nov 2026 (Order 5 check of `master_test_repository.md`, `rtm.md` and the final defect log)
+**Version:** 2,(Order 5 check of `master_test_repository.md`, `rtm.md` and the final defect log)
 **Week 7 task:** 5. Check that every TC ID, defect ID and status matches across the repository, RTM and defect log.
 
 ## 1. How I checked
