@@ -1,7 +1,7 @@
 # Final Consolidated Defect Log - PyTodo Pro
 
 **Maintained by:** Nafiesa (Defect & Metrics Coordinator)  
-**Version:** Final (Week 7), updated 26 Nov 2026 (D-036 added)  
+  
 **Covers:** every defect raised in Weeks 1 to 7 (D-001 to D-036)  
 **Rules used:** `03_Special_Testing/test_conventions.md` and the defect report template in the project brief
 
