@@ -3,9 +3,9 @@
 ## Summary
 *(Updated 24 Nov 2026, after Week 5. Severity scale and status values follow `test_conventions.md`.)*
 
-- **Total Defect IDs Logged:** 35 (D-001 to D-035)
-- **Unique Defects:** 33
-- **Open Defects:** 33
+- **Total Defect IDs Logged:** 36 (D-001 to D-036)
+- **Unique Defects:** 34
+- **Open Defects:** 34
 - **Closed as Duplicate:** 2 (D-002, D-003 are the same bug as D-001)
 - **Resolved Defects:** 0
 
@@ -13,12 +13,12 @@
 | :--- | :---: | :--- |
 | Critical | 3 | D-020, D-025, D-027 |
 | Major | 9 | D-004, D-006, D-010, D-011, D-013, D-022, D-026, D-029, D-031 |
-| Moderate | 14 | D-001, D-005, D-009, D-012, D-015, D-016, D-017, D-019, D-021, D-023, D-028, D-032, D-033, D-034 |
+| Moderate | 15 | D-001, D-005, D-009, D-012, D-015, D-016, D-017, D-019, D-021, D-023, D-028, D-032, D-033, D-034, D-036 |
 | Minor | 7 | D-007, D-008, D-014, D-018, D-024, D-030, D-035 |
 
 | Found in | Defect IDs |
 | :--- | :--- |
-| Week 1 (black-box) | D-001, D-004, D-005 (D-002, D-003 duplicates) |
+| Week 1 (black-box) | D-001, D-004, D-005, D-036 (D-002, D-003 duplicates) |
 | Week 2 (white-box) | D-006 |
 | Week 3 (GUI, usability, accessibility) | D-007 to D-018 |
 | Week 4 (web and API) | D-019 to D-025 |
@@ -667,3 +667,20 @@ Week 4 files used temporary IDs. This table shows where each one is logged, so t
 - **Status:** Open
 - **Evidence:** `05_Security_Performance/evidence_security.txt` (`test_sec_20`)
 - **Related Test Case:** `TC-SEC-20`, threat `TH-20` (Denial of service)
+
+### Defect ID: D-036
+- **Title:** Back button after logout shows the previous task page from the browser cache
+- **Affected Feature:** F-05 Logout (`app.py` has no `Cache-Control` header on authenticated pages)
+- **Environment:** Browser, local copy (127.0.0.1)
+- **Preconditions:** `qa_user1` is logged in on the task list.
+- **Steps to Reproduce:**
+  1. Click Log out.
+  2. Press the browser Back button.
+- **Expected Result:** The login page is shown, or the user is redirected to it. The old task list is not shown.
+- **Actual Result:** Back returns to the previous page (the old task list), not the login page. We did not check whether actions on that page are refused. Not yet tested: step 4 of TC-BB-067 (click Dashboard or press F5).
+- **Severity:** Moderate
+- **Priority:** Medium
+- **Status:** Open
+- **Evidence:** None yet. Screenshot needed. `evidence/ST/st_check_output.txt` shows the pages send no `Cache-Control`, `Expires` or `Pragma` header.
+- **Related Test Case:** `TC-BB-067`
+- **Suggested Fix:** Send `Cache-Control: no-store` on authenticated pages.

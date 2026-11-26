@@ -1,0 +1,27 @@
+060 302 / True True True
+061 302 / True
+062 302 /login
+062 login page has no Log out/Dashboard True True
+063 302 / True [('user2 task', '○', 'No due date')]
+064 200 True
+064 step4 302 /login
+065 /dashboard 302 /login
+065 /tasks/new 302 /login
+065 / 302 /login
+066 302 /login
+067 headers None None None
+068 step3 302 /login
+068 step4 [('stale68', '○', 'No due date')]
+069 before {'Total': 2, 'Open': 2, 'Overdue': 0, 'DueSoon': 0, 'Completed': 0}
+069 ('ST open task', '○', 'Upcoming') {'Total': 3, 'Open': 3, 'Overdue': 0, 'DueSoon': 0, 'Completed': 0}
+070 row [('ST open task', '✓', 'Done')] done filter [('ST open task', '✓', 'Done')] before {'Total': 3, 'Open': 3, 'Overdue': 0, 'DueSoon': 0, 'Completed': 0} after {'Total': 3, 'Open': 2, 'Overdue': 0, 'DueSoon': 0, 'Completed': 1}
+071 [('ST open task', '○', 'Upcoming')] before {'Total': 3, 'Open': 2, 'Overdue': 0, 'DueSoon': 0, 'Completed': 1} after {'Total': 3, 'Open': 3, 'Overdue': 0, 'DueSoon': 0, 'Completed': 0}
+072 302 [('ST open task edited', '○', 'Upcoming')] True before {'Total': 3, 'Open': 3, 'Overdue': 0, 'DueSoon': 0, 'Completed': 0} after {'Total': 3, 'Open': 3, 'Overdue': 0, 'DueSoon': 0, 'Completed': 0}
+073 [('ST done task edited', '✓', 'Done')] before {'Total': 4, 'Open': 3, 'Overdue': 0, 'DueSoon': 0, 'Completed': 1} after {'Total': 4, 'Open': 3, 'Overdue': 0, 'DueSoon': 0, 'Completed': 1}
+074 [] before {'Total': 5, 'Open': 4, 'Overdue': 0, 'DueSoon': 0, 'Completed': 1} after {'Total': 4, 'Open': 3, 'Overdue': 0, 'DueSoon': 0, 'Completed': 1}
+075 [] before {'Total': 5, 'Open': 3, 'Overdue': 0, 'DueSoon': 0, 'Completed': 2} after {'Total': 4, 'Open': 3, 'Overdue': 0, 'DueSoon': 0, 'Completed': 1}
+076 template has confirm: True
+077 302 / 5 4 []
+078 302 / False
+079 302 / False
+079 step3 [('ST own', '○', 'No due date')]
