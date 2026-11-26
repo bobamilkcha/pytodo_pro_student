@@ -49,10 +49,11 @@ All **103 automated tests** across **10 test scripts** in `06_Automation_Regress
 
 * **Execution Command:** `pytest 06_Automation_Regression/tests/ -m regression -v`
 * **Evidence Log:** `06_Automation_Regression/logs/regression_suite.log`
-* **Selection Scope:** **45 marked regression tests** (`58` deselected) — **16 Passed (35.6%)**, **29 Failed (64.4%)**, **0 Errors**
+* **Execution Duration:** `14.61s`
+* **Selection Scope:** **51 marked regression tests** (`52` deselected) — **22 Passed (43.1%)**, **29 Failed (56.9%)**, **0 Errors**
 
 ### Regression Health Assessment
-* **Passing Baseline Protection (16 tests):** Confirms core positive user flows remain functional—registration, login, task creation/editing/deletion, completion toggling (`Open` ↔ `Done`), combined filtering, and web-route ownership checks (`TC-SEC-22`).
+* **Passing Baseline Protection (22 tests):** Confirms core positive user flows and state transitions remain functional—registration, login, task creation/editing/deletion, completion toggling (`Open` ↔ `Done`), combined filtering, session guards, and web-route ownership checks (`TC-SEC-22`).
 * **Active Defect Coverage (29 failing tests):** Uses standard assertions (rather than `xfail`) so unpatched defects remain visible as caught failures across **16 distinct defect IDs** (`D-001`, `D-004`, `D-005`, `D-006`, `D-008`, `D-009`, `D-010`, `D-013`, `D-015`/`ACC-03`, `D-016`, `D-017`, `D-019`, `D-020`, `D-022`, `D-024`, `D-025`).
 
 ---
