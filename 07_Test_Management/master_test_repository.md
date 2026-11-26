@@ -2,7 +2,7 @@
 
 **Prepared by:** Test Design Coordinator (Aida)  
 **Target Application:** PyTodo Pro  
-**Consolidation Scope:** All test cases, scenarios, checks, and automated regression suites across **Weeks 1–6** (`286` distinct test cases/scenarios + `103` automated regression executions = `389` consolidated entries).
+**Consolidation Scope:** All unique test cases, checks, and usability observations across **Weeks 1–5** (`286` unique items), plus **Week 6** automated regression execution runs (`103` automated runs across `10` scripts, reported separately below so re-executed cases are not double-counted).
 
 ---
 
@@ -10,39 +10,39 @@
 
 ### 1.1 Consolidated Test Inventory by Week & Technique
 
-| Week | Folder | Technique / Test Type | Test Case Count | Passed | Failed | Observation / Not Run |
-| :---: | :--- | :--- | :---: | :---: | :---: | :---: |
-| **Week 1** | `01_Black_Box` | Equivalence Partitioning (`TC-BB-001` to `010`) | 10 | 7 | 3 | 0 |
+| Week | Folder | Technique / Test Type | Count | Passed | Failed | Ratings / Observations |
+| :---: | :--- | :--- | :---: | :---: | :---: | :--- |
+| **Week 1** | `01_Black_Box` | Equivalence Partitioning (`TC-BB-001` to `010`) | 10 | 8 | 2 | 0 |
 | **Week 1** | `01_Black_Box` | Boundary Value Analysis (`TC-BB-BVA-*`) | 8 | 5 | 3 | 0 |
 | **Week 1** | `01_Black_Box` | Decision Table (`TC-BB-F03-*`, `F11-*`, `F14-*`) | 12 | 11 | 1 | 0 |
-| **Week 1** | `01_Black_Box` | State Transition (`TC-BB-060` to `079`) | 20 | 19 | 1 | 0 *(17 automated in W6)* |
-| **Week 2** | `02_White_Box_Coverage` | White-Box Path & Branch Coverage (`TC-WB-*`) | 28 | 25 | 3 | 0 |
-| **Week 3** | `03_Special_Testing` | GUI Checklist (`GUI-01` to `18`) | 18 | 13 | 5 | 0 |
-| **Week 3** | `03_Special_Testing` | Cross-Browser & Device Compatibility (`COMP-01` to `09`) | 9 | 9 | 0 | 0 |
-| **Week 3** | `03_Special_Testing` | Accessibility Testing (`ACC-01` to `16`) | 16 | 9 | 7 | 0 |
-| **Week 3** | `03_Special_Testing` | Usability Evaluation (`US-01` to `31`) | 31 | 12 | 6 | 13 *(UX observations)* |
+| **Week 1** | `01_Black_Box` | State Transition (`TC-BB-060` to `079`) | 20 | 19 | 1 | 0 |
+| **Week 2** | `02_White_Box_Coverage` | White-Box Path & Branch Coverage (`TC-WB-*`) | 28 | 24 | 4 | 0 |
+| **Week 3** | `03_Special_Testing` | GUI Checklist (`GUI-01` to `18`) | 18 | 14 | 4 | 0 |
+| **Week 3** | `03_Special_Testing` | Cross-Browser & Device Compatibility (`COMP-01` to `09`) | 9 | 9 | 0 | 0 *(45/45 config results passed)* |
+| **Week 3** | `03_Special_Testing` | Accessibility Testing (`ACC-01` to `16`) | 16 | 8 | 8 | 0 |
+| **Week 3** | `03_Special_Testing` | Usability Evaluation (`US-01` to `31`) | 31 | — | — | **6 Good, 21 Minor issue, 4 Major issue** *(source ratings)* |
 | **Week 4** | `04_Web_API` | End-to-End Web Workflows (`WTS-01` to `08`) | 8 | 8 | 0 | 0 |
 | **Week 4** | `04_Web_API` | Client–Server Validation (`WTS-VAL-01` to `06`) | 6 | 1 | 5 | 0 |
 | **Week 4** | `04_Web_API` | Core REST API Endpoints (`API-*`) | 55 | 43 | 12 | 0 |
 | **Week 4** | `04_Web_API` | Extra Delete & Dashboard API (`API-DD-01` to `10`) | 10 | 6 | 4 | 0 |
 | **Week 4** | `04_Web_API` | UI vs. API Parity Comparison (`TC-API-UI-01` to `30`) | 30 | 16 | 14 | 0 |
 | **Week 5** | `05_Security_Performance` | STRIDE Security Tests (`TC-SEC-01` to `22`) | 22 | 3 | 19 | 0 |
-| **Week 5** | `05_Security_Performance` | Locust Load & Performance Stages (`PERF-01` to `03`) | 3 | 2 | 0 | 1 *(Stage 3 P95 520 ms; `PERF-OBS-01/02`)* |
-| **Week 6** | `06_Automation_Regression` | Automated Regression & Verification Suite (`10` files) | 103 | 69 | 34 | 0 *(34 failures confirm open defects)* |
-| **Total** | **Weeks 1–6** | **All Techniques** | **389** | **258** | **117** | **14** |
+| **Week 5** | `05_Security_Performance` | Locust Load & Performance Stages (`PERF-01` to `03`) | 3 | 2 | 0 | **1 Observation** (`PERF-03` Stage 3 P95 520 ms; `PERF-OBS-01/02`) |
+| **Subtotal** | **Weeks 1–5** | **Unique Test Cases, Checks & Observations** | **286** | **177** | **77** | **31 Usability Ratings + 1 Performance Observation** |
+| **Week 6** | `06_Automation_Regression` | Automated Regression & Verification Runs (`10` scripts) | **103** | **69** | **34** | Re-runs mapped cases from Weeks 1–5 (see Section 7) |
 
-### 1.2 Duplicate & Inconsistent ID Fixes Applied (Order 1 Reconciliation)
+### 1.2 Duplicate & Inconsistent ID Fixes Applied (Order 1 & Order 5 Reconciliation)
 
 | Issue Found Across Weeks 1–6 | Source File(s) | Resolution Applied in Master Repository |
 | :--- | :--- | :--- |
 | **Missing TC IDs for `completed_in_last_n_days`** | `02_White_Box_Coverage/test_helpers.py` | Assigned standardized IDs **`TC-WB-F15-01` through `TC-WB-F15-07`** in exact unit-test order mapped to Feature `F-15`. |
 | **Missing TC IDs for Locust load stages** | `05_Security_Performance/performance_plan.md`, `performance_results.md` | Assigned standardized IDs **`PERF-01` (10 users)**, **`PERF-02` (50 users)**, and **`PERF-03` (100 users)**. |
-| **Status conflict on `TC-BB-002` (Duplicate username)** | `01_Black_Box/EP_Test_Cases.md` vs `defect_log.md` | Updated status from `Pass` to **`Fail`** and linked to **`D-013`** (confirmed by `US-04`, `API-REG-09`, `TC-SEC-02`). |
+| **Status conflict on `TC-BB-002` (Duplicate username)** | `01_Black_Box/EP_Test_Cases.md` vs `07_Test_Management/defect_log.md` | Updated status from `Pass` to **`Fail`** and linked to **`D-013`** (confirmed by `US-04`, `API-REG-09`, `TC-SEC-02`). |
+| **Status separation on `TC-BB-005` (Empty title)** | `01_Black_Box/EP_Test_Cases.md` | Kept **`Pass`** (empty title blocked by HTML5 `required`); spaces-only title (`D-011`) is tested separately in `US-11`, `WTS-VAL-03`, and `TC-SEC-09`. |
 | **Spec conflict on `TC-BB-F14-03` (1 day ahead)** | `01_Black_Box/tc_defect_coordinator.md` vs `EP_Test_Cases.md` | Kept distinct Decision Table ID `TC-BB-F14-03` (separate from `TC-BB-BVA-F14-*`) and standardized expected result to **`Due Soon`** per spec. |
-| **State Transition execution & `D-036` logging** | `01_Black_Box/tc_state_transition.md`, `defect_log.md` | Recorded `19 Pass, 1 Fail` (`TC-BB-067` linked to **`D-036`**, browser Back-button cache behavior related to `D-032`). |
+| **State Transition execution & `D-036` duplicate rule** | `01_Black_Box/tc_state_transition.md`, `07_Test_Management/defect_log.md` | Recorded `19 Pass, 1 Fail` (`TC-BB-067` linked to **`D-032`**, with `D-036` closed as `Closed (Duplicate of D-032)`). |
 | **Unreproducible defect `D-007` on `GUI-01`** | `03_Special_Testing/gui_checklist.md` vs `week6_defect_check.md` | Updated `GUI-01` to **`Pass`** and marked `D-007` as **`Closed (Not reproducible)`** after code and screenshot verification. |
 | **Draft Defect IDs across Weeks 1, 4, and 5** | `tc_bva.md`, `web_test_scenarios.md`, `04_Web_API/defect_log.md`, `security_test_cases.md` | Standardized `DEF-001` → `D-001`; `DEF-API-01`/`03` → `D-019`; `DEF-API-02` → `D-013`; Week 4 draft `D-009` → `D-011`; Week 5 drafts `D-015`–`026` → `D-026`–`035`. |
-| **Inconsistent Pass/Fail casing** | Weeks 1–6 Markdown & PyTest logs | Normalized all statuses to **`Pass`**, **`Fail`**, or **`Observation`**. |
 
 ---
 
@@ -56,7 +56,7 @@
 | `TC-BB-002` | F-01 | Black-Box (EP) | Register with an already existing username (reconciled from Week 1 `Pass` to `Fail` per `D-013`) | Fail | D-013 |
 | `TC-BB-003` | F-03 | Black-Box (EP) | Log in with valid username and incorrect password | Pass | — |
 | `TC-BB-004` | F-08 | Black-Box (EP) | Create task with valid non-empty title, optional description, category, and due date | Pass | — |
-| `TC-BB-005` | F-08 | Black-Box (EP) | Create task with empty or whitespace-only title | Fail | D-011 |
+| `TC-BB-005` | F-08 | Black-Box (EP) | Submit New Task form with empty title (`""` blocked by HTML5 `required` attribute) | Pass | — |
 | `TC-BB-006` | F-14 | Black-Box (EP) | Urgency classification when due date is `None` or empty | Pass | — |
 | `TC-BB-007` | F-14 | Black-Box (EP) | Urgency classification for past due date (`< today`) returns `Overdue` | Pass | — |
 | `TC-BB-008` | F-14 | Black-Box (EP) | Urgency classification when due date equals `today` returns `Due Today` | Fail | D-001 |
@@ -95,8 +95,6 @@
 
 ### 2.4 State Transition Testing (`TC-BB-060` to `TC-BB-079`, `20` Cases)
 
-*(Executed via `01_Black_Box/evidence/ST/st_check.py` and browser verification for `TC-BB-067` and `TC-BB-076`; `17` cases automated in Week 6 via `tests/api/test_state_transition.py` and `tests/ui/test_ui_tasks.py`.)*
-
 | TC ID | Feature | Technique | Test Scenario / Summary | Status | Linked Defect |
 | :--- | :--- | :--- | :--- | :---: | :---: |
 | `TC-BB-060` | F-05 | Black-Box (ST) | Session transition (`S1`): Anonymous → Logged In via `/login` | Pass | — |
@@ -106,7 +104,7 @@
 | `TC-BB-064` | F-05 | Black-Box (ST) | Session transition (`S3`): Anonymous → stays Anonymous on failed login | Pass | — |
 | `TC-BB-065` | F-06 | Black-Box (ST) | Session guard (`S4`): Anonymous user redirected to `/login` on `/`, `/dashboard`, `/tasks/new` | Pass | — |
 | `TC-BB-066` | F-05 | Black-Box (ST) | Repeated `/logout` request while already Anonymous (`S5`) redirects cleanly | Pass | — |
-| `TC-BB-067` | F-05 | Black-Box (ST) | Browser Back button after `/logout` (`S8`) shows cached previous task page | Fail | D-036 *(see D-032)* |
+| `TC-BB-067` | F-05 | Black-Box (ST) | Browser Back button after `/logout` (`S8`) shows cached previous task page | Fail | D-032 *(D-036 dup)* |
 | `TC-BB-068` | F-05 | Black-Box (ST) | Stale tab toggle action after logout (`S9`) is refused and redirects to `/login` | Pass | — |
 | `TC-BB-069` | F-12 | Black-Box (ST) | Task transition (`T1`): `(None)` → `Open` upon creation (`completed_at` is `None`) | Pass | — |
 | `TC-BB-070` | F-12 | Black-Box (ST) | Task transition (`T2`): `Open` → `Done` via `/tasks/<id>/toggle` sets `completed_at` | Pass | — |
@@ -171,99 +169,101 @@
 
 ## 4. Week 3: Special Testing — GUI, Compatibility, Accessibility & Usability (`74` Items)
 
-### 4.1 GUI Checklist (`GUI-01` to `GUI-18`, `18` Items)
+### 4.1 GUI Checklist (`GUI-01` to `GUI-18`, `18` Items — `14` Pass, `4` Fail)
 
-| TC ID | Feature | Technique | Test Scenario / Summary | Status | Linked Defect |
+| TC ID | Feature | Technique | Test Scenario / Summary (from `03_Special_Testing/gui_checklist.md`) | Status | Linked Defect |
 | :--- | :--- | :--- | :--- | :---: | :---: |
-| `GUI-01` | F-01, F-03, F-08 | Special (GUI) | Box-sizing and container alignment on form inputs (re-verified Pass in W6; `D-007` closed) | Pass | D-007 *(Closed)* |
-| `GUI-02` | F-01, F-03, F-08 | Special (GUI) | Clicking form labels focuses corresponding input fields | Fail | D-009 |
-| `GUI-03` | F-01, F-03 | Special (GUI) | Auth card centered layout and visual hierarchy | Pass | — |
-| `GUI-04` | All Pages | Special (GUI) | Top navigation bar links (`Tasks`, `Dashboard`, `Log out`) visibility and alignment | Pass | — |
-| `GUI-05` | F-09 | Special (GUI) | Task table column headers and row alignment | Pass | — |
-| `GUI-06` | F-14 | Special (GUI) | Color-coded urgency badges (`Overdue`, `Due Soon`, `Upcoming`, `Done`, `No due date`) | Pass | — |
-| `GUI-07` | F-08, F-10 | Special (GUI) | Category dropdown and date picker rendering on task form | Pass | — |
-| `GUI-08` | F-09 | Special (GUI) | Empty task list message accuracy when no filters are active | Fail | D-008 |
-| `GUI-09` | F-15 | Special (GUI) | Dashboard 5-card grid alignment and typography | Pass | — |
-| `GUI-10` | F-09 | Special (GUI) | HTML tags in task title rendered as escaped text rather than raw HTML | Fail | D-010 |
-| `GUI-11` | F-13 | Special (GUI) | Browser JavaScript `confirm('Delete this task?')` dialog triggers before deletion | Pass | — |
-| `GUI-12` | F-12 | Special (GUI) | Completed task row renders checkmark (`✓`) and strikethrough styling | Pass | — |
-| `GUI-13` | F-01, F-03, F-08 | Special (GUI) | HTML5 `required` validation tooltip appears on empty submission | Pass | — |
-| `GUI-14` | F-01, F-03 | Special (GUI) | Server validation error banner styling (`.error`) on invalid auth | Pass | — |
-| `GUI-15` | F-11 | Special (GUI) | Filter bar dropdowns and search box layout on `/` | Pass | — |
-| `GUI-16` | All Pages | Special (GUI) | Cross-browser visual consistency across Chrome and Edge | Pass | — |
-| `GUI-17` | F-08 | Special (GUI) | Whitespace-only task title creates blank-looking row in task table | Fail | D-011 |
-| `GUI-18` | F-09 | Special (GUI) | Long task title overflows/stretches table row height | Fail | D-012 |
+| `GUI-01` | F-03 | Special (GUI) | Verify `.auth-card` container centering, padding, and input box alignment (re-verified Pass in W6; `D-007` closed) | Pass | D-007 *(Closed)* |
+| `GUI-02` | F-03 | Special (GUI) | Click the `"Username"` label text to verify input focus behavior | Fail | D-009 |
+| `GUI-03` | F-03 | Special (GUI) | Submit invalid credentials and inspect error banner styling | Pass | — |
+| `GUI-04` | F-03 | Special (GUI) | Verify `"Register"` link below login button navigates to registration page | Pass | — |
+| `GUI-05` | F-01 | Special (GUI) | Inspect label hints and submit an 8-character password matching the displayed hint | Fail | D-004 |
+| `GUI-06` | F-01 | Special (GUI) | Verify `"Log in"` link below registration form returns to login page | Pass | — |
+| `GUI-07` | F-05, F-06 | Special (GUI) | Verify top navbar layout, contrast, and user context when logged in | Pass | — |
+| `GUI-08` | F-09 | Special (GUI) | Inspect empty-state table message when a user has 0 tasks and no filters selected | Fail | D-008 |
+| `GUI-09` | F-11 | Special (GUI) | Verify filter bar controls (category dropdown, status dropdown, search input, Filter button) | Pass | — |
+| `GUI-10` | F-09, F-12, F-14 | Special (GUI) | Verify task table rows, done toggle (`○`/`✓`), urgency badges, and title text rendering (`\|safe`) | Fail | D-010 |
+| `GUI-11` | F-13 | Special (GUI) | Click **Delete** on a task row to verify destructive action confirmation | Pass | — |
+| `GUI-12` | F-08 | Special (GUI) | Verify form layout and visual alignment between **Create Task** button and **Cancel** link | Pass | — |
+| `GUI-13` | F-08 | Special (GUI) | Submit New Task form with an empty **Title** field | Pass | — |
+| `GUI-14` | F-10 | Special (GUI) | Open Edit Task and verify pre-filled values, **Save Changes** button, and **Cancel** link | Pass | — |
+| `GUI-15` | F-15 | Special (GUI) | Verify 5 summary stat cards layout, typography, and semantic color coding | Pass | — |
+| `GUI-16` | F-15 | Special (GUI) | Inspect responsive card grid behavior at narrow width (`375px` via Edge DevTools) | Pass | — |
+| `GUI-17` | F-05 | Special (GUI) | Click **Log out** in navbar and verify session termination and UI state | Pass | — |
+| `GUI-18` | F-06 | Special (GUI) | Click **PyTodo Pro** brand link while logged out | Pass | — |
 
-### 4.2 Compatibility Matrix (`COMP-01` to `COMP-09`, `9` Items)
+### 4.2 Compatibility Matrix (`COMP-01` to `COMP-09`, `9` Pages/Components across `5` Configurations = `45` Results)
 
-| TC ID | Feature | Technique | Test Scenario / Summary | Status | Linked Defect |
+| TC ID | Feature | Technique | Page / Component Tested (Chrome, Edge, Firefox, Galaxy A55, iPad Pro 13) | Status | Linked Defect |
 | :--- | :--- | :--- | :--- | :---: | :---: |
-| `COMP-01` | All Pages | Special (Compat) | Authentication & task CRUD on Windows 11 + Google Chrome (Desktop) | Pass | — |
-| `COMP-02` | All Pages | Special (Compat) | Authentication & task CRUD on Windows 11 + Microsoft Edge (Desktop) | Pass | — |
-| `COMP-03` | All Pages | Special (Compat) | Authentication & task CRUD on Mozilla Firefox (Desktop) | Pass | — |
-| `COMP-04` | F-08, F-10 | Special (Compat) | Native `<input type="date">` rendering across Chrome, Edge, and Firefox | Pass | — |
-| `COMP-05` | F-11 | Special (Compat) | Filter dropdown `onchange="this.form.submit()"` across desktop browsers | Pass | — |
-| `COMP-06` | F-13 | Special (Compat) | Delete `confirm()` modal behavior across desktop browsers | Pass | — |
-| `COMP-07` | All Pages | Special (Compat) | Tablet viewport (`768 × 1024`) layout and navigation | Pass | — |
-| `COMP-08` | All Pages | Special (Compat) | Standard desktop viewport (`1366 × 768` & `1920 × 1080`) rendering | Pass | — |
-| `COMP-09` | F-16–F-22 | Special (Compat) | JSON API session cookie persistence across browser/client sessions | Pass | — |
+| `COMP-01` | F-01 | Special (Compat) | Register (`/register`) across all 5 browser and viewport configurations (`5/5 Pass`) | Pass | — |
+| `COMP-02` | F-03 | Special (Compat) | Log in (`/login`) across all 5 browser and viewport configurations (`5/5 Pass`) | Pass | — |
+| `COMP-03` | F-05 | Special (Compat) | Log out (`/logout`) across all 5 browser and viewport configurations (`5/5 Pass`) | Pass | — |
+| `COMP-04` | F-05, F-06 | Special (Compat) | Navigation Bar (All logged-in pages) across all 5 configurations (`5/5 Pass`) | Pass | — |
+| `COMP-05` | F-09, F-11 | Special (Compat) | Task List — Layout & Filters (`/`) across all 5 configurations (`5/5 Pass`) | Pass | — |
+| `COMP-06` | F-12, F-13, F-14 | Special (Compat) | Task List — Controls & Popup (`/`) across all 5 configurations (`5/5 Pass`) | Pass | — |
+| `COMP-07` | F-08 | Special (Compat) | New Task — Form & Date Picker (`/tasks/new`) across all 5 configurations (`5/5 Pass`) | Pass | — |
+| `COMP-08` | F-10 | Special (Compat) | Edit Task (`/tasks/<id>/edit`) across all 5 configurations (`5/5 Pass`) | Pass | — |
+| `COMP-09` | F-15 | Special (Compat) | Dashboard — Stat Cards (`/dashboard`) across all 5 configurations (`5/5 Pass`) | Pass | — |
 
-### 4.3 Accessibility Checklist (`ACC-01` to `ACC-16`, `16` Items)
+### 4.3 Accessibility Checklist (`ACC-01` to `ACC-16`, `16` Items — `8` Pass, `8` Fail)
 
-| TC ID | Feature | Technique | Test Scenario / Summary | Status | Linked Defect |
+| TC ID | Feature | Technique | Test Scenario / Summary (from `03_Special_Testing/accessibility_findings.md`) | Status | Linked Defect |
 | :--- | :--- | :--- | :--- | :---: | :---: |
-| `ACC-01` | F-01, F-03, F-08, F-10 | Special (A11y) | Form `<label>` elements programmatically linked via `for`/`id` (WCAG 1.3.1 / 4.1.2) | Fail | D-009 |
-| `ACC-02` | F-12 | Special (A11y) | Done toggle button (`○` / `✓`) has descriptive `aria-label` (WCAG 4.1.2) | Fail | D-016 |
-| `ACC-03` | F-09, F-12 | Special (A11y) | Completed task text and `.empty` message meet `4.5:1` contrast minimum (WCAG 1.4.3) | Fail | D-015 |
-| `ACC-04` | F-14 | Special (A11y) | Urgency badges meet contrast requirements | Pass | — |
-| `ACC-05` | All Pages | Special (A11y) | Every page has a unique descriptive `<title>` and single `<h1>` | Pass | — |
-| `ACC-06` | All Pages | Special (A11y) | Keyboard Tab focus order follows logical reading order | Pass | — |
-| `ACC-07` | All Pages | Special (A11y) | HTML document declares `lang="en"` attribute | Pass | — |
-| `ACC-08` | F-11 | Special (A11y) | Filter `<select>` dropdowns and search `<input>` have accessible names | Fail | D-009 |
-| `ACC-09` | All Pages | Special (A11y) | Content reflows at `320 px` width without horizontal scrolling (`<meta name="viewport">`) | Fail | D-017 |
-| `ACC-10` | All Pages | Special (A11y) | Lighthouse automated accessibility audit baseline check | Pass | — |
-| `ACC-11` | F-10, F-13 | Special (A11y) | Edit and Delete action links meet `24 × 24 px` minimum target size (WCAG 2.5.8) | Fail | D-018 |
-| `ACC-12` | F-14 | Special (A11y) | Urgency status conveyed by text label, not color alone (WCAG 1.4.1) | Pass | — |
-| `ACC-13` | All Pages | Special (A11y) | Visible keyboard focus indicators on links, inputs, and buttons | Pass | — |
-| `ACC-14` | F-09 | Special (A11y) | Task list uses semantic `<table>` with `<thead>` and `<th>` headers | Pass | — |
-| `ACC-15` | F-01, F-03 | Special (A11y) | Error messages rendered in visible text on failed login/register | Pass | — |
-| `ACC-16` | F-05 | Special (A11y) | Navbar contrast at narrow widths (`320 px`) keeps `Log out` legible | Fail | D-017 |
+| `ACC-01` | F-01, F-03, F-08, F-10 | Special (A11y) | Click each form label; check whether the label is linked to its input (`for`/`id`) | Fail | D-009 |
+| `ACC-02` | F-12 | Special (A11y) | Read the accessible name of the done toggle button (`○` / `✓`) | Fail | D-016 |
+| `ACC-03` | F-09, F-12 | Special (A11y) | Measure text contrast of done task titles and the empty-list message (`>= 4.5:1`) | Fail | D-015 |
+| `ACC-04` | All Pages | Special (A11y) | Every control can be reached in a logical Tab order and focused control has a visible outline | Pass | — |
+| `ACC-05` | All Pages | Special (A11y) | Each page has its own unique browser tab `<title>` and one main `<h1>` heading | Pass | — |
+| `ACC-06` | F-01 | Special (A11y) | Submit invalid username (`ab`) on Register; error is shown in text and says what is wrong | Pass | — |
+| `ACC-07` | All Pages | Special (A11y) | `<html lang="en">` is set in `base.html` so screen readers use the right voice | Pass | — |
+| `ACC-08` | F-11 | Special (A1y) | Check accessible names (`label`/`aria-label`) of category dropdown, status dropdown, and search box | Fail | D-009 |
+| `ACC-09` | All Pages | Special (A11y) | Set window to `320 px` wide and check whether content reflows without sideways scrolling | Fail | D-017 |
+| `ACC-10` | All Pages | Special (A11y) | Run Lighthouse accessibility audit on each page (scores: 85, 85, 72, 74, 95; avg 82.2) | Fail | — *(See ACC-01, 03, 08, 11, 15)* |
+| `ACC-11` | F-10, F-13 | Special (A11y) | Measure click target size of Edit (`24×16 px`) and Delete (`39×15 px`) links (`>= 24×24 px`) | Fail | D-018 |
+| `ACC-12` | F-14 | Special (A11y) | Check whether urgency badges convey meaning in text rather than colour alone | Pass | — |
+| `ACC-13` | F-12, F-13 | Special (A11y) | Use done toggle and Delete confirm popup with keyboard only (`Enter` activates and answers) | Pass | — |
+| `ACC-14` | All Pages | Special (A11y) | Check images across all pages for alt text | Pass | — |
+| `ACC-15` | All Pages | Special (A11y) | Check pages for `<main>` landmark region and non-empty task table column headers | Fail | — *(Rec. R-04, not a defect)* |
+| `ACC-16` | All Pages | Special (A11y) | Look for flashing or moving content (`> 3` flashes per second) across all pages | Pass | — |
 
-### 4.4 Usability Evaluation (`US-01` to `US-31`, `31` Items)
+### 4.4 Usability Evaluation (`US-01` to `US-31`, `31` Observations — `6` Good, `21` Minor issue, `4` Major issue)
 
-| TC ID | Feature | Technique | Test Scenario / Summary | Status | Linked Defect |
+*(Note: Usability observations in `03_Special_Testing/usability_observations.md` use qualitative ratings — `Good`, `Minor issue`, `Major issue` — rather than binary Pass/Fail.)*
+
+| TC ID | Feature | Technique | Test Scenario / Summary | Source Rating | Linked Defect |
 | :--- | :--- | :--- | :--- | :---: | :---: |
-| `US-01` | F-01 | Special (Usability) | Registration page purpose and call-to-action clarity | Pass | — |
-| `US-02` | F-01 | Special (Usability) | Inline username/password format helper text visibility | Pass | — |
-| `US-03` | F-01 | Special (Usability) | Clear error feedback when username is outside `3–20` characters | Pass | — |
-| `US-04` | F-01 | Special (Usability) | Duplicate username registration prevention and error clarity | Fail | D-013 |
-| `US-05` | F-01 | Special (Usability) | 8-character password rejected despite `"min 8"` UI hint | Fail | D-004 |
-| `US-06` | F-03 | Special (Usability) | Clear generic error message on invalid login credentials | Pass | — |
-| `US-07` | F-03 | Special (Usability) | Direct link between Login and Register pages | Pass | — |
-| `US-08` | F-03 | Special (Usability) | Empty login field browser prompt prevents blank submission | Pass | — |
-| `US-09` | F-08 | Special (Usability) | `+ New Task` button prominence on task list header | Pass | — |
-| `US-10` | F-08 | Special (Usability) | Task form field labels and Cancel navigation clarity | Pass | — |
-| `US-11` | F-08 | Special (Usability) | Whitespace-only and excessively long titles accepted without user feedback | Fail | D-011, D-012 |
-| `US-12` | F-10 | Special (Usability) | Edit form pre-populates existing task title, description, category, and due date | Pass | — |
-| `US-13` | F-10 | Special (Usability) | Save Changes feedback and redirect to task list | Pass | — |
-| `US-14` | F-10 | Special (Usability) | Silent redirect to `/` without message when editing non-existent task ID | Observation | — |
-| `US-15` | F-12 | Special (Usability) | Single-click completion toggle responsiveness | Pass | — |
-| `US-16` | F-12 | Special (Usability) | Toggle button symbol (`○` / `✓`) lacks hover tooltip / accessible label | Fail | D-016 |
-| `US-17` | F-12 | Special (Usability) | Reopening a completed task restores original urgency badge | Pass | — |
-| `US-18` | F-14 | Special (Usability) | Task due today displays `"Overdue"` instead of `"Due Today"` | Fail | D-001 |
-| `US-19` | F-13 | Special (Usability) | Delete confirmation prompt prevents accidental task removal | Pass | — |
-| `US-20` | F-11 | Special (Usability) | Auto-submit behavior on category and status filter dropdowns | Observation | — |
-| `US-21` | F-11 | Special (Usability) | Search box placeholder and Filter button usability | Observation | — |
-| `US-22` | F-09 | Special (Usability) | Misleading `"No tasks match your filters."` message on brand-new empty account | Fail | D-008 |
-| `US-23` | F-11 | Special (Usability) | Lack of one-click `"Reset Filters"` button when multiple filters are active | Observation | — |
-| `US-24` | F-11 | Special (Usability) | Underscore `_` in search query acts as wildcard instead of literal character | Fail | D-014 |
-| `US-25` | F-15 | Special (Usability) | Dashboard summary cards readability and metric labels | Observation | — |
-| `US-26` | F-15 | Special (Usability) | Dashboard Overdue counter inflates due to today's tasks (`D-001`) | Observation | D-001 |
-| `US-27` | F-09 | Special (Usability) | Absence of pagination controls on web task list when task count grows | Observation | — |
-| `US-28` | F-05 | Special (Usability) | Current logged-in username displayed in top navigation bar | Observation | — |
-| `US-29` | F-05 | Special (Usability) | Browser Back button shows cached authenticated view after logout | Observation | D-032, D-036 |
-| `US-30` | F-08 | Special (Usability) | No confirmation flash banner after creating or deleting a task | Observation | — |
-| `US-31` | All Pages | Special (Usability) | Overall task management workflow learnability for first-time users | Observation | — |
+| `US-01` | F-01 | Special (Usability) | Finding the Register page link from the initial `/login` screen | Minor issue | — |
+| `US-02` | F-01 | Special (Usability) | Clarity and visibility of inline hints under Username and Password fields | Minor issue | See US-05 (`D-004`) |
+| `US-03` | F-01 | Special (Usability) | Error box feedback and field clearing after failed/successful registration | Minor issue | — |
+| `US-04` | F-01 | Special (Usability) | Registering again with a username that already exists | Major issue | D-013 |
+| `US-05` | F-01 | Special (Usability) | Misleading error message when entering an exact 8-character password | Major issue | D-004 |
+| `US-06` | F-03 | Special (Usability) | Generic error feedback and username field clearing on failed login | Minor issue | — |
+| `US-07` | F-03 | Special (Usability) | Visual and layout consistency between Login and Register pages | Good | — |
+| `US-08` | F-03 | Special (Usability) | Password masking and HTML5 empty-field prevention on Login | Good | — |
+| `US-09` | F-08 | Special (Usability) | Prominence of `+ New Task` button and Cancel navigation on task form | Good | — |
+| `US-10` | F-08 | Special (Usability) | Absence of confirmation flash banner after creating a task | Minor issue | — |
+| `US-11` | F-08 | Special (Usability) | Whitespace-only title, very long title, and past due date handling | Major issue | D-011, D-012 |
+| `US-12` | F-08 | Special (Usability) | Required/optional field indicators and date format consistency | Minor issue | — |
+| `US-13` | F-10 | Special (Usability) | Edit Task form layout consistency and pre-filled values | Good | — |
+| `US-14` | F-10 | Special (Usability) | Silent redirect without message when opening `/tasks/9999/edit` | Minor issue | — |
+| `US-15` | F-12 | Special (Usability) | Visual prominence and differentiation of stacked Edit and Delete links | Minor issue | — |
+| `US-16` | F-12 | Special (Usability) | Circle toggle button (`○`) lacks tooltip, label, or column heading | Minor issue | — |
+| `US-17` | F-12 | Special (Usability) | Immediate visual feedback when marking a task done and undoing | Good | — |
+| `US-18` | F-14 | Special (Usability) | Task due today displays `"Overdue"` instead of `"Due Today"` | Major issue | D-001 |
+| `US-19` | F-13 | Special (Usability) | Browser confirmation prompt on Delete (omits specific task title) | Minor issue | — |
+| `US-20` | F-13 | Special (Usability) | Delete link styling identical to Edit link without danger color | Minor issue | — |
+| `US-21` | F-13 | Special (Usability) | Absence of confirmation message after deleting a task | Minor issue | — |
+| `US-22` | F-11 | Special (Usability) | Empty filter message shown even for new user with zero tasks | Minor issue | — |
+| `US-23` | F-11 | Special (Usability) | Dropdowns auto-submit while search box requires clicking Filter; no Clear button | Minor issue | — |
+| `US-24` | F-11 | Special (Usability) | Underscore `_` in search acts as single-character wildcard | Minor issue | D-014 |
+| `US-25` | F-15 | Special (Usability) | Dashboard counter readability and inflated Overdue count (`D-001`) | Minor issue | See US-18 (`D-001`) |
+| `US-26` | F-15 | Special (Usability) | Dashboard stat cards are not clickable links to filtered task views | Minor issue | — |
+| `US-27` | F-05 | Special (Usability) | Visibility and consistent placement of `Log out` link in top navbar | Good | — |
+| `US-28` | F-05 | Special (Usability) | Absence of `"You have been logged out."` message after logout | Minor issue | — |
+| `US-29` | F-05 | Special (Usability) | Browser Back button after logout shows cached Dashboard page | Minor issue | D-032 *(D-036 dup)* |
+| `US-30` | All Pages | Special (Usability) | Cross-page styling consistency (button colors, fonts, date formats) | Minor issue | — |
+| `US-31` | All Pages | Special (Usability) | Brand link home routing and lack of active page indicator in navbar | Minor issue | — |
 
 ---
 
@@ -395,4 +395,71 @@
 | `TC-API-UI-21` | F-12, F-21 | UI vs API Parity | Toggle non-existent task ID handled cleanly (`404` API / redirect UI) | Pass | — |
 | `TC-API-UI-22` | F-21 | UI vs API Parity | `done: "false"` string completes task in API (`200`) | Fail | D-023 |
 | `TC-API-UI-23` | F-22 | UI vs API Parity | Delete non-existent task ID returns `200` in API instead of `404` | Fail | D-024 |
-| `TC-API-UI-24` | F-13, F-22 | UI vs API Parity | Cross-user delete blocked in UI, succeeds (`200`) in API | Fail
+| `TC-API-UI-24` | F-13, F-22 | UI vs API Parity | Cross-user delete blocked in UI, succeeds (`200`) in API | Fail | D-025 |
+| `TC-API-UI-25` | F-11, F-18 | UI vs API Parity | Underscore `_` in search acts as wildcard in both UI and API | Fail | D-014 |
+| `TC-API-UI-26` | F-11, F-18 | UI vs API Parity | Percent `%` in search acts as wildcard in both UI and API | Fail | D-014 |
+| `TC-API-UI-27` | F-11, F-18 | UI vs API Parity | Single quote `a'` in search causes `500` SQL error in API only | Fail | D-020 |
+| `TC-API-UI-28` | F-06, F-07 | UI vs API Parity | Unauthenticated task creation blocked in both UI (`302`) and API (`401`) | Pass | — |
+| `TC-API-UI-29` | F-06, F-07 | UI vs API Parity | Unauthenticated task edit blocked in both UI (`302`) and API (`401`) | Pass | — |
+| `TC-API-UI-30` | F-06, F-07 | UI vs API Parity | Unauthenticated task deletion blocked in both UI (`302`) and API (`401`) | Pass | — |
+
+---
+
+## 6. Week 5: Security & Performance Testing (`25` Items)
+
+### 6.1 STRIDE Security Test Cases (`TC-SEC-01` to `TC-SEC-22`, `22` Cases — `3` Pass, `19` Fail)
+
+*(Note: `Fail` indicates the STRIDE vulnerability was confirmed on the local environment and logged in `07_Test_Management/defect_log.md`; `Pass` indicates the security control prevented the attack.)*
+
+| TC ID | Feature | Technique | Test Scenario / Summary | Status | Linked Defect |
+| :--- | :--- | :--- | :--- | :---: | :---: |
+| `TC-SEC-01` | F-03 | Security (STRIDE `TH-01`) | Login brute-force protection across 10 consecutive failed `POST /login` attempts | Fail | D-026 |
+| `TC-SEC-02` | F-01 | Security (STRIDE `TH-02`) | Duplicate username registration prevention on `POST /register` | Fail | D-013 |
+| `TC-SEC-03` | F-04 | Security (STRIDE `TH-03`) | Session cookie forgery using hardcoded `SECRET_KEY` in `app.py` | Fail | D-027 |
+| `TC-SEC-04` | F-05 | Security (STRIDE `TH-04`) | Server-side session cookie invalidation after `GET /logout` | Fail | D-028 |
+| `TC-SEC-05` | F-08, F-09 | Security (STRIDE `TH-05`) | Stored XSS escaping for `<script>alert(1)</script>` in task title on `/` | Fail | D-010 |
+| `TC-SEC-06` | F-08, F-10, F-13 | Security (STRIDE `TH-06`) | Anti-CSRF token verification on state-changing web forms | Fail | D-029 |
+| `TC-SEC-07` | F-18 | Security (STRIDE `TH-07`) | SQL injection syntax handling for `GET /api/tasks?q=a'` | Fail | D-020 |
+| `TC-SEC-08` | F-11 | Security (STRIDE `TH-08`) | Literal `%` wildcard escaping in web search `GET /?q=%` | Fail | D-014 |
+| `TC-SEC-09` | F-08 | Security (STRIDE `TH-09`) | Server-side rejection of whitespace-only title on `POST /tasks/new` | Fail | D-011 |
+| `TC-SEC-10` | F-13 | Security (STRIDE `TH-10`) | Database audit trail verification upon task deletion | Fail | D-030 |
+| `TC-SEC-11` | NFR-02 | Security (STRIDE `TH-11`) | Inspection of `app.py` for hardcoded `app.run(debug=True)` | Fail | D-031 |
+| `TC-SEC-12` | F-05, F-09, F-15 | Security (STRIDE `TH-12`) | `Cache-Control: no-store` header verification on authenticated pages | Fail | D-032 |
+| `TC-SEC-13` | F-01 | Security (STRIDE `TH-13`) | Password cryptographic hashing (`scrypt:`/`pbkdf2:`) in `users` table | Pass | — |
+| `TC-SEC-14` | F-18 | Security (STRIDE `TH-14`) | Boolean SQL injection (`' OR 1=1 --`) cross-user isolation check | Fail | D-020 |
+| `TC-SEC-15` | F-04 | Security (STRIDE `TH-15`) | Session cookie `HttpOnly`, `SameSite`, and `Secure` flags check | Fail | D-033 |
+| `TC-SEC-16` | F-17 | Security (STRIDE `TH-16`) | Unauthenticated `GET /api/categories` exposes no user data | Pass | — |
+| `TC-SEC-17` | F-08, F-09 | Security (STRIDE `TH-17`) | Malformed `due_date` (`04-11-2026`) DoS check on `GET /` | Fail | D-006 |
+| `TC-SEC-18` | F-18 | Security (STRIDE `TH-18`) | Upper bound cap on `GET /api/tasks?per_page=1000` | Fail | D-034 |
+| `TC-SEC-19` | F-04 | Security (STRIDE `TH-19`) | Burst request throttling across 20 sequential `POST /api/login` calls | Fail | D-026 |
+| `TC-SEC-20` | F-05 | Security (STRIDE `TH-20`) | HTTP method enforcement requiring `POST` rather than `GET /logout` | Fail | D-035 |
+| `TC-SEC-21` | F-22 | Security (STRIDE `TH-21`) | Cross-user IDOR delete check on `DELETE /api/tasks/<id>` | Fail | D-025 |
+| `TC-SEC-22` | F-10, F-12, F-13 | Security (STRIDE `TH-22`) | Cross-user access control across web `/edit`, `/toggle`, and `/delete` | Pass | — |
+
+### 6.2 Locust Load & Performance Stages (`PERF-01` to `PERF-03`, `3` Stages)
+
+| TC ID | Feature | Technique | Test Scenario / Summary | Status | Linked Defect / Obs |
+| :--- | :--- | :--- | :--- | :---: | :---: |
+| `PERF-01` | F-02, F-04, F-16–F-22 | Performance (Load) | Stage 1 Baseline: `10` concurrent users (`221` reqs, `24 ms` avg, `140 ms` P95, `0.00%` errors) | Pass | — |
+| `PERF-02` | F-02, F-04, F-16–F-22 | Performance (Load) | Stage 2 Moderate: `50` concurrent users (`1,073` reqs, `47 ms` avg, `310 ms` P95, `0.00%` errors) | Pass | — |
+| `PERF-03` | F-02, F-04, F-16–F-22 | Performance (Load) | Stage 3 High Load: `100` concurrent users (`2,122` reqs, `95 ms` avg, `520 ms` P95, `0.00%` errors) | Observation | `PERF-OBS-01`, `PERF-OBS-02` |
+
+---
+
+## 7. Week 6: Automated Regression & Verification Runs (`103` Automated Runs across `10` Scripts)
+
+All 103 automated test runs in `06_Automation_Regression/tests/` (`69 Passed`, `34 Failed`, `0 Errors`) re-execute cases from Weeks 1–5 and map one-to-one in `06_Automation_Regression/manual_to_automated_traceability.md`.
+
+| Script File | Layer | Automated Runs | `@pytest.mark.regression` | Passed | Failed | Defects Caught |
+| :--- | :--- | :---: | :---: | :---: | :---: | :--- |
+| `tests/unit/test_bva_unit.py` | PyTest Unit | 3 | 1 | 2 | 1 | `D-004` |
+| `tests/unit/test_ep_urgency_unit.py` | PyTest Unit | 6 | 1 | 5 | 1 | `D-001` |
+| `tests/unit/test_reg_decision_table.py` | PyTest Unit / Route | 19 | 13 | 13 | 6 | `D-001`, `D-004` |
+| `tests/api/test_api_auth.py` | PyTest API | 18 | 2 | 15 | 3 | `D-013`, `D-019` |
+| `tests/api/test_ep_and_core_api.py` | PyTest API / Route | 13 | 9 | 4 | 9 | `D-006`, `D-009`, `D-010`, `D-011`, `D-016`, `D-017`, `D-020`, `D-022`, `D-025` |
+| `tests/api/test_reg_api_delete_dashboard.py` | PyTest API | 10 | 7 | 6 | 4 | `D-005`, `D-006`, `D-024`, `D-025` |
+| `tests/api/test_state_transition.py` | PyTest API / Route | 18 | 6 | 18 | 0 | — |
+| `tests/ui/test_ui_auth.py` | Selenium Browser UI | 1 | 0 | 1 | 0 | — |
+| `tests/ui/test_ui_tasks.py` | Selenium Browser UI | 1 | 0 | 1 | 0 | — |
+| `tests/ui/test_reg_accessibility_markup.py` | PyTest HTML/CSS | 14 | 12 | 4 | 10 | `D-008`, `D-009`, `D-015`, `D-016`, `D-017` |
+| **Total Automated Runs** | **All Layers** | **103** | **51** | **69** | **34** | **16 Unique Defects Confirmed** |

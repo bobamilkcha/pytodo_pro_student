@@ -100,3 +100,5 @@ This checklist evaluates all 8 pages and shared layout components defined in `03
 * **Priority:** Low
 * **Evidence:** `03_Special_Testing/evidence/GUI_testing/GUI-08.png`
 * **Status:** Open
+
+> **Week 7 Reconciliation Note:** `GUI-01` was re-verified as **Pass** in Week 6 and `D-007` was closed as `Closed (Not reproducible)`; see `07_Test_Management/master_test_repository.md` and `07_Test_Management/defect_log.md`.
