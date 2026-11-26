@@ -1,5 +1,7 @@
 # Central Defect Log - PyTodo Pro
 
+> **This is the Weeks 1–7 working copy, kept as history.** The final consolidated log, with current statuses, is **`07_Test_Management/defect_log.md`**. If the two differ, use the final log. In the final log, D-036 is `Closed (Duplicate of D-032)`.
+
 ## Summary
 *(Updated 24 Nov 2026, after Week 5. Severity scale and status values follow `test_conventions.md`.)*
 

@@ -34,8 +34,8 @@
   1. Navigate to `http://127.0.0.1:5000/login`.
   2. Enter Username `ryulemontea` and Password `Kimryulhensem`.
   3. Click "Log in".
-- **Expected Result:** Redirected to `/dashboard` with an active user session.
-- **Actual Result:** * Redirected to `/dashboard` with an active user session*
+- **Expected Result:** Redirected to the task list (`/`) with an active user session. *(Corrected in Week 7: the app opens the task list after login, not `/dashboard`. Found when this case was automated.)*
+- **Actual Result:** Redirected to the task list (`/`) with an active user session.
 - **Status:** PASS
 - **Evidence:** ``
 - **Defect ID:** N/A

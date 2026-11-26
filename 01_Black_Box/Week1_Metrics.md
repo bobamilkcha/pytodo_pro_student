@@ -1,5 +1,7 @@
 # Week 1 Testing Metrics Summary - PyTodo Pro
 
+> **Week 7 correction:** D-004 severity changed from "High" to **Major** (High is a priority, not a severity). D-003 is a duplicate of D-001, so Week 1 found **3 unique defects** (D-001, D-004, D-005). Current statuses are in `07_Test_Management/defect_log.md`.
+
 **Contributors:** 
 - Nafiesa (Defect & Metrics Coordinator - Decision Table) 
 - Nisrina (Automation/Tool Coordinator - BVA)
@@ -31,8 +33,8 @@
 | Defect ID | Associated Test Case | Feature / Area | Severity | Priority | Status |
 | :--- | :--- | :--- | :---: | :---: | :---: |
 | **D-001** | `TC-BB-F14-02` | F-14: Urgency Badge | Moderate | Medium | Open |
-| **D-003** | `TC-BB-BVA-F14-02` | F-14: Urgency Badge | Moderate | Medium | Open |
-| **D-004** | `TC-BB-BVA-F01-02` | F-01: Register (web) | High | High | Open |
+| **D-003** | `TC-BB-BVA-F14-02` | F-14: Urgency Badge | Moderate | Medium | Closed (Duplicate of D-001) |
+| **D-004** | `TC-BB-BVA-F01-02` | F-01: Register (web) | Major | High | Open |
 | **D-005** | `TC-BB-BVA-F15-01` | F-15: Dashboard (web) | Moderate | Medium | Open |
 
 ### Defect Distribution Metrics
