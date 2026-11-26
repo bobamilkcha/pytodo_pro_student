@@ -1,6 +1,6 @@
 # Final Consolidated Defect Log - PyTodo Pro
 
-**Maintained by:** Nafiesa (Defect & Metrics Coordinator)  
+**Prepared by:** Nafiesa (Defect & Metrics Coordinator)  
   
 **Covers:** every defect raised in Weeks 1 to 7 (D-001 to D-036)  
 **Rules used:** `03_Special_Testing/test_conventions.md` and the defect report template in the project brief
