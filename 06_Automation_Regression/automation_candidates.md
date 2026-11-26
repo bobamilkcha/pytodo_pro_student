@@ -1,7 +1,7 @@
 # Automation Candidates and Traceability - Nafiesa's Tests
 
 **Prepared by:** Nafiesa (Defect & Metrics Coordinator)
-**Date:** 25 Nov 2026
+
 **Week 6 tasks:** 1 (suggest candidates from my own tests), 3b (automate them), and input for 3c (manual-to-automated traceability)
 
 This file is my input for `automation_candidates.md` (QA/Test Lead) and `manual_to_automated_traceability.md` (Test Design Coordinator). Copy the rows you need.
