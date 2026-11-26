@@ -208,7 +208,7 @@ We use these before starting a test phase.
 | EX-10 | One defect log with unique IDs, severity, priority and status | Met for `07_Test_Management/defect_log.md`. The copies in `01_Black_Box/` and `04_Web_API/` are older and differ. | `defect_log.md` |
 | EX-11 | The master test repository matches the weekly files | Mostly met. Aida resolved the truncated file and reconciled the 286 unique Weeks 1–5 items plus 103 Week 6 runs; minor remaining items are tracked in `cross_check_defects.md`. | `master_test_repository.md`, `cross_check_defects.md` |
 
-Summary: we met 5 of 11, partly met 1 (EX-9), and did not meet 5 (EX-3, EX-4, EX-6, EX-7, EX-11). EX-6 and EX-7 need defects to be fixed. That part is outside what we can do in this course.
+Summary: we met 5 of 11, mostly met 1 (EX-11), partly met 1 (EX-9), and did not meet 4 (EX-3, EX-4, EX-6, EX-7). EX-6 and EX-7 need defects to be fixed. That part is outside what we can do in this course.
 
 ## 10. Defect management
 
@@ -256,7 +256,7 @@ Priority is separate from severity. The final log used one rule for every defect
 
 | Risk | What happened | Mitigation |
 |---|---|---|
-| Not enough time | Weeks 4 to 7 were done within a few days (29 commits on 26 Nov alone). Some work was shallow, for example 11 of the 22 security tests only check part of the threat. | Keep the security depth table in `05_Security_Performance/README.md`. Plan more time next time. |
+| Not enough time | Weeks 4 to 7 were done within a few days (29 commits on 26 Nov alone). Some work was shallow, for example 10 of the 22 security tests only check part of the threat. | Keep the security depth table in `05_Security_Performance/README.md`. Plan more time next time. |
 | Tool setup | Selenium, Locust and pytest-cov were set up on one machine each. Python versions differed. `requirements.txt` has only Flask. | Add the tools to `requirements.txt` (not done yet). Record versions in every evidence file. |
 | One tester per area | Usability had one tester. `toggle_task` had one owner and was never done. A wrong Pass (TC-BB-002) lasted until Week 3. | Cross-checking in Week 7 (`cross_check_defects.md`). A second person should review each result. |
 | Files overwritten or out of date | `automation_candidates.md` was overwritten after a merge. `execution_report.md` is behind. Several source files still show old results. | Pull before editing, and keep one source for each number. |
