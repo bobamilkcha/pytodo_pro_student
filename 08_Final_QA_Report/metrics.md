@@ -1,7 +1,6 @@
 # Week 8 Metrics - PyTodo Pro
 
 **Prepared by:** Nafiesa (Defect & Metrics Coordinator)
-**Date:** 25 Nov 2026
 **Week 8 tasks:** 1 (planned / executed / passed / failed / blocked counts and rates) and 2 (defects by severity and by feature/module)
 **Sources:** weekly metrics files (Weeks 1–4), `05_Security_Performance/security_test_cases.md`, the automated run on 25 Nov 2026 (`06_Automation_Regression/week6_defect_check.md`) and the final defect log (`07_Test_Management/defect_log.md`)
 
