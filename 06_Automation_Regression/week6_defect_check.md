@@ -1,7 +1,7 @@
 # Week 6 Defect Check - Automated Run vs Defect Log
 
 **Prepared by:** Nafiesa (Defect & Metrics Coordinator)
-**Date:** 25 Nov 2026
+
 **Week 6 task:** 6. Log failures as defects or script issues, and check whether known defects (8-character password, due today) are caught.
 
 This is a **pre-check**. I ran every test file in the repo on a fresh clone before the official run in `execution_report.md`. When Nisrina's official run is in, I compare the two and update this file if anything differs.
