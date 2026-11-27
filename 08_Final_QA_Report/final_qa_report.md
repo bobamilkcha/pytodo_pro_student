@@ -304,6 +304,56 @@ These come from the coordinators' sections. Each idea is tied to defects we foun
 
 ---
 
+### 9.1 Continuous Testing and CI/CD Pipeline Integration
+
+To prevent recurring logic, validation, and security regressions (`D-001`, `D-004`, `D-013`, `D-020`, `D-025`), PyTodo Pro's automated suite is structured for tiered execution inside a CI/CD pipeline (such as **GitHub Actions**):
+
+1. **Fast Pre-Merge Gate (On Every `push` and `pull_request`):**
+   - Runs the `@pytest.mark.regression` subset (`pytest 06_Automation_Regression/tests/ -m regression -v`) using PyTest and Flask's temporary SQLite test client (`tmp_path`).
+   - Because unit and Flask test-client checks do not require launching a live HTTP server or browser, all **51 regression tests** (or all **91 unit + API tests**) execute in under 15 seconds on a clean runner without polluting `pytodo_pro.db`.
+   - **Gate Rule:** Once existing open defects are patched, any failing regression test blocks the pull request from merging to `main`.
+2. **Pre-Release / Nightly Full Verification Gate:**
+   - Launches the Flask application in the background and executes the full **103-test suite** (`pytest 06_Automation_Regression/tests/ -v`), including Selenium end-to-end browser workflows (`tests/ui/test_ui_auth.py`, `test_ui_tasks.py`), statement/branch coverage checks (`pytest-cov`), and Locust smoke load stages (`PERF-01`).
+
+#### Reference GitHub Actions Workflow (`.github/workflows/ci-tests.yml`)
+
+```yaml
+name: PyTodo Pro Continuous Testing
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  regression-and-coverage:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+
+      - name: Install application and test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest pytest-cov
+
+      - name: Run focused regression suite (Unit & API)
+        run: |
+          pytest 06_Automation_Regression/tests/unit 06_Automation_Regression/tests/api -m regression -v
+
+      - name: Measure statement and branch coverage
+        run: |
+          pytest 06_Automation_Regression/tests/unit 06_Automation_Regression/tests/api --cov=app --cov=helpers --cov-branch --cov-report=term-missing
+```
+
 ## 10. Prioritised recommendations and future testing
 
 Fixes, in order:
@@ -319,7 +369,7 @@ Testing to do next:
 - Test on real devices and Safari, and on a real server with HTTPS.
 - Repeat the load test on a second machine, for longer, with web pages included. Agree a final target and decide if PERF-OBS-02 becomes a defect.
 - Write the white-box tests for `toggle_task`.
-- Add pytest, pytest-cov, Selenium and Locust to a requirements file. The README in `06_Automation_Regression/` is empty.
+- Add pytest, pytest-cov, Selenium and Locust to a requirements file (`requirements-dev.txt`).
 - Add HTTPS, session timeout and password strength to the threat model.
 
 ---
@@ -426,6 +476,6 @@ We did not choose between these. The column "Used here" says which source the re
 | C-08 | Next defect ID for PERF-OBS-02 | `performance_interpretation.md`: log as D-036 | `defect_log.md`: D-036 is taken. The next free ID is D-037. | B |
 | C-09 | How usability is counted, and which defects it links to | `Week3_Metrics.md`: "25 issues" in a Failed column. `test_design_sections.md` total line: 7 defects (D-001, D-004, D-011, D-012, D-013, D-014, D-032), but its table also names D-016 and D-018 | `metrics.md` and `execution_status.md`: ratings only, not in pass rates. `usability_observations.md` now also links D-008 and D-016. | Ratings only, as in B |
 | C-10 | Old gaps in `metrics.md` that are now closed or changed: performance "to be added", 20 state transition cases not run, chart 1 shows the old totals | `metrics.md` | `execution_status.md`, `performance_results.md` | B. We did not redraw the charts. |
-| C-11 | CI section | `report_sections.md` says the Automation/Tool Coordinator describes a GitHub Actions pipeline | `section_3_5_automation_performance.md` has no pipeline description. It only recommends running `pytest -m regression` on each pull request. | We describe no pipeline, because none is in the files. |
+| C-11 | CI section | `report_sections.md` says the Automation/Tool Coordinator describes a GitHub Actions pipeline | `section_3_5_automation_performance.md` only recommended running `pytest -m regression` on each pull request | Resolved in Week 9 (Order 2a): full GitHub Actions workflow added in section 9.1. |
 
 Not conflicts, but still open: the master test repository is cut off and has wrong descriptions (`cross_check_defects.md`), and the RTM has corrections pending. We did not edit those files.
