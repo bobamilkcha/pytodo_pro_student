@@ -33,7 +33,7 @@ These metrics only help if the team reads them as signals, not targets. For exam
 
 ### Summary for the final report
 
-Our testing found that most defects come from missing checks that a continuous process would catch early: the same rule applied differently in the web pages and the API, secrets and debug settings left in the code, and defects that were found again in later weeks because they had no automated test. The five improvements above move these checks earlier (shift-left), make them automatic on every change, and tie every defect to a regression test. It complements the Week 9 CI/CD section (Automation/Tool Coordinator), which covers where the regression suite would run.
+Our testing found that most defects come from missing checks that a continuous process would catch early: the same rule applied differently in the web pages and the API, secrets and debug settings left in the code and defects that were found again in later weeks because they had no automated test. The five improvements above move these checks earlier (shift-left), make them automatic on every change and tie every defect to a regression test. It complements the Week 9 CI/CD section (Automation/Tool Coordinator), which covers where the regression suite would run.
 
 ### References
 
