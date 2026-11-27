@@ -1,44 +1,68 @@
 # Week 8 Metrics - PyTodo Pro
 
 **Prepared by:** Nafiesa (Defect & Metrics Coordinator)
+**Version:** 2 (final), 27 Nov 2026
 **Week 8 tasks:** 1 (planned / executed / passed / failed / blocked counts and rates) and 2 (defects by severity and by feature/module)
-**Sources:** weekly metrics files (Weeks 1–4), `05_Security_Performance/security_test_cases.md`, the automated run on 25 Nov 2026 (`06_Automation_Regression/week6_defect_check.md`) and the final defect log (`07_Test_Management/defect_log.md`)
+**Sources:** `07_Test_Management/master_test_repository.md` and `execution_status.md` (test results), `07_Test_Management/defect_log.md` (defects), `06_Automation_Regression/execution_report.md` (automation), `05_Security_Performance/performance_results.md` (performance)
 
-> **Still to add:** Week 5 performance results. Nisrina's performance files are not in the repo yet. They are measured in response time, not pass/fail, so they will be added as their own table in section 5 and will not change the counts below.
+> **What changed from version 1 (25 Nov):** test counts now follow the reconciled master test repository (Week 7, Order 5). The 20 state transition cases have been run, the 8 web workflow scenarios, 6 validation checks and 3 performance stages are now counted, and 5 results were corrected (`TC-BB-002`, `TC-WB-F11-11`, `TC-WB-F15-03`, `GUI-01`, `GUI-05`). D-036 was added and closed as a duplicate of D-032. Automation now has 103 tests in the Week 6 suite.
 
 ---
 
 ## 1. Test execution metrics
 
-### 1.1 By week (unique test cases, Weeks 1–5)
+### 1.1 By week and technique (unique items, Weeks 1–5)
 
-Each test case is counted once, in the week it was designed. Re-runs in later weeks are counted separately in section 2, so nothing is counted twice.
+Each item is counted once, in the week it was designed. Week 6 automated re-runs are counted separately in section 2, so nothing is counted twice.
 
-| Week | Activity | Planned | Executed | Passed | Failed | Blocked | Not Run | Execution rate | Pass rate |
-| :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| 1 | Black-box (EP 10, BVA 8, decision table 12, state transition 20) | 50 | 30 | 25 | 5 | 0 | 20 | 60.0% | 83.3% |
-| 2 | White-box (`index`, `completed_in_last_n_days`, `compute_urgency`) | 28 | 28 | 26 | 2 | 0 | 0 | 100.0% | 92.9% |
-| 3 | GUI, compatibility, accessibility checks | 43 | 43 | 30 | 13 | 0 | 0 | 100.0% | 69.8% |
-| 4 | Web and API (automated) | 95 | 95 | 65 | 30 | 0 | 0 | 100.0% | 68.4% |
-| 5 | Security (automated) | 22 | 22 | 3 | 19 | 0 | 0 | 100.0% | 13.6% |
-| **Total** | | **238** | **218** | **149** | **69** | **0** | **20** | **91.6%** | **68.3%** |
+| Week | Technique / test type | Items | Executed | Passed | Failed | Blocked | Rated / observed | Pass rate |
+| :---: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| 1 | Equivalence partitioning | 10 | 10 | 8 | 2 | 0 | - | 80.0% |
+| 1 | Boundary value analysis | 8 | 8 | 5 | 3 | 0 | - | 62.5% |
+| 1 | Decision table | 12 | 12 | 11 | 1 | 0 | - | 91.7% |
+| 1 | State transition | 20 | 20 | 19 | 1 | 0 | - | 95.0% |
+| 2 | White-box (path and branch) | 28 | 28 | 24 | 4 | 0 | - | 85.7% |
+| 3 | GUI checklist | 18 | 18 | 14 | 4 | 0 | - | 77.8% |
+| 3 | Compatibility (9 pages x 5 configurations) | 9 | 9 | 9 | 0 | 0 | - | 100.0% |
+| 3 | Accessibility (WCAG 2.2) | 16 | 16 | 8 | 8 | 0 | - | 50.0% |
+| 3 | Usability evaluation | 31 | 31 | - | - | 0 | 31 ratings | - |
+| 4 | Web workflow scenarios | 8 | 8 | 8 | 0 | 0 | - | 100.0% |
+| 4 | Client-server validation | 6 | 6 | 1 | 5 | 0 | - | 16.7% |
+| 4 | REST API endpoints | 55 | 55 | 43 | 12 | 0 | - | 78.2% |
+| 4 | Extra delete and dashboard API | 10 | 10 | 6 | 4 | 0 | - | 60.0% |
+| 4 | UI vs API comparison | 30 | 30 | 16 | 14 | 0 | - | 53.3% |
+| 5 | STRIDE security tests | 22 | 22 | 3 | 19 | 0 | - | 13.6% |
+| 5 | Performance stages (Locust) | 3 | 3 | 2 | 0 | 0 | 1 observation | 100.0% of 2 |
+| **Total** | | **286** | **286** | **177** | **77** | **0** | **31 + 1** | **69.7%** |
 
-**Formulas:** Execution rate = Executed ÷ Planned. Pass rate = Passed ÷ Executed. Failure rate = Failed ÷ Executed = **31.7%**.
+### 1.2 By week
+
+| Week | Activity | Items | Pass/Fail items | Passed | Failed | Pass rate |
+| :---: | :--- | :---: | :---: | :---: | :---: | :---: |
+| 1 | Black-box | 50 | 50 | 43 | 7 | 86.0% |
+| 2 | White-box | 28 | 28 | 24 | 4 | 85.7% |
+| 3 | GUI, compatibility, accessibility, usability | 74 | 43 | 31 | 12 | 72.1% |
+| 4 | Web and API | 109 | 109 | 74 | 35 | 67.9% |
+| 5 | Security and performance | 25 | 24 | 5 | 19 | 20.8% |
+| **Total** | | **286** | **254** | **177** | **77** | **69.7%** |
+
+**Formulas**
+- Execution rate = Executed ÷ Planned = 286 ÷ 286 = **100%**. Every designed item was run.
+- Pass rate = Passed ÷ Pass/Fail items = 177 ÷ 254 = **69.7%**.
+- Failure rate = Failed ÷ Pass/Fail items = 77 ÷ 254 = **30.3%**.
+- Blocked = **0**. No test was stopped by a broken environment or a missing feature.
 
 ![Test results by week](charts/chart1_results_by_week.png)
 
 **Notes on the counts**
-- **Week 1** now includes Aida's EP cases (10) and the state transition design (20). `Week1_Metrics.md` counted only the decision table and BVA cases (20). The 20 state transition cases have no Actual Result or Status, so they are **Not Run**, which lowers the Week 1 execution rate to 60%.
-- **Week 1, TC-BB-002** is still recorded as Pass, but later weeks show duplicate usernames are accepted (D-013). If its owner changes it to Fail, the totals become 148 passed and 70 failed (pass rate 67.9%).
-- **Week 2:** the fourth unit, `toggle_task`, has no test cases, so it adds nothing to Planned. It is listed as an untested area in section 6.
-- **Week 3:** the 31 usability observations use ratings, not Pass/Fail, so they are not counted here: 6 Good, 21 Minor issue, 4 Major issue. Compatibility counts as 9 checks (45 results on 5 configurations).
-- **Week 3, GUI-01** failed because of D-007, which is now `Closed (Not reproducible)`. If a re-run passes, Week 3 becomes 31 passed and 12 failed.
-- **Week 4** excludes `test_api_smoke.py` (2 setup checks) and the 8 web workflow scenarios, which have no Pass/Fail column.
-- **Blocked = 0** in every week. No test was stopped by a broken environment or a missing feature.
+- **Usability (31)** uses ratings, not Pass/Fail: **6 Good, 21 Minor issue, 4 Major issue**. These items are executed but left out of the pass rate.
+- **Performance (3 stages)**: Stages 1 and 2 met every target. Stage 3 met 3 of 4 targets (P95 520 ms against 500 ms), so it is recorded as an **observation**, not a pass or a fail (see section 5).
+- **White-box** counts `TC-WB-F11-11` and `TC-WB-F15-03` as **Fail**. Their pytest scripts were written to reproduce defects D-014 and D-005, so the scripts pass while the defects are present. Against the expected behaviour in the specification, both test cases fail.
+- **Compatibility** counts each page once. In total, 45 of 45 page-and-configuration results passed.
 
-### 1.2 Why the pass rate falls week by week
+### 1.3 Why the pass rate falls week by week
 
-The pass rate drops from 92.9% (Week 2) to 13.6% (Week 5). This does **not** mean the app got worse. It shows where we aimed our tests:
+The pass rate drops from 86.0% (Week 1) to 20.8% (Week 5). This does **not** mean the app got worse. It shows where we aimed our tests:
 - Weeks 1–2 tested the normal paths of core features, which mostly work.
 - Weeks 4–5 aimed at invalid input, other users' data and attacks. These are the places the app does not check, so most of those tests fail.
 
@@ -48,19 +72,33 @@ A low pass rate in Week 5 means the security tests found real gaps. It does not 
 
 ## 2. Automation and regression metrics (Week 6)
 
+### 2.1 Week 6 suite (`06_Automation_Regression/tests/`)
+
+| Layer | Files | Tests | Passed | Failed |
+| :--- | :--- | :---: | :---: | :---: |
+| Unit | `test_bva_unit.py`, `test_ep_urgency_unit.py`, `test_reg_decision_table.py` | 28 | 20 | 8 |
+| API / route | `test_api_auth.py`, `test_ep_and_core_api.py`, `test_reg_api_delete_dashboard.py`, `test_state_transition.py` | 59 | 43 | 16 |
+| UI | `test_ui_auth.py`, `test_ui_tasks.py` (Selenium), `test_reg_accessibility_markup.py` (HTML/CSS) | 16 | 6 | 10 |
+| **Total** | **10 files** | **103** | **69** | **34** |
+
+**Regression subset** (`pytest 06_Automation_Regression/tests -m regression`): **51 tests, 22 passed, 29 failed** (14.61 s, `logs/regression_suite.log`). Full suite: 26.77 s (`logs/full_suite.log`).
+
+### 2.2 All automated tests in the repository
+
 | Metric | Value |
 | :--- | :---: |
-| Automated tests in the repo | 193 (150 from Weeks 2, 4, 5 + 43 new in Week 6) |
-| Passed / Failed / Errors | 122 / 71 / 0 |
-| Failures caused by real product defects | 71 of 71 (100%) |
+| Automated tests | **253** (150 from Weeks 2, 4, 5 + 103 in the Week 6 suite) |
+| Passed / Failed / Errors | 168 / 85 / 0 |
+| Failures caused by real product defects | 85 of 85 (100%) |
 | Failures caused by broken scripts | 0 |
-| New defects found by the regression run | 0 |
-| Regression-marked tests (Nafiesa's scripts) | 32 (12 pass, 20 fail) |
+| New defects found by automation | 0 |
 | Valid defects caught by at least one automated test | **31 of 32 (96.9%)**, up from 26 of 32 (81.3%) before Week 6 |
 | Defect not automated | D-018 (needs a real browser to measure target size) |
-| Full suite run time | about 14 seconds |
+| Known defects D-004 and D-001 | Both caught, by 4 tests each |
 
-The 71 failures are expected. Each one is a test that guards an open defect. When the developers fix a defect, its tests should turn green. That is how we will know the fix worked, and that nothing else broke.
+These numbers count **automated runs**, not unique test cases. Most Week 6 tests re-run cases already counted in section 1.
+
+The 85 failures are expected. Each one is a test that guards an open defect. When the developers fix a defect, its tests should turn green. That is how we will know the fix worked, and that nothing else broke.
 
 ### 2.1 Code coverage (all automated tests together)
 
@@ -70,13 +108,13 @@ The 71 failures are expected. Each one is a test that guards an open defect. Whe
 | `helpers.py` | 29 / 31 | **93.5%** | 16 / 18 | **88.9%** | 90.3% | 83.3% |
 | **Total** | 313 / 330 | **94.8%** | 73 / 82 | **89.0%** | | |
 
-Command: `pytest 02_White_Box_Coverage 04_Web_API 05_Security_Performance 06_Automation_Regression --cov=app --cov=helpers --cov-branch` (25 Nov 2026).
+Command: `pytest 02_White_Box_Coverage 04_Web_API 05_Security_Performance 06_Automation_Regression --cov=app --cov=helpers --cov-branch` (25 Nov 2026, before the 18 state transition tests were added; they test routes that were already covered).
 
 ![Code coverage, Week 2 vs Week 6](charts/chart5_coverage.png)
 
 High coverage means most lines **ran** during a test. It does not mean they were **checked** properly. For example, every line of the delete API already ran in the normal delete test `API-TSK-DEL-01`, which passes. The missing owner check (D-025) was only found when another test used a second user.
 
-**Uncovered lines worth noting:** no automated test saves a task through the **web edit form** (`app.py` lines 256–265) or marks a task done through the **web toggle** (lines 277–280). These two web features have only been tested by hand. The other uncovered lines are the `__main__` start-up block (481–482) and two small branches. The Automation/Tool Coordinator interprets these in her report section.
+**Uncovered lines worth noting (25 Nov):** no automated test saved a task through the **web edit form** (`app.py` lines 256–265) or marked a task done through the **web toggle** (lines 277–280). The state transition tests added on 26 Nov (`test_state_transition.py`) now exercise the toggle. The other uncovered lines are the `__main__` start-up block (481–482) and two small branches. The Automation/Tool Coordinator interprets these in her report section.
 
 ---
 
@@ -86,11 +124,12 @@ High coverage means most lines **ran** during a test. It does not mean they were
 
 | Item | Count |
 | :--- | :---: |
-| Defect IDs logged | 35 |
-| Duplicates closed (D-002, D-003) | 2 |
+| Defect IDs logged | 36 |
+| Duplicates closed (D-002, D-003 → D-001; D-036 → D-032) | 3 |
 | Not reproducible, closed (D-007) | 1 |
 | **Valid unique defects** | **32** |
 | Confirmed / Open / Retest / Closed-fixed | 31 / 1 / 0 / 0 |
+| Next free defect ID | D-037 |
 
 ### 3.2 By severity
 
@@ -124,15 +163,16 @@ High coverage means most lines **ran** during a test. It does not mean they were
 
 ### 3.4 By week found and by technique
 
-| Week | Technique | New valid defects | Defects per executed test |
-| :--- | :--- | :---: | :---: |
-| 1 | Black-box (EP, BVA, decision table) | 3 | 3 / 30 = 0.10 |
-| 2 | White-box | 1 | 1 / 28 = 0.04 |
-| 3 | GUI, usability, accessibility | 11 | 11 / 43 = 0.26 (plus usability observations) |
-| 4 | Web and API | 7 | 7 / 95 = 0.07 |
-| 5 | Security (STRIDE) | 10 | 10 / 22 = 0.45 |
-| 6 | Automation and regression | 0 | 0 / 193 = 0 |
-| **Total** | | **32** | **32 / 218 = 0.15** |
+| Week | Technique | New valid defects | Pass/Fail items | Defects per item |
+| :---: | :--- | :---: | :---: | :---: |
+| 1 | Black-box (EP, BVA, decision table, state transition) | 3 | 50 | 0.06 |
+| 2 | White-box | 1 | 28 | 0.04 |
+| 3 | GUI, usability, accessibility | 11 | 43 (+31 ratings) | 0.26 |
+| 4 | Web and API | 7 | 109 | 0.06 |
+| 5 | Security and performance | 10 | 24 | 0.42 |
+| 6 | Automation and regression | 0 | (103 re-runs) | 0 |
+| 7 | State transition run | 0 (D-036 = duplicate of D-032) | - | 0 |
+| **Total** | | **32** | **254** | **0.13** |
 
 ![New defects found per week](charts/chart4_defects_per_week.png)
 
@@ -153,25 +193,40 @@ The same root cause showed up through different techniques. This raised our conf
 
 ## 4. Interpretation
 
-1. **The core flows mostly work.** Normal register (with 9+ characters), login, create, filter and complete tasks pass in Weeks 1, 2 and 6.
-2. **Validation and security are the weakest areas.** 23 of the 32 valid defects (72%) involve missing input checks, missing ownership checks or weak session and server settings (D-006, D-010 to D-014, D-019 to D-035).
-3. **The JSON API is less safe than the web pages.** The web delete checks the owner and the web search uses a safe query, but the API does neither (D-020, D-025). The same feature was built twice with different rules.
-4. **Security testing found the most defects per test** (0.45 per test). Week 3 special testing was next (0.26), because accessibility had never been checked.
-5. **Week 6 found no new defects, and this is expected.** Regression tests re-check known behaviour. Their value is that 31 of 32 defects are now checked automatically, in about 14 seconds.
-6. **Testing has not shown that the app is defect-free.** It shows that 32 defects exist, mostly in validation and security, and that the normal paths we tested work. The areas in section 6 were not tested, or were tested only lightly.
+1. **Every designed test was run.** The execution rate is 100% (286 of 286), and nothing was blocked.
+2. **The core flows mostly work.** Normal register (with 9+ characters), login, create, filter, complete and logout pass in Weeks 1, 2, 4 and 6, including all 20 state transitions except the Back-button case.
+3. **Validation and security are the weakest areas.** 23 of the 32 valid defects (72%) involve missing input checks, missing ownership checks or weak session and server settings (D-006, D-010 to D-014, D-019 to D-035).
+4. **The JSON API is less safe than the web pages.** The web delete checks the owner and the web search uses a safe query, but the API does neither (D-020, D-025). The same feature was built twice with different rules.
+5. **Security testing found the most defects per test** (0.42 per item). Week 3 special testing was next (0.26), because accessibility had never been checked.
+6. **Weeks 6 and 7 found no new valid defects, and this is expected.** Regression tests re-check known behaviour. Their value is that 31 of 32 defects are now checked automatically, in under 30 seconds. The one new ID in Week 7 (D-036) turned out to be a duplicate.
+7. **Testing has not shown that the app is defect-free.** It shows that 32 defects exist, mostly in validation and security, and that the normal paths we tested work. The areas in section 6 were not tested, or were tested only lightly.
 
-## 5. Performance (to be added)
+## 5. Performance (Week 5)
 
-| Endpoint / page | Users | Avg response (ms) | 95th percentile (ms) | Throughput (req/s) | Error rate |
-| :--- | :---: | :---: | :---: | :---: | :---: |
-| *Waiting for `performance_results.md`* | | | | | |
+Source: `05_Security_Performance/performance_results.md` (Locust, API only, 30 s per stage). Interpretation: `05_Security_Performance/performance_interpretation.md`.
+
+| Stage | Users | Requests | Errors | Avg (ms) | Median (ms) | P95 (ms) | Max (ms) | Throughput (req/s) | Targets met |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| 1 Baseline | 10 | 221 | 0 (0.00%) | 24 | 10 | 140 | 204 | 7.55 | 4 of 4 |
+| 2 Moderate | 50 | 1,073 | 0 (0.00%) | 47 | 13 | 310 | 770 | 36.92 | 4 of 4 |
+| 3 High | 100 | 2,122 | 0 (0.00%) | 95 | 19 | 520 | 1,478 | 72.19 | 3 of 4 (P95 above 500 ms) |
+| **Total** | | **3,416** | **0** | | | | | | |
+
+Targets: average < 200 ms, P95 < 500 ms, error rate < 1%, throughput grows with users.
+
+**Key points**
+- **Stable:** 0 errors in 3,416 requests, up to 100 concurrent users.
+- **Scales:** 10 times the users gave 9.6 times the throughput.
+- **Bottleneck:** login and register (password hashing). At 100 users, register averaged 662 ms (P95 1,200 ms). All task, dashboard and category endpoints stayed below 500 ms P95 in every stage.
+- **No new defect:** the targets were met under normal load (Stages 1 and 2), and the Stage 3 P95 miss comes from deliberate password hashing during a login burst. It is recorded as observations PERF-OBS-01 and PERF-OBS-02 for the risk section. If the team logs PERF-OBS-02 as a defect, it becomes **D-037** (D-036 is now taken).
+- **Repeated:** a second run on another machine showed the same pattern (`05_Security_Performance/evidence_performance_rerun.txt`). It was slower on fewer CPU cores, so the absolute numbers depend on the hardware.
 
 ## 6. Gaps that affect these metrics
 
 | Gap | Effect on the metrics |
 | :--- | :--- |
-| 20 state transition cases not executed (F-05 Logout, F-12 Mark done) | Week 1 execution rate is 60%; session state changes were tested only through security tests |
-| `toggle_task` white-box unit not tested | Still uncovered: no automated test marks a task done through the web (lines 277–280). The web edit save (lines 256–265) is also uncovered |
-| Performance results not yet in repo | No response-time or load figures in this report yet |
+| Usability rated, not Pass/Fail | 31 observations are reported as ratings and left out of the pass rate |
+| `toggle_task` white-box unit not tested in Week 2 | No branch-focused unit test; the toggle is covered by state transition tests instead |
+| Performance tested on the API only, 30 s per stage, one run each, load generator on the same machine | Response times describe this setup only; web pages, long runs and the failure point were not tested |
 | D-018 target size not automated | 1 defect relies on a manual browser check |
-| Usability rated, not Pass/Fail | 31 observations are reported separately, not in pass rates |
+| Coverage measured on 25 Nov | Does not include the 18 state transition tests added on 26 Nov; the real figure can only be the same or higher |

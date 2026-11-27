@@ -52,7 +52,7 @@ The clearest pattern is that **the web pages and the JSON API apply different ru
 
 The second pattern is **missing defaults for a real deployment**: a hard-coded secret key, debug mode on, no rate limiting, no CSRF tokens and weak cookie flags (D-026, D-027, D-029, D-031, D-033). Each is common in a development build, but together they mean the app is not ready to be put on the internet as it is.
 
-All 19 security failures are now in the automated regression suite (Week 6), so each fix can be checked again in seconds.
+All 19 security failures are re-checked automatically by `05_Security_Performance/tests/test_security.py`, and the two Critical ones (D-020, D-025) are also in the Week 6 regression suite, so each fix can be checked again in seconds.
 
 ### A.4 Limitations
 
@@ -98,13 +98,13 @@ Improvement 3 matters because accessibility is easy to break again with any temp
 
 **Metrics to track each sprint.** These continue the metrics we already calculate, so the team can see whether quality is improving:
 - defects found per sprint by severity, and how many were found **before** merge rather than after;
-- the regression pass rate (it should rise as fixes arrive; it is 63% today: 122 of 193 tests);
+- the pass rate of the regression suite (it should rise as fixes arrive; today it is 43.1%: 22 of the 51 regression tests pass);
 - automated defect coverage (96.9% today; the target is 100%);
 - the time from a defect being logged to it being `Closed`.
 
 These metrics only help if the team reads them as signals, not targets. For example, a falling defect count could mean that testing has stopped, not that the app got better.
 
-**Link to the other sections.** The CI/CD pipeline itself (GitHub Actions running pytest on each push) is described by the Automation/Tool Coordinator in her section. My improvements above are the process rules around that pipeline: what must be tested before code is merged, and how defects move through their lifecycle.
+**Link to the other sections.** These improvements are process rules: what must be tested before code is merged, and how defects move through their lifecycle. They assume a CI step that runs `pytest 06_Automation_Regression/tests -m regression` on every push or pull request, as recommended in `section_3_5_automation_performance.md`. We did not build that pipeline in this project, so it is a recommendation, not something we tested.
 
 ---
 
