@@ -1,7 +1,7 @@
 # Week 9 Standards Integration: Defect & Metrics Coordinator (Nafiesa)
 
 **Date:** 27 Nov 2026
-**Task:** Week 9, Order 2b — QA and process improvements for an Agile/DevOps workflow (brief: "Identify QA/process improvements that could be incorporated into an Agile/DevOps workflow")
+**Task:** Week 9, QA and process improvements for an Agile/DevOps workflow (brief: "Identify QA/process improvements that could be incorporated into an Agile/DevOps workflow")
 **For:** Integration into `08_Final_QA_Report/final_qa_report.md` (QA/Test Lead)
 **Based on:** `07_Test_Management/defect_log.md`, `08_Final_QA_Report/metrics.md`, `06_Automation_Regression/week6_defect_check.md`
 
