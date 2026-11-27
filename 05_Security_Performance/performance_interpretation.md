@@ -66,7 +66,7 @@ Together, these mean an attacker could send many login requests and keep the CPU
 
 ## 5. Defect decision
 
-**No new defect was logged.** The next free ID stays **D-036**.
+**No new defect was logged.** *(Update 27 Nov: D-036 has since been used for a state transition defect, so the next free ID is **D-037**.)*
 
 | Reason | Detail |
 | :--- | :--- |
@@ -82,7 +82,7 @@ Instead, it is recorded as a **performance observation** for the risk section of
 | PERF-OBS-01 | Login and register response time grows quickly with concurrent users (avg 662 ms, P95 1,200 ms at 100 users) | Slow sign-in at peak times; possible slowdown attack combined with D-026 | Developers |
 | PERF-OBS-02 | Overall P95 is 520 ms at 100 users, just above our 500 ms target | Users at peak load may notice delays | Team, when setting a final target |
 
-If the team decides that the 500 ms target should also apply at 100 users, PERF-OBS-02 can be logged as **D-036** (Minor, Low priority). I will add it to the log if we agree.
+If the team decides that the 500 ms target should also apply at 100 users, PERF-OBS-02 can be logged as **D-037** (Minor, Low priority). I will add it to the log if we agree.
 
 ## 6. Limitations of the experiment
 
